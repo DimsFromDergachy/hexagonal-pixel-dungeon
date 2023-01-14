@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2021 Evan Debenham
+ * Copyright (C) 2014-2022 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,9 @@ package com.shatteredpixel.shatteredpixeldungeon.ui;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDAction;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
 import com.watabou.input.GameAction;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
@@ -53,7 +55,7 @@ public class DangerIndicator extends Tag {
 	
 	@Override
 	public GameAction keyAction() {
-		return SPDAction.TAG_DANGER;
+		return SPDAction.CYCLE;
 	}
 	
 	@Override
@@ -114,7 +116,14 @@ public class DangerIndicator extends Tag {
 			QuickSlotButton.target(target);
 			if (Dungeon.hero.canAttack(target)) AttackIndicator.target(target);
 
-			if (Dungeon.hero.curAction == null) Camera.main.panTo(target.sprite.center(), 5f);
+			if (Dungeon.hero.curAction == null && target.sprite != null) {
+				Camera.main.panTo(target.sprite.center(), 5f);
+			}
 		}
+	}
+
+	@Override
+	protected String hoverText() {
+		return Messages.titleCase(Messages.get(WndKeyBindings.class, "tag_danger"));
 	}
 }

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2021 Evan Debenham
+ * Copyright (C) 2014-2022 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -98,7 +98,7 @@ public class HeroSprite extends CharSprite {
 	@Override
 	public void place( int p ) {
 		super.place( p );
-		if (Game.scene() instanceof GameScene) Camera.main.panTo(center(), 5f);
+		if (Game.scene() instanceof GameScene) Camera.main.panFollow(this, 5f);
 	}
 
 	@Override
@@ -124,7 +124,7 @@ public class HeroSprite extends CharSprite {
 		play( fly );
 	}
 
-	public void read() {
+	public synchronized void read() {
 		animCallback = new Callback() {
 			@Override
 			public void call() {

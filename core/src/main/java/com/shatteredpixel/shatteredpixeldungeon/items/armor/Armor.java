@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2021 Evan Debenham
+ * Copyright (C) 2014-2022 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -56,6 +56,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Stone;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Swiftness;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Thorns;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs.Viscosity;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -105,7 +106,7 @@ public class Armor extends EquipableItem {
 	public boolean curseInfusionBonus = false;
 	public boolean masteryPotionBonus = false;
 	
-	private BrokenSeal seal;
+	protected BrokenSeal seal;
 	
 	public int tier;
 	
@@ -197,6 +198,7 @@ public class Armor extends EquipableItem {
 			if (!detaching.collect()){
 				Dungeon.level.drop(detaching, hero.pos);
 			}
+			updateQuickslot();
 		}
 	}
 
@@ -238,8 +240,7 @@ public class Armor extends EquipableItem {
 		this.seal = seal;
 		if (seal.level() > 0){
 			//doesn't trigger upgrading logic such as affecting curses/glyphs
-			int newLevel = level()+1;
-			if (curseInfusionBonus) newLevel--;
+			int newLevel = trueLevel()+1;
 			level(newLevel);
 			Badges.validateItemLevelAquired(this);
 		}
@@ -353,15 +354,15 @@ public class Armor extends EquipableItem {
 					break;
 				}
 			}
-			if (!enemyNear) speed *= (1.2f + 0.04f * buffedLvl());
+			if (!enemyNear) speed *= (1.2f + 0.04f * buffedLvl()) * RingOfArcana.enchantPowerMultiplier(owner);
 		} else if (hasGlyph(Flow.class, owner) && Dungeon.level.water[owner.pos]){
-			speed *= (2f + 0.25f*buffedLvl());
+			speed *= (2f + 0.25f*buffedLvl()) * RingOfArcana.enchantPowerMultiplier(owner);
 		}
 		
 		if (hasGlyph(Bulk.class, owner) &&
 				(Dungeon.level.map[owner.pos] == Terrain.DOOR
 						|| Dungeon.level.map[owner.pos] == Terrain.OPEN_DOOR )) {
-			speed /= 3f;
+			speed /= 3f * RingOfArcana.enchantPowerMultiplier(owner);
 		}
 		
 		return speed;
@@ -371,7 +372,7 @@ public class Armor extends EquipableItem {
 	public float stealthFactor( Char owner, float stealth ){
 		
 		if (hasGlyph(Obfuscation.class, owner)){
-			stealth += 1 + buffedLvl()/3f;
+			stealth += (1 + buffedLvl()/3f) * RingOfArcana.enchantPowerMultiplier(owner);
 		}
 		
 		return stealth;
@@ -379,7 +380,9 @@ public class Armor extends EquipableItem {
 	
 	@Override
 	public int level() {
-		return super.level() + (curseInfusionBonus ? 1 : 0);
+		int level = super.level();
+		if (curseInfusionBonus) level += 1 + level/6;
+		return level;
 	}
 	
 	//other things can equip these, for now we assume only the hero can be affected by levelling debuffs
@@ -482,7 +485,7 @@ public class Armor extends EquipableItem {
 		}
 		
 		if (glyph != null  && (cursedKnown || !glyph.curse())) {
-			info += "\n\n" +  Messages.get(Armor.class, "inscribed", glyph.name());
+			info += "\n\n" +  Messages.capitalize(Messages.get(Armor.class, "inscribed", glyph.name()));
 			info += " " + glyph.desc();
 		}
 		
@@ -493,7 +496,11 @@ public class Armor extends EquipableItem {
 		} else if (seal != null) {
 			info += "\n\n" + Messages.get(Armor.class, "seal_attached", seal.maxShield(tier, level()));
 		} else if (!isIdentified() && cursedKnown){
-			info += "\n\n" + Messages.get(Armor.class, "not_cursed");
+			if (glyph != null && glyph.curse()) {
+				info += "\n\n" + Messages.get(Armor.class, "weak_cursed");
+			} else {
+				info += "\n\n" + Messages.get(Armor.class, "not_cursed");
+			}
 		}
 		
 		return info;
@@ -637,6 +644,10 @@ public class Armor extends EquipableItem {
 		};
 		
 		public abstract int proc( Armor armor, Char attacker, Char defender, int damage );
+
+		protected float procChanceMultiplier( Char defender ){
+			return RingOfArcana.enchantPowerMultiplier(defender);
+		}
 		
 		public String name() {
 			if (!curse())

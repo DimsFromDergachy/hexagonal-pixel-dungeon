@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2021 Evan Debenham
+ * Copyright (C) 2014-2022 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.huntress.NaturesPower;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.LeafParticle;
-import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfSharpshooting;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -186,7 +185,7 @@ public class SpiritBow extends Weapon {
 	public int min(int lvl) {
 		int dmg = 1 + Dungeon.hero.lvl/5
 				+ RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
-				+ (curseInfusionBonus ? 1 : 0);
+				+ (curseInfusionBonus ? 1 + Dungeon.hero.lvl/30 : 0);
 		return Math.max(0, dmg);
 	}
 	
@@ -194,7 +193,7 @@ public class SpiritBow extends Weapon {
 	public int max(int lvl) {
 		int dmg = 6 + (int)(Dungeon.hero.lvl/2.5f)
 				+ 2*RingOfSharpshooting.levelDamageBonus(Dungeon.hero)
-				+ (curseInfusionBonus ? 2 : 0);
+				+ (curseInfusionBonus ? 2 + Dungeon.hero.lvl/15 : 0);
 		return Math.max(0, dmg);
 	}
 
@@ -246,9 +245,9 @@ public class SpiritBow extends Weapon {
 				case NONE: default:
 					return 0f;
 				case SPEED:
-					return 1f * RingOfFuror.attackSpeedMultiplier(owner);
+					return 1f;
 				case DAMAGE:
-					return 2f * RingOfFuror.attackSpeedMultiplier(owner);
+					return 2f;
 			}
 		} else{
 			return super.baseDelay(owner);
@@ -267,7 +266,9 @@ public class SpiritBow extends Weapon {
 
 	@Override
 	public int level() {
-		return (Dungeon.hero == null ? 0 : Dungeon.hero.lvl/5) + (curseInfusionBonus ? 1 : 0);
+		int level = Dungeon.hero == null ? 0 : Dungeon.hero.lvl/5;
+		if (curseInfusionBonus) level += 1 + level/6;
+		return level;
 	}
 
 	@Override
@@ -327,11 +328,11 @@ public class SpiritBow extends Weapon {
 		}
 		
 		@Override
-		public float accuracyFactor(Char owner) {
+		public float accuracyFactor(Char owner, Char target) {
 			if (sniperSpecial && SpiritBow.this.augment == Augment.DAMAGE){
 				return Float.POSITIVE_INFINITY;
 			} else {
-				return super.accuracyFactor(owner);
+				return super.accuracyFactor(owner, target);
 			}
 		}
 		
@@ -360,7 +361,8 @@ public class SpiritBow extends Weapon {
 		}
 
 		int flurryCount = -1;
-		
+		Actor flurryActor = null;
+
 		@Override
 		public void cast(final Hero user, final int dst) {
 			final int cell = throwPos( user, dst );
@@ -374,6 +376,11 @@ public class SpiritBow extends Weapon {
 					user.spendAndNext(castDelay(user, dst));
 					sniperSpecial = false;
 					flurryCount = -1;
+
+					if (flurryActor != null){
+						flurryActor.next();
+						flurryActor = null;
+					}
 					return;
 				}
 				QuickSlotButton.target(enemy);
@@ -401,6 +408,11 @@ public class SpiritBow extends Weapon {
 											sniperSpecial = false;
 											flurryCount = -1;
 										}
+
+										if (flurryActor != null){
+											flurryActor.next();
+											flurryActor = null;
+										}
 									}
 								});
 				
@@ -409,7 +421,23 @@ public class SpiritBow extends Weapon {
 					public void call() {
 						flurryCount--;
 						if (flurryCount > 0){
-							cast(user, dst);
+							Actor.add(new Actor() {
+
+								{
+									actPriority = VFX_PRIO-1;
+								}
+
+								@Override
+								protected boolean act() {
+									flurryActor = this;
+									int target = QuickSlotButton.autoAim(enemy, SpiritArrow.this);
+									if (target == -1) target = cell;
+									cast(user, target);
+									Actor.remove(this);
+									return false;
+								}
+							});
+							curUser.next();
 						}
 					}
 				});

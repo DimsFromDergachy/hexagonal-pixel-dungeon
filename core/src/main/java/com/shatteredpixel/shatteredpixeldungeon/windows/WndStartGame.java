@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2021 Evan Debenham
+ * Copyright (C) 2014-2022 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,10 +29,10 @@ import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroSubClass;
+import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.IntroScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -45,7 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.ColorBlock;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.ui.Button;
+import com.shatteredpixel.shatteredpixeldungeon.ui.Button;
 import com.watabou.noosa.ui.Component;
 import com.watabou.utils.DeviceCompat;
 
@@ -94,15 +94,11 @@ public class WndStartGame extends Window {
 				
 				GamesInProgress.curSlot = slot;
 				Dungeon.hero = null;
+				Dungeon.daily = Dungeon.dailyReplay = false;
 				ActionIndicator.action = null;
 				InterlevelScene.mode = InterlevelScene.Mode.DESCEND;
-				
-				if (SPDSettings.intro()) {
-					SPDSettings.intro( false );
-					Game.switchScene( IntroScene.class );
-				} else {
-					Game.switchScene( InterlevelScene.class );
-				}
+
+				Game.switchScene( InterlevelScene.class );
 			}
 			
 			@Override
@@ -325,7 +321,7 @@ public class WndStartGame extends Window {
 						case ROGUE:
 							heroItem.icon(new ItemSprite(ItemSpriteSheet.ARTIFACT_CLOAK, null));
 							heroLoadout.icon(new ItemSprite(ItemSpriteSheet.DAGGER, null));
-							heroMisc.icon(Icons.get(Icons.DEPTH));
+							heroMisc.icon(Icons.get(Icons.STAIRS));
 							break;
 						case HUNTRESS:
 							heroItem.icon(new ItemSprite(ItemSpriteSheet.SPIRIT_BOW, null));

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2021 Evan Debenham
+ * Copyright (C) 2014-2022 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -239,7 +239,7 @@ public class RenderedTextBlock extends Component {
 
 				if ((x - this.x) > width) width = (x - this.x);
 				
-				//TODO spacing currently doesn't factor in halfwidth and fullwidth characters
+				//Note that spacing currently doesn't factor in halfwidth and fullwidth characters
 				//(e.g. Ideographic full stop)
 				x -= 0.5f;
 

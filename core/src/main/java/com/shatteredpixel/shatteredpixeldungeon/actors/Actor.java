@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2021 Evan Debenham
+ * Copyright (C) 2014-2022 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -54,14 +54,20 @@ public abstract class Actor implements Bundlable {
 	protected int actPriority = DEFAULT;
 
 	protected abstract boolean act();
-	
-	protected void spend( float time ) {
+
+	//Always spends exactly the specified amount of time, regardless of time-influencing factors
+	protected void spendConstant( float time ){
 		this.time += time;
 		//if time is very close to a whole number, round to a whole number to fix errors
 		float ex = Math.abs(this.time % 1f);
 		if (ex < .001f){
 			this.time = Math.round(this.time);
 		}
+	}
+
+	//sends time, but the amount can be influenced
+	protected void spend( float time ) {
+		spendConstant( time );
 	}
 
 	public void spendToWhole(){
@@ -184,6 +190,11 @@ public abstract class Actor implements Bundlable {
 		
 		for (Mob mob : Dungeon.level.mobs) {
 			add( mob );
+		}
+
+		//mobs need to remember their targets after every actor is added
+		for (Mob mob : Dungeon.level.mobs) {
+			mob.restoreEnemy();
 		}
 		
 		for (Blob blob : Dungeon.level.blobs.values()) {

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2021 Evan Debenham
+ * Copyright (C) 2014-2022 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -47,9 +47,11 @@ public class GamesInProgress {
 	private static final String GAME_FOLDER = "game%d";
 	private static final String GAME_FILE	= "game.dat";
 	private static final String DEPTH_FILE	= "depth%d.dat";
+	private static final String DEPTH_BRANCH_FILE	= "depth%d-branch%d.dat";
 	
 	public static boolean gameExists( int slot ){
-		return FileUtils.dirExists(Messages.format(GAME_FOLDER, slot));
+		return FileUtils.dirExists(gameFolder(slot))
+				&& FileUtils.fileLength(gameFile(slot)) > 1;
 	}
 	
 	public static String gameFolder( int slot ){
@@ -60,8 +62,12 @@ public class GamesInProgress {
 		return gameFolder(slot) + "/" + GAME_FILE;
 	}
 	
-	public static String depthFile( int slot, int depth ) {
-		return gameFolder(slot) + "/" + Messages.format(DEPTH_FILE, depth);
+	public static String depthFile( int slot, int depth, int branch ) {
+		if (branch == 0) {
+			return gameFolder(slot) + "/" + Messages.format(DEPTH_FILE, depth);
+		} else {
+			return gameFolder(slot) + "/" + Messages.format(DEPTH_BRANCH_FILE, depth, branch);
+		}
 	}
 	
 	public static int firstEmpty(){
@@ -73,7 +79,7 @@ public class GamesInProgress {
 	
 	public static ArrayList<Info> checkAll(){
 		ArrayList<Info> result = new ArrayList<>();
-		for (int i = 0; i <= MAX_SLOTS; i++){
+		for (int i = 1; i <= MAX_SLOTS; i++){
 			Info curr = check(i);
 			if (curr != null) result.add(curr);
 		}
@@ -102,8 +108,8 @@ public class GamesInProgress {
 				info.slot = slot;
 				Dungeon.preview(info, bundle);
 				
-				//saves from before v0.9.0b are not supported
-				if (info.version < ShatteredPixelDungeon.v0_9_0b) {
+				//saves from before v1.0.3 are not supported
+				if (info.version < ShatteredPixelDungeon.v1_0_3) {
 					info = null;
 				}
 
@@ -120,24 +126,28 @@ public class GamesInProgress {
 		}
 	}
 
-	public static void set(int slot, int depth, int challenges,
-	                       Hero hero) {
+	public static void set(int slot) {
 		Info info = new Info();
 		info.slot = slot;
 		
-		info.depth = depth;
-		info.challenges = challenges;
+		info.depth = Dungeon.depth;
+		info.challenges = Dungeon.challenges;
+
+		info.seed = Dungeon.seed;
+		info.customSeed = Dungeon.customSeedText;
+		info.daily = Dungeon.daily;
+		info.dailyReplay = Dungeon.dailyReplay;
 		
-		info.level = hero.lvl;
-		info.str = hero.STR;
-		info.strBonus = hero.STR() - hero.STR;
-		info.exp = hero.exp;
-		info.hp = hero.HP;
-		info.ht = hero.HT;
-		info.shld = hero.shielding();
-		info.heroClass = hero.heroClass;
-		info.subClass = hero.subClass;
-		info.armorTier = hero.tier();
+		info.level = Dungeon.hero.lvl;
+		info.str = Dungeon.hero.STR;
+		info.strBonus = Dungeon.hero.STR() - Dungeon.hero.STR;
+		info.exp = Dungeon.hero.exp;
+		info.hp = Dungeon.hero.HP;
+		info.ht = Dungeon.hero.HT;
+		info.shld = Dungeon.hero.shielding();
+		info.heroClass = Dungeon.hero.heroClass;
+		info.subClass = Dungeon.hero.subClass;
+		info.armorTier = Dungeon.hero.tier();
 		
 		info.goldCollected = Statistics.goldCollected;
 		info.maxDepth = Statistics.deepestFloor;
@@ -159,7 +169,12 @@ public class GamesInProgress {
 		public int depth;
 		public int version;
 		public int challenges;
-		
+
+		public long seed;
+		public String customSeed;
+		public boolean daily;
+		public boolean dailyReplay;
+
 		public int level;
 		public int str;
 		public int strBonus;

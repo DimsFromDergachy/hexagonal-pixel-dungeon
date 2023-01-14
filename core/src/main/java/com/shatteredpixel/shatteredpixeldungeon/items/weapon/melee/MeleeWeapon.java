@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2021 Evan Debenham
+ * Copyright (C) 2014-2022 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -95,8 +95,8 @@ public class MeleeWeapon extends Weapon {
 		}
 
 		if (enchantment != null && (cursedKnown || !enchantment.curse())){
-			info += "\n\n" + Messages.get(Weapon.class, "enchanted", enchantment.name());
-			info += " " + Messages.get(enchantment, "desc");
+			info += "\n\n" + Messages.capitalize(Messages.get(Weapon.class, "enchanted", enchantment.name()));
+			info += " " + enchantment.desc();
 		}
 
 		if (cursed && isEquipped( Dungeon.hero )) {
@@ -104,7 +104,11 @@ public class MeleeWeapon extends Weapon {
 		} else if (cursedKnown && cursed) {
 			info += "\n\n" + Messages.get(Weapon.class, "cursed");
 		} else if (!isIdentified() && cursedKnown){
-			info += "\n\n" + Messages.get(Weapon.class, "not_cursed");
+			if (enchantment != null && enchantment.curse()) {
+				info += "\n\n" + Messages.get(Weapon.class, "weak_cursed");
+			} else {
+				info += "\n\n" + Messages.get(Weapon.class, "not_cursed");
+			}
 		}
 		
 		return info;

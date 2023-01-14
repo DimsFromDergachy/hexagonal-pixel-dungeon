@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2021 Evan Debenham
+ * Copyright (C) 2014-2022 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -105,11 +105,11 @@ abstract public class KindOfWeapon extends EquipableItem {
 		return Random.NormalIntRange( min(), max() );
 	}
 	
-	public float accuracyFactor( Char owner ) {
+	public float accuracyFactor( Char owner, Char target ) {
 		return 1f;
 	}
 	
-	public float delayFactor(Char owner ) {
+	public float delayFactor( Char owner ) {
 		return 1f;
 	}
 

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2021 Evan Debenham
+ * Copyright (C) 2014-2022 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Reflection;
@@ -103,17 +104,31 @@ public class Buff extends Actor {
 		return 0;
 	}
 
+	//text to display on large buff icons in the desktop UI
+	public String iconTextDisplay(){
+		return "";
+	}
+
 	//visual effect usually attached to the sprite of the character the buff is attacked to
 	public void fx(boolean on) {
 		//do nothing by default
 	}
 
 	public String heroMessage(){
-		return null;
+		String msg = Messages.get(this, "heromsg");
+		if (msg.isEmpty()) {
+			return null;
+		} else {
+			return msg;
+		}
+	}
+
+	public String name() {
+		return Messages.get(this, "name");
 	}
 
 	public String desc(){
-		return "";
+		return Messages.get(this, "desc");
 	}
 
 	//to handle the common case of showing how many turns are remaining in a buff description.

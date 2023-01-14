@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2021 Evan Debenham
+ * Copyright (C) 2014-2022 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -185,12 +185,10 @@ public class PrismaticImage extends NPC {
 	
 	@Override
 	public int defenseProc(Char enemy, int damage) {
-		damage = super.defenseProc(enemy, damage);
 		if (hero != null && hero.belongings.armor() != null){
-			return hero.belongings.armor().proc( enemy, this, damage );
-		} else {
-			return damage;
+			damage = hero.belongings.armor().proc( enemy, this, damage );
 		}
+		return super.defenseProc(enemy, damage);
 	}
 	
 	@Override
@@ -199,7 +197,7 @@ public class PrismaticImage extends NPC {
 		//TODO improve this when I have proper damage source logic
 		if (hero != null && hero.belongings.armor() != null && hero.belongings.armor().hasGlyph(AntiMagic.class, this)
 				&& AntiMagic.RESISTS.contains(src.getClass())){
-			dmg -= AntiMagic.drRoll(hero.belongings.armor().buffedLvl());
+			dmg -= AntiMagic.drRoll(hero, hero.belongings.armor().buffedLvl());
 		}
 		
 		super.damage(dmg, src);

@@ -48,8 +48,8 @@ public class WandEmpower extends Buff {
 	}
 
 	@Override
-	public String toString() {
-		return Messages.get(this, "name");
+	public String iconTextDisplay() {
+		return Integer.toString(left);
 	}
 
 	@Override

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2021 Evan Debenham
+ * Copyright (C) 2014-2022 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -121,7 +121,7 @@ public class Pickaxe extends Weapon {
 							
 							DarkGold gold = new DarkGold();
 							if (gold.doPickUp( Dungeon.hero )) {
-								GLog.i( Messages.get(Dungeon.hero, "you_now_have", gold.name()) );
+								GLog.i( Messages.capitalize(Messages.get(Dungeon.hero, "you_now_have", gold.name())) );
 							} else {
 								Dungeon.level.drop( gold, hero.pos ).sprite.drop();
 							}

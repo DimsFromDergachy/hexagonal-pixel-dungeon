@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2021 Evan Debenham
+ * Copyright (C) 2014-2022 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,13 +28,12 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 
 public class Foresight extends FlavourBuff {
 
-	public static final float DURATION = 250f;
+	public static final float DURATION = 400f;
 
 	public static final int DISTANCE = 8;
 
 	{
 		type = buffType.POSITIVE;
-		announced = true;
 	}
 	
 	@Override
@@ -60,14 +59,5 @@ public class Foresight extends FlavourBuff {
 	public float iconFadePercent() {
 		return Math.max(0, (DURATION - visualcooldown()) / DURATION);
 	}
-	
-	@Override
-	public String toString() {
-		return Messages.get(this, "name");
-	}
-	
-	@Override
-	public String desc() {
-		return Messages.get(this, "desc", dispTurns());
-	}
+
 }

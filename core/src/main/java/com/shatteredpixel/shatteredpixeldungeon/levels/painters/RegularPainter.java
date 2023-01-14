@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2021 Evan Debenham
+ * Copyright (C) 2014-2022 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,12 +22,14 @@
 package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Patch;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
@@ -204,6 +206,38 @@ public abstract class RegularPainter extends Painter {
 				if (d.type == Room.Door.Type.REGULAR){
 					if (Random.Float() < hiddenDoorChance) {
 						d.type = Room.Door.Type.HIDDEN;
+						//all standard rooms must have an unbroken path to all other standard rooms
+						if (l.feeling != Level.Feeling.SECRETS){
+							Graph.buildDistanceMap(rooms, r);
+							if (n.distance == Integer.MAX_VALUE){
+								d.type = Room.Door.Type.UNLOCKED;
+							}
+						//on a secrets level, rooms just have to not be totally isolated
+						} else {
+							int roomsInGraph = 0;
+							Graph.buildDistanceMap(rooms, r);
+							for (Room rDest : rooms){
+								if (rDest.distance != Integer.MAX_VALUE
+										&& !(rDest instanceof ConnectionRoom)){
+									roomsInGraph++;
+								}
+							}
+							if (roomsInGraph < 2){
+								d.type = Room.Door.Type.UNLOCKED;
+							} else {
+								roomsInGraph = 0;
+								Graph.buildDistanceMap(rooms, n);
+								for (Room nDest : rooms){
+									if (nDest.distance != Integer.MAX_VALUE
+											&& !(nDest instanceof ConnectionRoom)){
+										roomsInGraph++;
+									}
+								}
+								if (roomsInGraph < 2){
+									d.type = Room.Door.Type.UNLOCKED;
+								}
+							}
+						}
 						Graph.buildDistanceMap(rooms, r);
 						//don't hide if it would make this room only accessible by hidden doors
 						//unless we're on a secrets depth
@@ -214,11 +248,13 @@ public abstract class RegularPainter extends Painter {
 						d.type = Room.Door.Type.UNLOCKED;
 					}
 
+					//entrance doors on floor 1 are hidden during tutorial
 					//entrance doors on floor 2 are hidden if the player hasn't picked up 2nd guidebook page
-					if (Dungeon.depth == 2
-							&& !Document.ADVENTURERS_GUIDE.isPageFound(Document.GUIDE_SEARCHING)
-							&& r instanceof EntranceRoom){
-						d.type = Room.Door.Type.HIDDEN;
+					if (r instanceof EntranceRoom || n instanceof EntranceRoom){
+						if ((Dungeon.depth == 1 && SPDSettings.intro())
+							|| (Dungeon.depth == 2 && !Document.ADVENTURERS_GUIDE.isPageFound(Document.GUIDE_SEARCHING))) {
+							d.type = Room.Door.Type.HIDDEN;
+						}
 					}
 				}
 				
@@ -243,6 +279,9 @@ public abstract class RegularPainter extends Painter {
 						break;
 					case LOCKED:
 						l.map[door] = Terrain.LOCKED_DOOR;
+						break;
+					case CRYSTAL:
+						l.map[door] = Terrain.CRYSTAL_DOOR;
 						break;
 				}
 			}
@@ -270,7 +309,7 @@ public abstract class RegularPainter extends Painter {
 			}
 
 			if (merge.height() >= 3) {
-				Painter.fill(l, merge.left, merge.top + 1, 1, merge.height()-1, mergeTerrain);
+				r.merge(l, n, new Rect(merge.left, merge.top + 1, merge.left+1, merge.bottom), mergeTerrain);
 				return true;
 			} else {
 				return false;
@@ -294,7 +333,7 @@ public abstract class RegularPainter extends Painter {
 			}
 
 			if (merge.width() >= 3) {
-				Painter.fill(l, merge.left + 1, merge.top, merge.width()-1, 1, mergeTerrain);
+				r.merge(l, n, new Rect(merge.left + 1, merge.top, merge.right, merge.top+1), mergeTerrain);
 				return true;
 			} else {
 				return false;

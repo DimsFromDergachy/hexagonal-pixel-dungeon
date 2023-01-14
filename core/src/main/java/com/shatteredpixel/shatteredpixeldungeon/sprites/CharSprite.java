@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2021 Evan Debenham
+ * Copyright (C) 2014-2022 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -160,7 +160,15 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 
 		ch.updateSpriteState();
 	}
-	
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		if (ch != null && ch.sprite == this){
+			ch.sprite = null;
+		}
+	}
+
 	//used for just updating a sprite based on a given character, not linking them or placing in the game
 	public void linkVisuals( Char ch ){
 		//do nothin by default
@@ -237,35 +245,33 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	}
 	
 	public void attack( int cell ) {
-		turnTo( ch.pos, cell );
-		play( attack );
+		attack( cell, null );
 	}
 	
-	public void attack( int cell, Callback callback ) {
+	public synchronized void attack( int cell, Callback callback ) {
 		animCallback = callback;
 		turnTo( ch.pos, cell );
 		play( attack );
 	}
 	
 	public void operate( int cell ) {
-		turnTo( ch.pos, cell );
-		play( operate );
+		operate( cell, null );
 	}
 	
-	public void operate( int cell, Callback callback ) {
+	public synchronized void operate( int cell, Callback callback ) {
 		animCallback = callback;
 		turnTo( ch.pos, cell );
 		play( operate );
 	}
 	
 	public void zap( int cell ) {
-		turnTo( ch.pos, cell );
-		play( zap );
+		zap( cell, null );
 	}
 	
-	public void zap( int cell, Callback callback ) {
+	public synchronized void zap( int cell, Callback callback ) {
 		animCallback = callback;
-		zap( cell );
+		turnTo( ch.pos, cell );
+		play( zap );
 	}
 	
 	public void turnTo( int from, int to ) {
@@ -393,7 +399,10 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 				healing.pour(Speck.factory(Speck.HEALING), 0.5f);
 				break;
 			case SHIELDED:
-				GameScene.effect( shield = new ShieldHalo( this ));
+				if (shield != null) {
+					shield.killAndErase();
+				}
+				GameScene.effect(shield = new ShieldHalo(this));
 				break;
 			case HEARTS:
 				hearts = emitter();
@@ -721,7 +730,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	}
 
 	@Override
-	public void onComplete( Animation anim ) {
+	public synchronized void onComplete( Animation anim ) {
 		
 		if (animCallback != null) {
 			Callback executing = animCallback;

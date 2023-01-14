@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2021 Evan Debenham
+ * Copyright (C) 2014-2022 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,11 +30,12 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.KindOfWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfArcana;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfFuror;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Annoying;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Displacing;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Exhausting;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Fragile;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Dazzling;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Explosive;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Friendly;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Polarized;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.curses.Sacrificial;
@@ -168,7 +169,7 @@ abstract public class Weapon extends KindOfWeapon {
 	}
 	
 	@Override
-	public float accuracyFactor( Char owner ) {
+	public float accuracyFactor(Char owner, Char target) {
 		
 		int encumbrance = 0;
 		
@@ -176,10 +177,11 @@ abstract public class Weapon extends KindOfWeapon {
 			encumbrance = STRReq() - ((Hero)owner).STR();
 		}
 
-		if (hasEnchant(Wayward.class, owner))
-			encumbrance = Math.max(2, encumbrance+2);
-
 		float ACC = this.ACC;
+
+		if (owner.buff(Wayward.WaywardBuff.class) != null && enchantment instanceof Wayward){
+			ACC /= 5;
+		}
 
 		return encumbrance > 0 ? (float)(ACC / Math.pow( 1.5, encumbrance )) : ACC;
 	}
@@ -207,7 +209,11 @@ abstract public class Weapon extends KindOfWeapon {
 
 	@Override
 	public int reachFactor(Char owner) {
-		return hasEnchant(Projecting.class, owner) ? RCH+1 : RCH;
+		if (hasEnchant(Projecting.class, owner)){
+			return RCH + Math.round(RingOfArcana.enchantPowerMultiplier(owner));
+		} else {
+			return RCH;
+		}
 	}
 
 	public int STRReq(){
@@ -229,7 +235,9 @@ abstract public class Weapon extends KindOfWeapon {
 
 	@Override
 	public int level() {
-		return super.level() + (curseInfusionBonus ? 1 : 0);
+		int level = super.level();
+		if (curseInfusionBonus) level += 1 + level/6;
+		return level;
 	}
 	
 	//overrides as other things can equip these
@@ -350,7 +358,7 @@ abstract public class Weapon extends KindOfWeapon {
 		};
 		
 		private static final Class<?>[] curses = new Class<?>[]{
-				Annoying.class, Displacing.class, Exhausting.class, Fragile.class,
+				Annoying.class, Displacing.class, Dazzling.class, Explosive.class,
 				Sacrificial.class, Wayward.class, Polarized.class, Friendly.class
 		};
 		
@@ -358,13 +366,12 @@ abstract public class Weapon extends KindOfWeapon {
 		public abstract int proc( Weapon weapon, Char attacker, Char defender, int damage );
 
 		protected float procChanceMultiplier( Char attacker ){
-			float multi = 1f;
-			if (attacker instanceof Hero && ((Hero) attacker).hasTalent(Talent.ENRAGED_CATALYST)){
-				Berserk rage = attacker.buff(Berserk.class);
-				if (rage != null) {
-					multi += (rage.rageAmount() / 6f) * ((Hero) attacker).pointsInTalent(Talent.ENRAGED_CATALYST);
-				}
+			float multi = RingOfArcana.enchantPowerMultiplier(attacker);
+			Berserk rage = attacker.buff(Berserk.class);
+			if (rage != null) {
+				multi = rage.enchantFactor(multi);
 			}
+
 			if (attacker.buff(Talent.SpiritBladesTracker.class) != null
 					&& ((Hero)attacker).pointsInTalent(Talent.SPIRIT_BLADES) == 4){
 				multi += 0.1f;
