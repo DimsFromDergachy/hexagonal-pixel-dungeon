@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.LostInventory;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.CloakOfShadows;
+import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.MagicalHolster;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
@@ -50,13 +51,15 @@ public class LostBackpack extends Item {
 
 		MagicalHolster holster = hero.belongings.getItem(MagicalHolster.class);
 		for (Item i : hero.belongings){
-			if (i.keptThoughLostInvent){
+			if (i.keptThroughLostInventory()){
 				i.keptThoughLostInvent = false; //don't reactivate, was previously activated
 			} else {
 				if (i instanceof EquipableItem && i.isEquipped(hero)){
 					((EquipableItem) i).activate(hero);
 				} else if ( i instanceof CloakOfShadows && hero.hasTalent(Talent.LIGHT_CLOAK)){
 					((CloakOfShadows) i).activate(hero);
+				} else if ( i instanceof HolyTome && hero.hasTalent(Talent.LIGHT_READING)){
+					((HolyTome) i).activate(hero);
 				} else if (i instanceof Wand){
 					if (holster != null && holster.contains(i)){
 						((Wand) i).charge(hero, MagicalHolster.HOLSTER_SCALE_FACTOR);

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,8 +21,10 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor.curses;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 
 public class Bulk extends Armor.Glyph {
@@ -31,9 +33,18 @@ public class Bulk extends Armor.Glyph {
 	
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
-		
-		//no proc effect, see armor.speedfactor
+		//no proc effect, triggers in Char.speed()
 		return damage;
+	}
+
+	//more of a reduction really
+	public static float speedBoost( Char owner, int level ){
+		if (level == -1 ||
+				(Dungeon.level.map[owner.pos] != Terrain.DOOR && Dungeon.level.map[owner.pos] != Terrain.OPEN_DOOR )) {
+			return 1;
+		} else {
+			return 1/3f * genericProcChanceMultiplier(owner);
+		}
 	}
 	
 	@Override

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.MagicImmune;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
@@ -51,8 +52,7 @@ public abstract class InventoryStone extends Runestone {
 	@Override
 	public void execute(Hero hero, String action) {
 		super.execute(hero, action);
-		if (action.equals(AC_USE)){
-			curItem = detach( hero.belongings.backpack );
+		if (action.equals(AC_USE) && hero.buff(MagicImmune.class) == null){
 			activate(curUser.pos);
 		}
 	}
@@ -61,12 +61,16 @@ public abstract class InventoryStone extends Runestone {
 	protected void activate(int cell) {
 		GameScene.selectItem( itemSelector );
 	}
+
+	public void directActivate(){
+		GameScene.selectItem( itemSelector );
+	}
 	
 	protected void useAnimation() {
 		curUser.spend( 1f );
 		curUser.busy();
 		curUser.sprite.operate(curUser.pos);
-		
+
 		Sample.INSTANCE.play( Assets.Sounds.READ );
 		Invisibility.dispel();
 	}
@@ -110,11 +114,9 @@ public abstract class InventoryStone extends Runestone {
 			}
 			
 			if (item != null) {
-				
+
 				((InventoryStone)curItem).onItemSelected( item );
 				
-			} else{
-				curItem.collect( curUser.belongings.backpack );
 			}
 		}
 	};

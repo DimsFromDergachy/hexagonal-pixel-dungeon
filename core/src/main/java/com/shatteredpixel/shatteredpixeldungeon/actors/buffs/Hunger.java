@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,10 +25,8 @@ import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
-import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HornOfPlenty;
-import com.shatteredpixel.shatteredpixeldungeon.items.journal.Guidebook;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfChallenge;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.SaltCube;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -37,8 +35,6 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 
 public class Hunger extends Buff implements Hero.Doom {
-
-	private static final float STEP	= 10f;
 
 	public static final float HUNGRY	= 300f;
 	public static final float STARVING	= 450f;
@@ -70,7 +66,7 @@ public class Hunger extends Buff implements Hero.Doom {
 				|| target.buff(WellFed.class) != null
 				|| SPDSettings.intro()
 				|| target.buff(ScrollOfChallenge.ChallengeArena.class) != null){
-			spend(STEP);
+			spend(TICK);
 			return true;
 		}
 
@@ -80,7 +76,7 @@ public class Hunger extends Buff implements Hero.Doom {
 
 			if (isStarving()) {
 
-				partialDamage += STEP * target.HT/1000f;
+				partialDamage += target.HT/1000f;
 
 				if (partialDamage > 1){
 					target.damage( (int)partialDamage, this);
@@ -89,21 +85,26 @@ public class Hunger extends Buff implements Hero.Doom {
 				
 			} else {
 
-				float newLevel = level + STEP;
+				float hungerDelay = 1f;
+				if (target.buff(Shadows.class) != null){
+					hungerDelay *= 1.5f;
+				}
+				hungerDelay /= SaltCube.hungerGainMultiplier();
+
+				float newLevel = level + (1f/hungerDelay);
 				if (newLevel >= STARVING) {
 
 					GLog.n( Messages.get(this, "onstarving") );
-					hero.resting = false;
 					hero.damage( 1, this );
 
 					hero.interrupt();
+					newLevel = STARVING;
 
 				} else if (newLevel >= HUNGRY && level < HUNGRY) {
 
 					GLog.w( Messages.get(this, "onhungry") );
 
 					if (!Document.ADVENTURERS_GUIDE.isPageRead(Document.GUIDE_FOOD)){
-						GLog.p(Messages.get(Guidebook.class, "hint"));
 						GameScene.flashForDocument(Document.ADVENTURERS_GUIDE, Document.GUIDE_FOOD);
 					}
 
@@ -112,7 +113,7 @@ public class Hunger extends Buff implements Hero.Doom {
 
 			}
 			
-			spend( target.buff( Shadows.class ) == null ? STEP : STEP * 1.5f );
+			spend( TICK );
 
 		} else {
 
@@ -139,6 +140,8 @@ public class Hunger extends Buff implements Hero.Doom {
 			return;
 		}
 
+		float oldLevel = level;
+
 		level -= energy;
 		if (level < 0 && !overrideLimits) {
 			level = 0;
@@ -146,6 +149,17 @@ public class Hunger extends Buff implements Hero.Doom {
 			float excess = level - STARVING;
 			level = STARVING;
 			partialDamage += excess * (target.HT/1000f);
+			if (partialDamage > 1f){
+				target.damage( (int)partialDamage, this );
+				partialDamage -= (int)partialDamage;
+			}
+		}
+
+		if (oldLevel < HUNGRY && level >= HUNGRY){
+			GLog.w( Messages.get(this, "onhungry") );
+		} else if (oldLevel < STARVING && level >= STARVING){
+			GLog.n( Messages.get(this, "onstarving") );
+			target.damage( 1, this );
 		}
 
 		BuffIndicator.refreshHero();
@@ -198,7 +212,7 @@ public class Hunger extends Buff implements Hero.Doom {
 
 		Badges.validateDeathFromHunger();
 
-		Dungeon.fail( getClass() );
+		Dungeon.fail( this );
 		GLog.n( Messages.get(this, "ondeath") );
 	}
 }

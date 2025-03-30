@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,7 +22,6 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.blobs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
-import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Awareness;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -31,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.BlobEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Identification;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
+import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes.Landmark;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
@@ -77,8 +77,7 @@ public class WaterOfAwareness extends WellWater {
 		if (item.isIdentified()) {
 			return null;
 		} else {
-			item.identify();
-			Badges.validateItemLevelAquired( item );
+			ScrollOfIdentify.IDItem(item);
 			
 			Sample.INSTANCE.play( Assets.Sounds.DRINK );
 			emitter.parent.add( new Identification( DungeonTilemap.tileCenterToWorld( pos ) ) );
@@ -88,7 +87,7 @@ public class WaterOfAwareness extends WellWater {
 	}
 	
 	@Override
-	protected Landmark record() {
+	public Landmark landmark() {
 		return Landmark.WELL_OF_AWARENESS;
 	}
 	

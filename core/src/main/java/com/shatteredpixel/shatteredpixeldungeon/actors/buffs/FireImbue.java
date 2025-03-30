@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -62,6 +62,10 @@ public class FireImbue extends Buff {
 		this.left = duration;
 	}
 
+	public void extend( float duration ) {
+		left += duration;
+	}
+
 	@Override
 	public boolean act() {
 		if (Dungeon.level.map[target.pos] == Terrain.GRASS) {
@@ -112,5 +116,15 @@ public class FireImbue extends Buff {
 
 	{
 		immunities.add( Burning.class );
+	}
+
+	@Override
+	public boolean attachTo(Char target) {
+		if (super.attachTo(target)){
+			Buff.detach(target, Burning.class);
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

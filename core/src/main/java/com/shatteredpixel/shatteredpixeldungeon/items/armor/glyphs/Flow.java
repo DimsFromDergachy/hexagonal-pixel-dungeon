@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor.glyphs;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
@@ -31,8 +32,16 @@ public class Flow extends Armor.Glyph {
 
 	@Override
 	public int proc(Armor armor, Char attacker, Char defender, int damage) {
-		//no proc effect, see armor.speedfactor for effect.
+		//no proc effect, triggers in Char.speed()
 		return damage;
+	}
+
+	public static float speedBoost( Char owner, int level ){
+		if (level == -1 || !Dungeon.level.water[owner.pos]){
+			return 1;
+		} else {
+			return (2f + 0.5f*level) * genericProcChanceMultiplier(owner);
+		}
 	}
 
 	@Override

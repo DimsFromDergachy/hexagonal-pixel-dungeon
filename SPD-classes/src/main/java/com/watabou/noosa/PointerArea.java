@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -81,7 +81,16 @@ public class PointerArea extends Visual implements Signal.Listener<PointerEvent>
 					curEvent = null;
 					onClick( event );
 				}
-				
+
+			//similar to up, but no click
+			} else if (event.type == PointerEvent.Type.CANCEL) {
+
+				onPointerUp( event );
+
+				if (curEvent == event) {
+					curEvent = null;
+				}
+
 			} else if (event.type == PointerEvent.Type.HOVER) {
 				if (event.handled && hovered){
 					hovered = false;
@@ -100,7 +109,8 @@ public class PointerArea extends Visual implements Signal.Listener<PointerEvent>
 			if (event == null && curEvent != null) {
 				onDrag(curEvent);
 
-			} else if (curEvent != null && event.type == PointerEvent.Type.UP) {
+			} else if (curEvent != null &&
+					(event.type == PointerEvent.Type.UP || event.type == PointerEvent.Type.CANCEL)) {
 				onPointerUp( event );
 				curEvent = null;
 

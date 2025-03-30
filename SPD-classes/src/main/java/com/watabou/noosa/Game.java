@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,7 +33,6 @@ import com.watabou.glwrap.Blending;
 import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.input.ControllerHandler;
 import com.watabou.input.InputHandler;
-import com.watabou.input.PointerEvent;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -94,12 +93,25 @@ public class Game implements ApplicationListener {
 	
 	@Override
 	public void create() {
+		dispHeight = Gdx.graphics.getDisplayMode().height;
+		dispWidth = Gdx.graphics.getDisplayMode().width;
+
 		density = Gdx.graphics.getDensity();
 		if (density == Float.POSITIVE_INFINITY){
 			density = 100f / 160f; //assume 100PPI if density can't be found
+		} else if (DeviceCompat.isDesktop()) {
+			float PpiX = Gdx.graphics.getPpiX();
+			float PpiY = Gdx.graphics.getPpiY();
+
+			//this exists because Steam deck reports its display size as 4"x6.3" for some reason
+			// as if in portrait, instead of 6.3"x4". This results in incorrect PPI measurements.
+			// So when the PPIs differ, we assume reported display size is flipped and adjust
+			if (PpiX / PpiY > 1.1f || PpiX / PpiY < 0.9f ){
+				float reportedDisplayHeightInches = dispHeight / PpiY; //it's actually the width
+				float realPpiX = dispWidth / reportedDisplayHeightInches;
+				density = realPpiX / 160f;
+			}
 		}
-		dispHeight = Gdx.graphics.getDisplayMode().height;
-		dispWidth = Gdx.graphics.getDisplayMode().width;
 
 		inputHandler = new InputHandler( Gdx.input );
 		if (ControllerHandler.controllersSupported()){
@@ -146,9 +158,8 @@ public class Game implements ApplicationListener {
 		}
 	}
 
-	//FIXME this is a hack to improve start times on android (first frame is 'cheated' and skips rendering)
-	//This is mainly to improve stats on google play, as lots of texture refreshing leads to slow warm starts
-	//Would be nice to accomplish this goal in a less hacky way
+	//justResumed is a bit of a hack to improve start time metrics on Android,
+	// as texture refreshing leads to slow warm starts. TODO would be nice to fix this properly
 	private boolean justResumed = true;
 
 	@Override
@@ -177,8 +188,6 @@ public class Game implements ApplicationListener {
 	
 	@Override
 	public void pause() {
-		PointerEvent.clearPointerEvents();
-		
 		if (scene != null) {
 			scene.onPause();
 		}
@@ -229,6 +238,10 @@ public class Game implements ApplicationListener {
 	public static Scene scene() {
 		return instance.scene;
 	}
+
+	public static boolean switchingScene() {
+		return instance.requestedReset;
+	}
 	
 	protected void step() {
 		
@@ -277,6 +290,7 @@ public class Game implements ApplicationListener {
 
 		inputHandler.processAllEvents();
 
+		Music.INSTANCE.update();
 		Sample.INSTANCE.update();
 		scene.update();
 		Camera.updateAll();
@@ -313,7 +327,9 @@ public class Game implements ApplicationListener {
 	}
 	
 	public static void vibrate( int milliseconds ) {
-		platform.vibrate( milliseconds );
+		if (platform.supportsVibration()) {
+			platform.vibrate(milliseconds);
+		}
 	}
 
 	public interface SceneChangeCallback{

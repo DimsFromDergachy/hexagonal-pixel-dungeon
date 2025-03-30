@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
+import com.shatteredpixel.shatteredpixeldungeon.actors.hero.HeroClass;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.Artifact;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.Ring;
@@ -31,11 +32,10 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
+import com.watabou.utils.Random;
 
 
 public abstract class KindofMisc extends EquipableItem {
-
-	private static final float TIME_TO_EQUIP = 1f;
 
 	@Override
 	public boolean doEquip(final Hero hero) {
@@ -100,6 +100,7 @@ public abstract class KindofMisc extends EquipableItem {
 							// to unequip the equipped one, but don't want to trigger any other
 							// item detaching logic
 							int slot = Dungeon.quickslot.getSlot(KindofMisc.this);
+							slotOfUnequipped = -1;
 							Dungeon.hero.belongings.backpack.items.remove(KindofMisc.this);
 							if (equipped.doUnequip(hero, true, false)) {
 								//swap out equip in misc slot if needed
@@ -115,7 +116,11 @@ public abstract class KindofMisc extends EquipableItem {
 							} else {
 								Dungeon.hero.belongings.backpack.items.add(KindofMisc.this);
 							}
-							if (slot != -1) Dungeon.quickslot.setSlot(slot, KindofMisc.this);
+							if (slot != -1) {
+								Dungeon.quickslot.setSlot(slot, KindofMisc.this);
+							} else if (slotOfUnequipped != -1 && defaultAction() != null){
+								Dungeon.quickslot.setSlot(slotOfUnequipped, KindofMisc.this);
+							}
 							updateQuickslot();
 						}
 
@@ -128,6 +133,15 @@ public abstract class KindofMisc extends EquipableItem {
 			return false;
 
 		} else {
+
+			// 15/25% chance
+			if (hero.heroClass != HeroClass.CLERIC && hero.hasTalent(Talent.HOLY_INTUITION)
+					&& cursed && !cursedKnown
+					&& Random.Int(20) < 1 + 2*hero.pointsInTalent(Talent.HOLY_INTUITION)){
+				cursedKnown = true;
+				GLog.p(Messages.get(this, "curse_detected"));
+				return false;
+			}
 
 			if (this instanceof Artifact){
 				if (hero.belongings.artifact == null)   hero.belongings.artifact = (Artifact) this;
@@ -148,7 +162,7 @@ public abstract class KindofMisc extends EquipableItem {
 				GLog.n( Messages.get(this, "equip_cursed", this) );
 			}
 
-			hero.spendAndNext( TIME_TO_EQUIP );
+			hero.spendAndNext( timeToEquip(hero) );
 			return true;
 
 		}
@@ -178,9 +192,9 @@ public abstract class KindofMisc extends EquipableItem {
 
 	@Override
 	public boolean isEquipped( Hero hero ) {
-		return hero.belongings.artifact() == this
+		return hero != null && (hero.belongings.artifact() == this
 				|| hero.belongings.misc() == this
-				|| hero.belongings.ring() == this;
+				|| hero.belongings.ring() == this);
 	}
 
 }

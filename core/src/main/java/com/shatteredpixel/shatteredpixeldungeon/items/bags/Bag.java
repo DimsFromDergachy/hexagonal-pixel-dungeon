@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,15 +48,28 @@ public class Bag extends Item implements Iterable<Item> {
 	}
 	
 	public Char owner;
-	
+
 	public ArrayList<Item> items = new ArrayList<>();
 
 	public int capacity(){
 		return 20; // default container size
 	}
-	
+
+	//if an item is being quick-used from the bag, the bag should take on its targeting properties
+	public Item quickUseItem;
+
+	@Override
+	public int targetingPos(Hero user, int dst) {
+		if (quickUseItem != null){
+			return quickUseItem.targetingPos(user, dst);
+		} else {
+			return super.targetingPos(user, dst);
+		}
+	}
+
 	@Override
 	public void execute( Hero hero, String action ) {
+		quickUseItem = null;
 
 		super.execute( hero, action );
 
@@ -71,6 +84,11 @@ public class Bag extends Item implements Iterable<Item> {
 	public boolean collect( Bag container ) {
 
 		grabItems(container);
+
+		//if there are any quickslot placeholders that match items in this bag, assign them
+		for (Item item : items) {
+			Dungeon.quickslot.replacePlaceholder(item);
+		}
 
 		if (super.collect( container )) {
 			
@@ -87,8 +105,9 @@ public class Bag extends Item implements Iterable<Item> {
 	@Override
 	public void onDetach( ) {
 		this.owner = null;
-		for (Item item : items)
+		for (Item item : items) {
 			Dungeon.quickslot.clearItem(item);
+		}
 		updateQuickslot();
 	}
 
@@ -150,7 +169,12 @@ public class Bag extends Item implements Iterable<Item> {
 
 		loading = true;
 		for (Bundlable item : bundle.getCollection( ITEMS )) {
-			if (item != null) ((Item)item).collect( this );
+			if (item != null){
+				if (!((Item)item).collect( this )){
+					//force-add the item if necessary, such as if its item category changed after an update
+					items.add((Item) item);
+				}
+			}
 		}
 		loading = false;
 	}
@@ -168,7 +192,7 @@ public class Bag extends Item implements Iterable<Item> {
 
 	public boolean canHold( Item item ){
 		if (!loading && owner != null && owner.buff(LostInventory.class) != null
-			&& !item.keptThoughLostInvent){
+			&& !item.keptThroughLostInventory()){
 			return false;
 		}
 

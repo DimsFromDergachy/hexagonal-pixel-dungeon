@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,9 @@ package com.shatteredpixel.shatteredpixeldungeon;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.SparseArray;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 public class Statistics {
 
 	public static int goldCollected;
@@ -34,6 +37,8 @@ public class Statistics {
 	public static int itemsCrafted;
 	public static int piranhasKilled;
 	public static int ankhsUsed;
+	//tracks every item type 'seen' this run (i.e. would be added to catalogs)
+	public static HashSet<Class> itemTypesDiscovered = new HashSet<>();
 
 	//These are used for score calculation
 	// some are built incrementally, most are assigned when full score is calculated
@@ -61,6 +66,7 @@ public class Statistics {
 	
 	public static boolean qualifiedForNoKilling = false;
 	public static boolean completedWithNoKilling = false;
+	public static boolean qualifiedForBossRemainsBadge = false;
 	public static boolean qualifiedForBossChallengeBadge = false;
 	
 	public static boolean amuletObtained = false;
@@ -77,6 +83,7 @@ public class Statistics {
 		itemsCrafted    = 0;
 		piranhasKilled	= 0;
 		ankhsUsed		= 0;
+		itemTypesDiscovered.clear();
 
 		progressScore   = 0;
 		heldItemValue   = 0;
@@ -100,6 +107,7 @@ public class Statistics {
 		duration	    = 0;
 		
 		qualifiedForNoKilling = false;
+		qualifiedForBossRemainsBadge = false;
 		qualifiedForBossChallengeBadge = false;
 		
 		amuletObtained = false;
@@ -134,11 +142,14 @@ public class Statistics {
 	private static final String SNEAKS		= "sneakAttacks";
 	private static final String THROWN		= "thrownAssists";
 
+	private static final String ITEM_TYPES_DISCOVERED    = "item_types_discovered";
+
 	private static final String SPAWNERS	= "spawnersAlive";
 	
 	private static final String DURATION	= "duration";
 
 	private static final String NO_KILLING_QUALIFIED	= "qualifiedForNoKilling";
+	private static final String BOSS_REMAINS_QUALIFIED	= "qualifiedForBossRemainsBadge";
 	private static final String BOSS_CHALLENGE_QUALIFIED= "qualifiedForBossChallengeBadge";
 	
 	private static final String AMULET          = "amuletObtained";
@@ -154,6 +165,7 @@ public class Statistics {
 		bundle.put( ALCHEMY,    itemsCrafted );
 		bundle.put( PIRANHAS,	piranhasKilled );
 		bundle.put( ANKHS,		ankhsUsed );
+		bundle.put( ITEM_TYPES_DISCOVERED, itemTypesDiscovered.toArray(new Class<?>[0]) );
 
 		bundle.put( PROG_SCORE,  progressScore );
 		bundle.put( ITEM_VAL,    heldItemValue );
@@ -181,6 +193,7 @@ public class Statistics {
 		bundle.put( DURATION,	duration );
 
 		bundle.put(NO_KILLING_QUALIFIED, qualifiedForNoKilling);
+		bundle.put(BOSS_REMAINS_QUALIFIED, qualifiedForBossRemainsBadge);
 		bundle.put(BOSS_CHALLENGE_QUALIFIED, qualifiedForBossChallengeBadge);
 		
 		bundle.put( AMULET,		amuletObtained );
@@ -197,6 +210,12 @@ public class Statistics {
 		itemsCrafted    = bundle.getInt( ALCHEMY );
 		piranhasKilled	= bundle.getInt( PIRANHAS );
 		ankhsUsed		= bundle.getInt( ANKHS );
+
+		if (bundle.contains( ITEM_TYPES_DISCOVERED )) {
+			itemTypesDiscovered = new HashSet<>(Arrays.asList(bundle.getClassArray(ITEM_TYPES_DISCOVERED)));
+		} else {
+			itemTypesDiscovered.clear();
+		}
 
 		progressScore   = bundle.getInt( PROG_SCORE );
 		heldItemValue   = bundle.getInt( ITEM_VAL );
@@ -227,7 +246,7 @@ public class Statistics {
 		duration		= bundle.getFloat( DURATION );
 
 		qualifiedForNoKilling = bundle.getBoolean( NO_KILLING_QUALIFIED );
-
+		qualifiedForBossRemainsBadge = bundle.getBoolean( BOSS_REMAINS_QUALIFIED );
 		qualifiedForBossChallengeBadge = bundle.getBoolean( BOSS_CHALLENGE_QUALIFIED );
 		
 		amuletObtained	= bundle.getBoolean( AMULET );

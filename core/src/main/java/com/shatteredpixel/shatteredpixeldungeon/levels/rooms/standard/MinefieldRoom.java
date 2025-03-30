@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,9 +21,11 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrapMechanism;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
@@ -37,7 +39,7 @@ public class MinefieldRoom extends StandardRoom {
 	}
 
 	@Override
-	public boolean canMerge(Level l, Point p, int mergeTerrain) {
+	public boolean canMerge(Level l, Room other, Point p, int mergeTerrain) {
 		int cell = l.pointToCell(pointInside(p, 1));
 		return l.map[cell] == Terrain.EMPTY;
 	}
@@ -64,6 +66,8 @@ public class MinefieldRoom extends StandardRoom {
 				break;
 		}
 
+		float revealedChance = TrapMechanism.revealHiddenTrapChance();
+		float revealInc = 0;
 		for (int i = 0; i < mines; i++ ){
 			int pos;
 			do {
@@ -78,8 +82,15 @@ public class MinefieldRoom extends StandardRoom {
 				}
 			}
 
-			Painter.set(level, pos, Terrain.SECRET_TRAP);
-			level.setTrap(new ExplosiveTrap().hide(), pos);
+			revealInc += revealedChance;
+			if (revealInc >= 1) {
+				Painter.set(level, pos, Terrain.TRAP);
+				level.setTrap(new ExplosiveTrap().reveal(), pos);
+				revealInc--;
+			} else {
+				Painter.set(level, pos, Terrain.SECRET_TRAP);
+				level.setTrap(new ExplosiveTrap().hide(), pos);
+			}
 
 		}
 

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -95,7 +95,7 @@ public class WndDailies extends Window {
 
 		top = (int) score.bottom() + 6;
 
-		NumberFormat num = NumberFormat.getInstance(Locale.US);
+		NumberFormat num = NumberFormat.getInstance(Messages.locale());
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ROOT);
 		format.setTimeZone(TimeZone.getTimeZone("UTC"));
 		Date date = new Date();

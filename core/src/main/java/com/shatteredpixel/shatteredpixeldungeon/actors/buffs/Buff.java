@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,14 +26,17 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
+import com.watabou.utils.Bundle;
 import com.watabou.utils.Reflection;
 
-import java.text.DecimalFormat;
 import java.util.HashSet;
 
 public class Buff extends Actor {
 	
 	public Char target;
+
+	//whether this buff was already extended by the mnemonic prayer spell
+	public boolean mnemonicExtended = false;
 
 	{
 		actPriority = BUFF_PRIO; //low priority, towards the end of a turn
@@ -46,7 +49,7 @@ public class Buff extends Actor {
 	//whether or not the buff announces its name
 	public boolean announced = false;
 
-	//whether a buff should persist through revive effects for the hero
+	//whether a buff should persist through revive effects or similar (e.g. transmogrify)
 	public boolean revivePersists = false;
 	
 	protected HashSet<Class> resistances = new HashSet<>();
@@ -68,9 +71,8 @@ public class Buff extends Actor {
 		}
 		
 		this.target = target;
-		target.add( this );
 
-		if (target.buffs().contains(this)){
+		if (target.add( this )){
 			if (target.sprite != null) fx( true );
 			return true;
 		} else {
@@ -80,8 +82,7 @@ public class Buff extends Actor {
 	}
 	
 	public void detach() {
-		if (target.sprite != null) fx( false );
-		target.remove( this );
+		if (target.remove( this ) && target.sprite != null) fx( false );
 	}
 	
 	@Override
@@ -133,12 +134,28 @@ public class Buff extends Actor {
 
 	//to handle the common case of showing how many turns are remaining in a buff description.
 	protected String dispTurns(float input){
-		return new DecimalFormat("#.##").format(input);
+		return Messages.decimalFormat("#.##", input);
 	}
 
 	//buffs act after the hero, so it is often useful to use cooldown+1 when display buff time remaining
 	public float visualcooldown(){
 		return cooldown()+1f;
+	}
+
+	private static final String MNEMONIC_EXTENDED    = "mnemonic_extended";
+
+	@Override
+	public void storeInBundle(Bundle bundle) {
+		super.storeInBundle(bundle);
+		if (mnemonicExtended) bundle.put(MNEMONIC_EXTENDED, mnemonicExtended);
+	}
+
+	@Override
+	public void restoreFromBundle(Bundle bundle) {
+		super.restoreFromBundle(bundle);
+		if (bundle.contains(MNEMONIC_EXTENDED)) {
+			mnemonicExtended = bundle.getBoolean(MNEMONIC_EXTENDED);
+		}
 	}
 
 	//creates a fresh instance of the buff and attaches that, this allows duplication.

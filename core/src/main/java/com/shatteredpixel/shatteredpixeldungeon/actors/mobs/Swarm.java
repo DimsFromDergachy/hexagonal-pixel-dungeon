@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,10 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AllyBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
-import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.ChampionEnemy;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
@@ -52,7 +50,7 @@ public class Swarm extends Mob {
 		
 		flying = true;
 
-		loot = new PotionOfHealing();
+		loot = PotionOfHealing.class;
 		lootChance = 0.1667f; //by default, see lootChance()
 	}
 	
@@ -73,6 +71,12 @@ public class Swarm extends Mob {
 		super.restoreFromBundle( bundle );
 		generation = bundle.getInt( GENERATION );
 		if (generation > 0) EXP = 0;
+	}
+
+	@Override
+	public void die(Object cause) {
+		flying = false;
+		super.die(cause);
 	}
 	
 	@Override
@@ -99,12 +103,12 @@ public class Swarm extends Mob {
 			if (candidates.size() > 0) {
 				
 				Swarm clone = split();
-				clone.HP = (HP - damage) / 2;
 				clone.pos = Random.element( candidates );
 				clone.state = clone.HUNTING;
+				GameScene.add( clone, SPLIT_DELAY ); //we add before assigning HP due to ascension
 
-				GameScene.add( clone, SPLIT_DELAY );
-				Actor.addDelayed( new Pushing( clone, pos, clone.pos ), -1 );
+				clone.HP = (HP - damage) / 2;
+				Actor.add( new Pushing( clone, pos, clone.pos ) );
 
 				Dungeon.level.occupyCell(clone);
 				
@@ -130,11 +134,10 @@ public class Swarm extends Mob {
 		if (buff( Poison.class ) != null) {
 			Buff.affect( clone, Poison.class ).set(2);
 		}
-		for (Buff b : buffs(AllyBuff.class)){
-			Buff.affect( clone, b.getClass());
-		}
-		for (Buff b : buffs(ChampionEnemy.class)){
-			Buff.affect( clone, b.getClass());
+		for (Buff b : buffs()){
+			if (b.revivePersists) {
+				Buff.affect(clone, b.getClass());
+			}
 		}
 		return clone;
 	}

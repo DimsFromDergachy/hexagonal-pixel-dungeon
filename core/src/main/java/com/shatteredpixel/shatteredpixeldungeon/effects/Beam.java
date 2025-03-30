@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,6 +63,13 @@ public class Beam extends Image {
 	public static class LightRay extends Beam{
 		public LightRay(PointF s, PointF e){
 			super(s, e, Effects.Type.LIGHT_RAY, 1f);
+		}
+	}
+
+	public static class SunRay extends Beam{
+		public SunRay(PointF s, PointF e){
+			super(s, e, Effects.Type.LIGHT_RAY, 1f);
+			tint(1, 1, 0.25f, 1);
 		}
 	}
 

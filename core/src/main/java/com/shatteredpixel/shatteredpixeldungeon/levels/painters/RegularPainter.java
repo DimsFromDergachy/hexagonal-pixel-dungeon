@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.SPDSettings;
 import com.shatteredpixel.shatteredpixeldungeon.ShatteredPixelDungeon;
+import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.TrapMechanism;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Patch;
@@ -31,7 +32,6 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EntranceRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.watabou.noosa.Game;
@@ -75,6 +75,10 @@ public abstract class RegularPainter extends Painter {
 		trapChances = chances;
 		return this;
 	}
+
+	protected int padding(Level level){
+		return level.feeling == Level.Feeling.CHASM ? 2 : 1;
+	}
 	
 	@Override
 	public boolean paint(Level level, ArrayList<Room> rooms) {
@@ -82,7 +86,7 @@ public abstract class RegularPainter extends Painter {
 		//painter can be used without rooms
 		if (rooms != null) {
 			
-			int padding = level.feeling == Level.Feeling.CHASM ? 2 : 1;
+			int padding = padding(level);
 			
 			int leftMost = Integer.MAX_VALUE, topMost = Integer.MAX_VALUE;
 			
@@ -127,20 +131,26 @@ public abstract class RegularPainter extends Painter {
 		}
 		
 		paintDoors( level, rooms );
+
+		//use a separate RNG here so that extra painting variance doesn't affect the rest of levelgen
+		//e.g. this minimizes mossy clump's effect on levelgen
+		Random.pushGenerator(Random.Long());
+
+			if (waterFill > 0f) {
+				paintWater( level, rooms );
+			}
+
+			if (grassFill > 0f){
+				paintGrass( level, rooms );
+			}
+
+			if (nTraps > 0){
+				paintTraps( level, rooms );
+			}
 		
-		if (waterFill > 0f) {
-			paintWater( level, rooms );
-		}
-		
-		if (grassFill > 0f){
-			paintGrass( level, rooms );
-		}
-		
-		if (nTraps > 0){
-			paintTraps( level, rooms );
-		}
-		
-		decorate( level, rooms );
+			decorate( level, rooms );
+
+		Random.popGenerator();
 		
 		return true;
 	}
@@ -250,7 +260,7 @@ public abstract class RegularPainter extends Painter {
 
 					//entrance doors on floor 1 are hidden during tutorial
 					//entrance doors on floor 2 are hidden if the player hasn't picked up 2nd guidebook page
-					if (r instanceof EntranceRoom || n instanceof EntranceRoom){
+					if (r.isEntrance() || n.isEntrance()){
 						if ((Dungeon.depth == 1 && SPDSettings.intro())
 							|| (Dungeon.depth == 2 && !Document.ADVENTURERS_GUIDE.isPageFound(Document.GUIDE_SEARCHING))) {
 							d.type = Room.Door.Type.HIDDEN;
@@ -283,6 +293,9 @@ public abstract class RegularPainter extends Painter {
 					case CRYSTAL:
 						l.map[door] = Terrain.CRYSTAL_DOOR;
 						break;
+					case WALL:
+						l.map[door] = Terrain.WALL;
+						break;
 				}
 			}
 		}
@@ -298,12 +311,12 @@ public abstract class RegularPainter extends Painter {
 			merge.top = merge.bottom = start != null ? start.y : intersect.center().y;
 
 			Point p = new Point(merge.left, merge.top);
-			while(merge.top > intersect.top && n.canMerge(l, p, mergeTerrain) && r.canMerge(l, p, mergeTerrain)) {
+			while(merge.top > intersect.top && n.canMerge(l, r, p, mergeTerrain) && r.canMerge(l, n, p, mergeTerrain)) {
 				merge.top--;
 				p.y--;
 			}
 			p.y = merge.bottom;
-			while(merge.bottom < intersect.bottom && n.canMerge(l, p, mergeTerrain) && r.canMerge(l, p, mergeTerrain)) {
+			while(merge.bottom < intersect.bottom && n.canMerge(l, r, p, mergeTerrain) && r.canMerge(l, n, p, mergeTerrain)) {
 				merge.bottom++;
 				p.y++;
 			}
@@ -322,12 +335,12 @@ public abstract class RegularPainter extends Painter {
 			merge.top = merge.bottom = intersect.top;
 
 			Point p = new Point(merge.left, merge.top);
-			while(merge.left > intersect.left && n.canMerge(l, p, mergeTerrain) && r.canMerge(l, p, mergeTerrain)) {
+			while(merge.left > intersect.left && n.canMerge(l, r, p, mergeTerrain) && r.canMerge(l, n, p, mergeTerrain)) {
 				merge.left--;
 				p.x--;
 			}
 			p.x = merge.right;
-			while(merge.right < intersect.right && n.canMerge(l, p, mergeTerrain) && r.canMerge(l, p, mergeTerrain)) {
+			while(merge.right < intersect.right && n.canMerge(l, r, p, mergeTerrain) && r.canMerge(l, n, p, mergeTerrain)) {
 				merge.right++;
 				p.x++;
 			}
@@ -448,6 +461,9 @@ public abstract class RegularPainter extends Painter {
 		//no more than one trap every 5 valid tiles.
 		nTraps = Math.min(nTraps, validCells.size()/5);
 
+		float revealedChance = TrapMechanism.revealHiddenTrapChance();
+		float revealInc = 0;
+
 		//5x traps on traps level feeling, but the extra traps are all visible
 		for (int i = 0; i < (l.feeling == Level.Feeling.TRAPS ? 5*nTraps : nTraps); i++) {
 
@@ -463,8 +479,13 @@ public abstract class RegularPainter extends Painter {
 			validCells.remove(trapPos);
 			validNonHallways.remove(trapPos);
 
-			if (i < nTraps) trap.hide();
-			else            trap.reveal();
+			revealInc += revealedChance;
+			if (i >= nTraps || revealInc >= 1) {
+				trap.reveal();
+				revealInc--;
+			} else {
+				trap.hide();
+			}
 
 			l.setTrap( trap, trapPos );
 			//some traps will not be hidden

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ public class Chrome {
 	public enum  Type {
 		TOAST,
 		TOAST_TR,
+		TOAST_TR_HEAVY,
 		TOAST_WHITE,
 		WINDOW,
 		WINDOW_SILVER,
@@ -55,6 +56,8 @@ public class Chrome {
 		case TOAST_TR:
 		case GREY_BUTTON_TR:
 			return new NinePatch( Asset, 20, 9, 9, 9, 4 );
+		case TOAST_TR_HEAVY:
+			return new NinePatch( Asset, 29, 9, 9, 9, 4 );
 		case TOAST_WHITE:
 			return new NinePatch( Asset, 29, 0, 9, 9, 4 );
 		case RED_BUTTON:

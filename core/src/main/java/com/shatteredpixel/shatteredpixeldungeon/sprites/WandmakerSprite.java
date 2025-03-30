@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,8 +60,8 @@ public class WandmakerSprite extends MobSprite {
 	@Override
 	public void die() {
 		super.die();
-		
-		remove(State.SHIELDED);
+
+		processStateRemoval(State.SHIELDED);
 		emitter().start( ElmoParticle.FACTORY, 0.03f, 60 );
 
 		if (visible) {

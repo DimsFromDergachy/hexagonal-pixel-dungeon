@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,32 +25,27 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
+import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Vulnerable;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
-import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bat;
-import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
-import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.items.weapon.Weapon;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Bee;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Crab;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Scorpio;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Spinner;
+import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Swarm;
+import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
+import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite.Glowing;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
+import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
-import com.watabou.utils.PathFinder;
 
 import java.util.ArrayList;
 
-public class Pickaxe extends Weapon {
-	
-	public static final String AC_MINE	= "MINE";
-	
-	public static final float TIME_TO_MINE = 2;
-	
-	private static final Glowing BLOODY = new Glowing( 0x550000 );
+public class Pickaxe extends MeleeWeapon {
 	
 	{
 		image = ItemSpriteSheet.PICKAXE;
@@ -59,139 +54,94 @@ public class Pickaxe extends Weapon {
 		
 		unique = true;
 		bones = false;
-		
-		defaultAction = AC_MINE;
 
-	}
-	
-	public boolean bloodStained = false;
-
-	@Override
-	public int min(int lvl) {
-		return 2;   //tier 2
-	}
-
-	@Override
-	public int max(int lvl) {
-		return 15;  //tier 2
+		tier = 2;
 	}
 
 	@Override
 	public int STRReq(int lvl) {
-		return STRReq(3, lvl); //tier 3
+		return super.STRReq(lvl) + 2; //tier 3 strength requirement with tier 2 damage stats
 	}
 
 	@Override
 	public ArrayList<String> actions( Hero hero ) {
 		ArrayList<String> actions = super.actions( hero );
-		actions.add( AC_MINE );
+		if (Dungeon.level instanceof MiningLevel){
+			actions.remove(AC_DROP);
+			actions.remove(AC_THROW);
+		}
 		return actions;
 	}
-	
+
 	@Override
-	public void execute( final Hero hero, String action ) {
+	public boolean keptThroughLostInventory() {
+		//pickaxe is always kept when it's needed for the mining level
+		return super.keptThroughLostInventory() || Dungeon.level instanceof MiningLevel;
+	}
+	@Override
+	public String targetingPrompt() {
+		return Messages.get(this, "prompt");
+	}
 
-		super.execute( hero, action );
-		
-		if (action.equals(AC_MINE)) {
-			
-			if (Dungeon.depth < 11 || Dungeon.depth > 15) {
-				GLog.w( Messages.get(this, "no_vein") );
-				return;
-			}
-			
-			for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-				
-				final int pos = hero.pos + PathFinder.NEIGHBOURS8[i];
-				if (Dungeon.level.map[pos] == Terrain.WALL_DECO) {
-				
-					hero.spend( TIME_TO_MINE );
-					hero.busy();
-					
-					hero.sprite.attack( pos, new Callback() {
-						
-						@Override
-						public void call() {
-
-							CellEmitter.center( pos ).burst( Speck.factory( Speck.STAR ), 7 );
-							Sample.INSTANCE.play( Assets.Sounds.EVOKE );
-							
-							Level.set( pos, Terrain.WALL );
-							GameScene.updateMap( pos );
-							
-							DarkGold gold = new DarkGold();
-							if (gold.doPickUp( Dungeon.hero )) {
-								GLog.i( Messages.capitalize(Messages.get(Dungeon.hero, "you_now_have", gold.name())) );
-							} else {
-								Dungeon.level.drop( gold, hero.pos ).sprite.drop();
-							}
-							
-							hero.onOperateComplete();
-						}
-					} );
-					
-					return;
-				}
-			}
-			
-			GLog.w( Messages.get(this, "no_vein") );
-			
+	@Override
+	protected void duelistAbility(Hero hero, Integer target) {
+		if (target == null) {
+			return;
 		}
-	}
-	
-	@Override
-	public boolean isUpgradable() {
-		return false;
-	}
-	
-	@Override
-	public boolean isIdentified() {
-		return true;
-	}
-	
-	@Override
-	public int proc( Char attacker, Char defender, int damage ) {
-		if (!bloodStained && defender instanceof Bat) {
-			Actor.add(new Actor() {
 
-				{
-					actPriority = VFX_PRIO;
+		Char enemy = Actor.findChar(target);
+		if (enemy == null || enemy == hero || hero.isCharmedBy(enemy) || !Dungeon.level.heroFOV[target]) {
+			GLog.w(Messages.get(this, "ability_no_target"));
+			return;
+		}
+
+		hero.belongings.abilityWeapon = this;
+		if (!hero.canAttack(enemy)){
+			GLog.w(Messages.get(this, "ability_target_range"));
+			hero.belongings.abilityWeapon = null;
+			return;
+		}
+		hero.belongings.abilityWeapon = null;
+
+		hero.sprite.attack(enemy.pos, new Callback() {
+			@Override
+			public void call() {
+				int damageBoost = 0;
+				if (Char.hasProp(enemy, Char.Property.INORGANIC)
+						|| enemy instanceof Swarm
+						|| enemy instanceof Bee
+						|| enemy instanceof Crab
+						|| enemy instanceof Spinner
+						|| enemy instanceof Scorpio) {
+					//+(8+2*lvl) damage, equivalent to +100% damage
+					damageBoost = augment.damageFactor(8 + 2*buffedLvl());
 				}
-
-				@Override
-				protected boolean act() {
-					if (!defender.isAlive()){
-						bloodStained = true;
-						updateQuickslot();
+				beforeAbilityUsed(hero, enemy);
+				AttackIndicator.target(enemy);
+				if (hero.attack(enemy, 1, damageBoost, Char.INFINITE_ACCURACY)) {
+					if (enemy.isAlive()) {
+						Buff.affect(enemy, Vulnerable.class, 3f);
+					} else {
+						onAbilityKill(hero, enemy);
 					}
-
-					Actor.remove(this);
-					return true;
+					Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 				}
-			});
-		}
-		return damage;
+				Invisibility.dispel();
+				hero.spendAndNext(hero.attackDelay());
+				afterAbilityUsed(hero);
+			}
+		});
 	}
-	
-	private static final String BLOODSTAINED = "bloodStained";
-	
+
 	@Override
-	public void storeInBundle( Bundle bundle ) {
-		super.storeInBundle( bundle );
-		
-		bundle.put( BLOODSTAINED, bloodStained );
+	public String abilityInfo() {
+		int dmgBoost = 8 + 2*buffedLvl();
+		return Messages.get(this, "ability_desc", augment.damageFactor(min()+dmgBoost), augment.damageFactor(max()+dmgBoost));
 	}
-	
-	@Override
-	public void restoreFromBundle( Bundle bundle ) {
-		super.restoreFromBundle( bundle );
-		
-		bloodStained = bundle.getBoolean( BLOODSTAINED );
-	}
-	
-	@Override
-	public Glowing glowing() {
-		return bloodStained ? BLOODY : null;
+
+	public String upgradeAbilityStat(int level){
+		int dmgBoost = 8 + 2*level;
+		return augment.damageFactor(min(level)+dmgBoost) + "-" + augment.damageFactor(max(level)+dmgBoost);
 	}
 
 }

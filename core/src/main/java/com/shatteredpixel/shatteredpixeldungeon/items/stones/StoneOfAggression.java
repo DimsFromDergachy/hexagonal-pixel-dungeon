@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2022 Evan Debenham
+ * Copyright (C) 2014-2024 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,12 +30,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.FlavourBuff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
-import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.Bundle;
 
 public class StoneOfAggression extends Runestone {
 	
@@ -49,20 +46,15 @@ public class StoneOfAggression extends Runestone {
 		Char ch = Actor.findChar( cell );
 		
 		if (ch != null) {
-			if (ch.alignment == Char.Alignment.ENEMY) {
+			if (Char.hasProp(ch, Char.Property.BOSS) || Char.hasProp(ch, Char.Property.MINIBOSS)) {
 				Buff.prolong(ch, Aggression.class, Aggression.DURATION / 4f);
 			} else {
 				Buff.prolong(ch, Aggression.class, Aggression.DURATION);
 			}
-			CellEmitter.center(cell).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
-			Sample.INSTANCE.play( Assets.Sounds.READ );
-		} else {
-			//Item.onThrow
-			Heap heap = Dungeon.level.drop( this, cell );
-			if (!heap.isEmpty()) {
-				heap.sprite.drop( cell );
-			}
 		}
+
+		CellEmitter.center(cell).start( Speck.factory( Speck.SCREAM ), 0.3f, 3 );
+		Sample.INSTANCE.play( Assets.Sounds.READ );
 		
 	}
 
@@ -82,7 +74,7 @@ public class StoneOfAggression extends Runestone {
 
 		@Override
 		public float iconFadePercent() {
-			if (target.alignment == Char.Alignment.ENEMY){
+			if (Char.hasProp(target, Char.Property.BOSS) || Char.hasProp(target, Char.Property.MINIBOSS)){
 				return Math.max(0, (DURATION/4f - visualcooldown()) / (DURATION/4f));
 			} else {
 				return Math.max(0, (DURATION - visualcooldown()) / DURATION);
@@ -91,7 +83,7 @@ public class StoneOfAggression extends Runestone {
 
 		@Override
 		public void detach() {
-			//if our target is an enemy, reset the aggro of any enemies targeting it
+			//if our target is an enemy, reset any enemy-to-enemy aggro involving it
 			if (target.isAlive()) {
 				if (target.alignment == Char.Alignment.ENEMY) {
 					for (Mob m : Dungeon.level.mobs) {
