@@ -161,7 +161,7 @@ public class GameScene extends PixelScene {
 	private RaisedTerrainTilemap raisedTerrain;
 	private DungeonWallsTilemap walls;
 	private WallBlockingTilemap wallBlocking;
-	private FogOfWar fog;
+	//private FogOfWar fog;
 	private HeroSprite hero;
 
 	private MenuPane menu;
@@ -340,8 +340,8 @@ public class GameScene extends PixelScene {
 		}
 
 
-		fog = new FogOfWar( Dungeon.level.width(), Dungeon.level.height() );
-		add( fog );
+		//fog = new FogOfWar( Dungeon.level.width(), Dungeon.level.height() );
+		//add( fog );
 
 		spells = new Group();
 		add( spells );
@@ -1204,7 +1204,7 @@ public class GameScene extends PixelScene {
 			scene.raisedTerrain.map(Dungeon.level.map, Dungeon.level.width() );
 			scene.walls.map(Dungeon.level.map, Dungeon.level.width() );
 		}
-		updateFog();
+		//updateFog();
 	}
 
 	//updates the whole map
@@ -1215,7 +1215,7 @@ public class GameScene extends PixelScene {
 			scene.terrainFeatures.updateMap();
 			scene.raisedTerrain.updateMap();
 			scene.walls.updateMap();
-			updateFog();
+			//updateFog();
 		}
 	}
 	
@@ -1227,7 +1227,7 @@ public class GameScene extends PixelScene {
 			scene.raisedTerrain.updateMapCell( cell );
 			scene.walls.updateMapCell( cell );
 			//update adjacent cells too
-			updateFog( cell, 1 );
+			//updateFog( cell, 1 );
 		}
 	}
 
@@ -1310,24 +1310,24 @@ public class GameScene extends PixelScene {
 	}
 
 	public static void updateFog(){
-		if (scene != null) {
-			scene.fog.updateFog();
-			scene.wallBlocking.updateMap();
-		}
+		// if (scene != null) {
+		// 	scene.fog.updateFog();
+		// 	scene.wallBlocking.updateMap();
+		// }
 	}
 
 	public static void updateFog(int x, int y, int w, int h){
-		if (scene != null) {
-			scene.fog.updateFogArea(x, y, w, h);
-			scene.wallBlocking.updateArea(x, y, w, h);
-		}
+		// if (scene != null) {
+		// 	scene.fog.updateFogArea(x, y, w, h);
+		// 	scene.wallBlocking.updateArea(x, y, w, h);
+		// }
 	}
 	
 	public static void updateFog( int cell, int radius ){
-		if (scene != null) {
-			scene.fog.updateFog( cell, radius );
-			scene.wallBlocking.updateArea( cell, radius );
-		}
+		// if (scene != null) {
+		// 	scene.fog.updateFog( cell, radius );
+		// 	scene.wallBlocking.updateArea( cell, radius );
+		// }
 	}
 	
 	public static void afterObserve() {
