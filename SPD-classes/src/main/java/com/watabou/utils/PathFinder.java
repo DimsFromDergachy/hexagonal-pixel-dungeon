@@ -329,7 +329,7 @@ public class PathFinder {
 		return pathFound;
 	}
 
-	//the lookahead is the target number of cells to retreat toward from our current position's
+	// the lookahead is the target number of cells to retreat toward from our current position's
 	// distance from the position we are escaping from. Returns the highest found distance, up to the lookahead
 	private static int buildEscapeDistanceMap( int cur, int from, int lookAhead, boolean[] passable ) {
 		

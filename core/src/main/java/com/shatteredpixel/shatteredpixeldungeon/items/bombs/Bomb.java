@@ -152,7 +152,7 @@ public class Bomb extends Item {
 			boolean terrainAffected = false;
 			boolean[] explodable = new boolean[Dungeon.level.length()];
 			BArray.not( Dungeon.level.solid, explodable);
-			BArray.or( Dungeon.level.flamable, explodable, explodable);
+			BArray.or( Dungeon.level.flammable, explodable, explodable);
 			PathFinder.buildDistanceMap( cell, explodable, explosionRange() );
 			for (int i = 0; i < PathFinder.distance.length; i++) {
 				if (PathFinder.distance[i] != Integer.MAX_VALUE) {
@@ -169,7 +169,7 @@ public class Bomb extends Item {
 					CellEmitter.get(i).burst(SmokeParticle.FACTORY, 4);
 				}
 
-				if (Dungeon.level.flamable[i]) {
+				if (Dungeon.level.flammable[i]) {
 					Dungeon.level.destroy(i);
 					GameScene.updateMap(i);
 					terrainAffected = true;

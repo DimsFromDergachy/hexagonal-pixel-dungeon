@@ -818,7 +818,7 @@ public class CursedWand {
 						int dmg = Random.NormalIntRange(5 + Dungeon.scalingDepth(), 10 + Dungeon.scalingDepth()*2);
 						ch.damage(dmg, burning);
 					}
-					if (Dungeon.level.flamable[i]){
+					if (Dungeon.level.flammable[i]){
 						GameScene.add(Blob.seed(i, 4, Fire.class));
 					}
 

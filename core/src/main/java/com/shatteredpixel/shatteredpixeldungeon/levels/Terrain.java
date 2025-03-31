@@ -69,7 +69,7 @@ public class Terrain {
 	
 	public static final int PASSABLE		= 0x01;
 	public static final int LOS_BLOCKING	= 0x02;
-	public static final int FLAMABLE		= 0x04;
+	public static final int FLAMMABLE		= 0x04;
 	public static final int SECRET			= 0x08;
 	public static final int SOLID			= 0x10;
 	public static final int AVOID			= 0x20;
@@ -80,12 +80,12 @@ public class Terrain {
 	static {
 		flags[CHASM]		= AVOID	| PIT;
 		flags[EMPTY]		= PASSABLE;
-		flags[GRASS]		= PASSABLE | FLAMABLE;
+		flags[GRASS]		= PASSABLE | FLAMMABLE;
 		flags[EMPTY_WELL]	= PASSABLE;
 		flags[WATER]		= PASSABLE | LIQUID;
 		flags[WALL]			= LOS_BLOCKING | SOLID;
-		flags[DOOR]			= PASSABLE | LOS_BLOCKING | FLAMABLE | SOLID;
-		flags[OPEN_DOOR]	= PASSABLE | FLAMABLE;
+		flags[DOOR]			= PASSABLE | LOS_BLOCKING | FLAMMABLE | SOLID;
+		flags[OPEN_DOOR]	= PASSABLE | FLAMMABLE;
 		flags[ENTRANCE]		= PASSABLE;
 		flags[ENTRANCE_SP]	= flags[ENTRANCE];
 		flags[EXIT]			= PASSABLE;
@@ -94,9 +94,9 @@ public class Terrain {
 		flags[CRYSTAL_DOOR]	= SOLID;
 		flags[PEDESTAL]		= PASSABLE;
 		flags[WALL_DECO]	= flags[WALL];
-		flags[BARRICADE]	= FLAMABLE | SOLID | LOS_BLOCKING;
+		flags[BARRICADE]	= FLAMMABLE | SOLID | LOS_BLOCKING;
 		flags[EMPTY_SP]		= flags[EMPTY];
-		flags[HIGH_GRASS]	= PASSABLE | LOS_BLOCKING | FLAMABLE;
+		flags[HIGH_GRASS]	= PASSABLE | LOS_BLOCKING | FLAMMABLE;
 		flags[FURROWED_GRASS]= flags[HIGH_GRASS];
 
 		flags[SECRET_DOOR]  = flags[WALL]  | SECRET;

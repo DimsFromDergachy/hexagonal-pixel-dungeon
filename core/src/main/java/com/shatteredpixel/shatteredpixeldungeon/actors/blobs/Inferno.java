@@ -57,14 +57,14 @@ public class Inferno extends Blob {
 					
 					Fire.burn(cell);
 
-					if (Dungeon.level.flamable[cell]){
+					if (Dungeon.level.flammable[cell]){
 						Dungeon.level.destroy( cell );
 
 						observe = true;
 						GameScene.updateMap( cell );
 					}
 					
-				} else if (Dungeon.level.flamable[cell]
+				} else if (Dungeon.level.flammable[cell]
 						&& (cur[cell-1] > 0
 						|| cur[cell+1] > 0
 						|| cur[cell-Dungeon.level.width()] > 0

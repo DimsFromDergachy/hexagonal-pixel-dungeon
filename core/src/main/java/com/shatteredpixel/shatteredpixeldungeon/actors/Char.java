@@ -171,7 +171,7 @@ public abstract class Char extends Actor {
 	protected float baseSpeed	= 1;
 	protected PathFinder.Path path;
 
-	public int paralysed	    = 0;
+	public int paralysed		= 0;
 	public boolean rooted		= false;
 	public boolean flying		= false;
 	public int invisible		= 0;
@@ -1208,10 +1208,10 @@ public abstract class Char extends Actor {
 		move( step, true );
 	}
 
-	//travelling may be false when a character is moving instantaneously, such as via teleportation
-	public void move( int step, boolean travelling ) {
+	// Traveling may be false when a character is moving instantaneously, such as via teleportation
+	public void move( int step, boolean traveling ) {
 
-		if (travelling && Dungeon.level.adjacent( step, pos ) && buff( Vertigo.class ) != null) {
+		if (traveling && Dungeon.level.adjacent( step, pos ) && buff( Vertigo.class ) != null) {
 			sprite.interruptMotion();
 			int newPos = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
 			if (!(Dungeon.level.passable[newPos] || Dungeon.level.avoid[newPos])
@@ -1262,8 +1262,8 @@ public abstract class Char extends Actor {
 	
 	protected final HashSet<Class> resistances = new HashSet<>();
 	
-	//returns percent effectiveness after resistances
-	//TODO currently resistances reduce effectiveness by a static 50%, and do not stack.
+	// returns percent effectiveness after resistances
+	// TODO: currently resistances reduce effectiveness by a static 50%, and do not stack.
 	public float resist( Class effect ){
 		HashSet<Class> resists = new HashSet<>(resistances);
 		for (Property p : properties()){

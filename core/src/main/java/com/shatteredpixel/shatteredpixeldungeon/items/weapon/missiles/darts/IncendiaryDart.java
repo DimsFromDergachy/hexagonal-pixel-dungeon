@@ -40,7 +40,7 @@ public class IncendiaryDart extends TippedDart {
 	@Override
 	protected void onThrow( int cell ) {
 		Char enemy = Actor.findChar( cell );
-		if ((enemy == null || enemy == curUser) && Dungeon.level.flamable[cell]) {
+		if ((enemy == null || enemy == curUser) && Dungeon.level.flammable[cell]) {
 			GameScene.add(Blob.seed(cell, 4, Fire.class));
 			decrementDurability();
 			if (durability > 0 || spawnedForEffect){
