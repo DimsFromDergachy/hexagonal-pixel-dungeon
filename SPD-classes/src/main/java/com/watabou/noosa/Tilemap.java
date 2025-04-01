@@ -121,12 +121,13 @@ public class Tilemap extends Visual {
 		RectF uv;
 
 		y1 = cellH * updating.top;
-		y2 = y1 + cellH;
+		y2 = y1 + 0.75f * cellH;
 
 		for (int i=updating.top; i < updating.bottom; i++) {
 
 			x1 = cellW * updating.left;
-			x2 = x1 + cellW;
+			x1 += (i % 2 == 0) ? 0 : 0.5 * cellW;
+			x2 = x1 + 0.75f * cellW;
 
 			pos = i * mapWidth + updating.left;
 
@@ -179,13 +180,12 @@ public class Tilemap extends Visual {
 				quads.put(vertices);
 
 				pos++;
-				x1 = x2;
-				x2 += cellW;
-
+				x1 = x1 + cellW;
+				x2 = x1 + 0.75f * cellW;
 			}
 
-			y1 = y2;
-			y2 += cellH;
+			y1 = y1 + cellH;
+			y2 = y1 + 0.75f * cellH;
 		}
 
 	}

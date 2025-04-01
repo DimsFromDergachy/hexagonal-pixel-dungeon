@@ -60,7 +60,7 @@ import com.watabou.utils.Random;
 import java.nio.Buffer;
 import java.util.HashSet;
 
-public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip.Listener {
+public class CharSprite extends Sprite implements Tweener.Listener, MovieClip.Listener {
 	
 	// Color constants for floating text
 	public static final int DEFAULT		= 0xFFFFFF;
@@ -175,17 +175,7 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 	public void linkVisuals( Char ch ){
 		//do nothing by default
 	}
-	
-	public PointF worldToCamera( int cell ) {
-		
-		final int csize = DungeonTilemap.SIZE;
-		
-		return new PointF(
-			PixelScene.align(Camera.main, ((cell % Dungeon.level.width()) + 0.5f) * csize - width() * 0.5f),
-			PixelScene.align(Camera.main, ((cell / Dungeon.level.width()) + 1.0f) * csize - height() - csize * perspectiveRaise)
-		);
-	}
-	
+
 	public void place( int cell ) {
 		point( worldToCamera( cell ) );
 	}
@@ -727,52 +717,9 @@ public class CharSprite extends MovieClip implements Tweener.Listener, MovieClip
 		}
 	}
 
-	private float[] shadowMatrix = new float[16];
-
 	@Override
 	protected void updateMatrix() {
 		super.updateMatrix();
-		Matrix.copy(matrix, shadowMatrix);
-		Matrix.translate(shadowMatrix,
-				(width * (1f - shadowWidth)) / 2f,
-				(height * (1f - shadowHeight)) + shadowOffset);
-		Matrix.scale(shadowMatrix, shadowWidth, shadowHeight);
-	}
-
-	@Override
-	public void draw() {
-		if (texture == null || (!dirty && buffer == null))
-			return;
-
-		if (renderShadow) {
-			if (dirty) {
-				((Buffer)verticesBuffer).position(0);
-				verticesBuffer.put(vertices);
-				if (buffer == null)
-					buffer = new Vertexbuffer(verticesBuffer);
-				else
-					buffer.updateVertices(verticesBuffer);
-				dirty = false;
-			}
-
-			NoosaScript script = script();
-
-			texture.bind();
-
-			script.camera(camera());
-
-			updateMatrix();
-
-			script.uModel.valueM4(shadowMatrix);
-			script.lighting(
-					0, 0, 0, am * .6f,
-					0, 0, 0, aa * .6f);
-
-			script.drawQuad(buffer);
-		}
-
-		super.draw();
-
 	}
 
 	@Override

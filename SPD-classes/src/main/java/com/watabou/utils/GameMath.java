@@ -43,4 +43,6 @@ public class GameMath {
 			return value;
 		}
 	}
+
+	public static float RATIO = 0.75f; //2f / (float) Math.sqrt(3);
 }
