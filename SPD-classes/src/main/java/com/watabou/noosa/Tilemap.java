@@ -121,14 +121,14 @@ public class Tilemap extends Visual {
 		int pos;
 		RectF uv;
 
-		y1 = 0.1f * cellH + cellH * updating.top;
-		y2 = y1 + 0.8f * cellH;
+		y1 = cellH * (updating.top + GameMath.PIXEL);
+		y2 = y1 + cellH * (1 - GameMath.PIXEL);
 
 		for (int i=updating.top; i < updating.bottom; i++) {
 
-			x1 = 0.1f * cellW + cellW * updating.left;
+			x1 = cellW * (updating.left + GameMath.PIXEL);
 			x1 += (i % 2 == 0) ? 0 : 0.5 * cellW;
-			x2 = x1 + 0.8f * cellW;
+			x2 = x1 + cellW * (1 - GameMath.PIXEL);
 
 			pos = i * mapWidth + updating.left;
 
