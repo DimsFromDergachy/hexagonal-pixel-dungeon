@@ -25,7 +25,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.glwrap.Matrix;
 import com.watabou.glwrap.Quad;
-import com.watabou.glwrap.Vertexbuffer;
+import com.watabou.glwrap.VertexBuffer;
 import com.watabou.utils.RectF;
 
 import java.nio.Buffer;
@@ -38,7 +38,7 @@ public class BitmapText extends Visual {
 
 	protected float[] vertices = new float[16];
 	protected FloatBuffer quads;
-	protected Vertexbuffer buffer;
+	protected VertexBuffer buffer;
 	
 	public int realLength;
 	
@@ -77,7 +77,7 @@ public class BitmapText extends Visual {
 			updateVertices();
 			((Buffer)quads).limit(quads.position());
 			if (buffer == null)
-				buffer = new Vertexbuffer(quads);
+				buffer = new VertexBuffer(quads);
 			else
 				buffer.updateVertices(quads);
 		}

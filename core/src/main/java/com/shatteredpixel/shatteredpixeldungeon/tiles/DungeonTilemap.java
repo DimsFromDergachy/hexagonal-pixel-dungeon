@@ -24,13 +24,13 @@ package com.shatteredpixel.shatteredpixeldungeon.tiles;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
-import com.watabou.noosa.Tilemap;
+import com.watabou.noosa.TileMap;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 
-public abstract class DungeonTilemap extends Tilemap {
+public abstract class DungeonTilemap extends TileMap {
 
 	public static final int SIZE = 16;
 
@@ -118,7 +118,7 @@ public abstract class DungeonTilemap extends Tilemap {
 		if (visual < 0) return;
 		
 		final Image tile = new Image( texture );
-		tile.frame( tileset.get( getTileVisual( pos, oldValue, false)));
+		tile.frame( tileSet.get( getTileVisual( pos, oldValue, false)));
 		tile.point( tileToWorld( pos ) );
 
 		parent.add( tile );

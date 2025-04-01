@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.TextureFilm;
-import com.watabou.noosa.Tilemap;
+import com.watabou.noosa.TileMap;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 
@@ -38,7 +38,7 @@ public abstract class CustomTilemap implements Bundlable {
 	public int tileW = 1, tileH = 1; //width and height in tiles
 	
 	protected Object texture;
-	protected Tilemap vis = null;
+	protected TileMap vis = null;
 
 	public void pos(int pos) {
 		pos( pos, Dungeon.level );
@@ -86,9 +86,9 @@ public abstract class CustomTilemap implements Bundlable {
 		return data;
 	}
 	
-	public Tilemap create(){
+	public TileMap create(){
 		if (vis != null && vis.alive) vis.killAndErase();
-		vis = new Tilemap(texture, new TextureFilm( texture, SIZE, SIZE )){
+		vis = new TileMap(texture, new TextureFilm( texture, SIZE, SIZE )){
 			@Override
 			protected NoosaScript script() {
 				//allow lighting for custom tilemaps

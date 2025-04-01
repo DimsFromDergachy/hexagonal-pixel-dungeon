@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRo
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
-import com.watabou.noosa.Tilemap;
+import com.watabou.noosa.TileMap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -123,8 +123,8 @@ public class BlacksmithRoom extends StandardRoom {
 		}
 
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 			v.map( new int[]{0}, 1 );
 			return v;
 		}

@@ -54,7 +54,7 @@ import com.watabou.utils.BArray;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
-import com.watabou.noosa.Tilemap;
+import com.watabou.noosa.TileMap;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.tweeners.AlphaTweener;
@@ -762,8 +762,8 @@ public class PrisonBossLevel extends Level {
 		}
 		
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 			int[] data = new int[tileW*tileH];
 			int cell;
 			Trap t;
@@ -873,8 +873,8 @@ public class PrisonBossLevel extends Level {
 		};
 		
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 			int[] data = mapSimpleImage(0, 0, TEX_WIDTH);
 			for (int i = 0; i < data.length; i++){
 				if (render[i] == 0) data[i] = -1;
@@ -930,8 +930,8 @@ public class PrisonBossLevel extends Level {
 		};
 		
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 			int[] data = mapSimpleImage(0, 10, TEX_WIDTH);
 			for (int i = 0; i < data.length; i++){
 				if (render[i] == 0) data[i] = -1;

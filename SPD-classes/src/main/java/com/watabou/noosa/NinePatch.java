@@ -24,7 +24,7 @@ package com.watabou.noosa;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Quad;
-import com.watabou.glwrap.Vertexbuffer;
+import com.watabou.glwrap.VertexBuffer;
 import com.watabou.utils.RectF;
 
 import java.nio.Buffer;
@@ -36,7 +36,7 @@ public class NinePatch extends Visual {
 	
 	protected float[] vertices;
 	protected FloatBuffer quads;
-	protected Vertexbuffer buffer;
+	protected VertexBuffer buffer;
 	
 	protected RectF outterF;
 	protected RectF innerF;
@@ -207,7 +207,7 @@ public class NinePatch extends Visual {
 
 		if (dirty){
 			if (buffer == null)
-				buffer = new Vertexbuffer(quads);
+				buffer = new VertexBuffer(quads);
 			else
 				buffer.updateVertices(quads);
 			dirty = false;

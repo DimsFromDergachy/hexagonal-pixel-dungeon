@@ -26,7 +26,7 @@ import com.watabou.glscripts.Script;
 import com.watabou.glwrap.Attribute;
 import com.watabou.glwrap.Quad;
 import com.watabou.glwrap.Uniform;
-import com.watabou.glwrap.Vertexbuffer;
+import com.watabou.glwrap.VertexBuffer;
 
 import java.nio.Buffer;
 import java.nio.FloatBuffer;
@@ -96,7 +96,7 @@ public class NoosaScript extends Script {
 		Gdx.gl20.glDrawElements( Gdx.gl20.GL_TRIANGLES, Quad.SIZE, Gdx.gl20.GL_UNSIGNED_SHORT, 0 );
 	}
 
-	public void drawQuad( Vertexbuffer buffer ) {
+	public void drawQuad( VertexBuffer buffer ) {
 
 		buffer.updateGLData();
 
@@ -125,7 +125,7 @@ public class NoosaScript extends Script {
 		Gdx.gl20.glDrawElements( Gdx.gl20.GL_TRIANGLES, Quad.SIZE * size, Gdx.gl20.GL_UNSIGNED_SHORT, 0 );
 	}
 
-	public void drawQuadSet( Vertexbuffer buffer, int length, int offset ){
+	public void drawQuadSet( VertexBuffer buffer, int length, int offset ){
 
 		if (length == 0) {
 			return;

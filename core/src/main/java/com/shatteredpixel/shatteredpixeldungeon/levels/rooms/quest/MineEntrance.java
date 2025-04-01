@@ -34,7 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CaveRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.Tilemap;
+import com.watabou.noosa.TileMap;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
@@ -160,8 +160,8 @@ public class MineEntrance extends CaveRoom {
 		final int TEX_WIDTH = 128;
 
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 			v.map(mapSimpleImage(0, 1, TEX_WIDTH), 3);
 			return v;
 		}

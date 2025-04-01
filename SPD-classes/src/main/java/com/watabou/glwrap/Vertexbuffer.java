@@ -27,15 +27,15 @@ import java.nio.Buffer;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 
-public class Vertexbuffer {
+public class VertexBuffer {
 
 	private int id;
 	private FloatBuffer vertices;
 	private int updateStart, updateEnd;
 
-	private static final ArrayList<Vertexbuffer> buffers = new ArrayList<>();
+	private static final ArrayList<VertexBuffer> buffers = new ArrayList<>();
 
-	public Vertexbuffer( FloatBuffer vertices ) {
+	public VertexBuffer( FloatBuffer vertices ) {
 		synchronized (buffers) {
 			id = Gdx.gl.glGenBuffer();
 
@@ -105,7 +105,7 @@ public class Vertexbuffer {
 
 	public static void clear(){
 		synchronized (buffers) {
-			for (Vertexbuffer buf : buffers.toArray(new Vertexbuffer[0])) {
+			for (VertexBuffer buf : buffers.toArray(new VertexBuffer[0])) {
 				buf.delete();
 			}
 		}
@@ -113,7 +113,7 @@ public class Vertexbuffer {
 
 	public static void reload(){
 		synchronized (buffers) {
-			for (Vertexbuffer buf : buffers) {
+			for (VertexBuffer buf : buffers) {
 				buf.updateVertices();
 				buf.updateGLData();
 			}

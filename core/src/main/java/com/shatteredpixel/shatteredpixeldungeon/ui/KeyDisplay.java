@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Quad;
-import com.watabou.glwrap.Vertexbuffer;
+import com.watabou.glwrap.VertexBuffer;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.Visual;
 import com.watabou.utils.RectF;
@@ -45,7 +45,7 @@ public class KeyDisplay extends Visual {
 	
 	private float[] vertices = new float[16];
 	private FloatBuffer quads;
-	private Vertexbuffer buffer;
+	private VertexBuffer buffer;
 	
 	private SmartTexture tx = TextureCache.get(Assets.Interfaces.MENU_BTN);
 	
@@ -101,7 +101,7 @@ public class KeyDisplay extends Visual {
 
 			((Buffer)quads).limit(quads.position());
 			if (buffer == null)
-				buffer = new Vertexbuffer(quads);
+				buffer = new VertexBuffer(quads);
 			else
 				buffer.updateVertices(quads);
 			

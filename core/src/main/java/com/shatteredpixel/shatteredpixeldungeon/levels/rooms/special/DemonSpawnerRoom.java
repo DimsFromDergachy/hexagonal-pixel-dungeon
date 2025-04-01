@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
-import com.watabou.noosa.Tilemap;
+import com.watabou.noosa.TileMap;
 import com.watabou.utils.Point;
 
 public class DemonSpawnerRoom extends SpecialRoom {
@@ -86,8 +86,8 @@ public class DemonSpawnerRoom extends SpecialRoom {
 		}
 
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 			int cell = tileX + tileY * Dungeon.level.width();
 			int[] map = Dungeon.level.map;
 			int[] data = new int[tileW*tileH];

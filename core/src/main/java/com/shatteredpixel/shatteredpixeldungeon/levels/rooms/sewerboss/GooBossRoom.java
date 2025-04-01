@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.Tilemap;
+import com.watabou.noosa.TileMap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -70,8 +70,8 @@ public abstract class GooBossRoom extends StandardRoom {
 		}
 		
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 			int[] data = new int[tileW*tileH];
 			for (int x = 0; x < tileW; x++){
 				for (int y = 0; y < tileH; y++){

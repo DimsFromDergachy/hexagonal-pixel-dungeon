@@ -24,7 +24,7 @@ package com.watabou.noosa;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Quad;
-import com.watabou.glwrap.Vertexbuffer;
+import com.watabou.glwrap.VertexBuffer;
 import com.watabou.utils.RectF;
 
 import java.nio.Buffer;
@@ -40,7 +40,7 @@ public class Image extends Visual {
 	
 	protected float[] vertices;
 	protected FloatBuffer verticesBuffer;
-	protected Vertexbuffer buffer;
+	protected VertexBuffer buffer;
 	
 	protected boolean dirty;
 	
@@ -163,7 +163,7 @@ public class Image extends Visual {
 			((Buffer)verticesBuffer).position( 0 );
 			verticesBuffer.put( vertices );
 			if (buffer == null)
-				buffer = new Vertexbuffer( verticesBuffer );
+				buffer = new VertexBuffer( verticesBuffer );
 			else
 				buffer.updateVertices( verticesBuffer );
 			dirty = false;

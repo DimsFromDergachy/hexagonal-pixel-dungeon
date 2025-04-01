@@ -24,7 +24,7 @@ package com.watabou.noosa;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Quad;
-import com.watabou.glwrap.Vertexbuffer;
+import com.watabou.glwrap.VertexBuffer;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Rect;
 import com.watabou.utils.RectF;
@@ -33,10 +33,10 @@ import java.nio.Buffer;
 import java.nio.FloatBuffer;
 import java.util.Arrays;
 
-public class Tilemap extends Visual {
+public class TileMap extends Visual {
 
 	protected SmartTexture texture;
-	protected TextureFilm tileset;
+	protected TextureFilm tileSet;
 
 	protected int[] data;
 	protected int mapWidth;
@@ -48,7 +48,7 @@ public class Tilemap extends Visual {
 
 	protected float[] vertices;
 	protected FloatBuffer quads;
-	protected Vertexbuffer buffer;
+	protected VertexBuffer buffer;
 
 	private volatile Rect updated;
 	private boolean fullUpdate;
@@ -56,16 +56,16 @@ public class Tilemap extends Visual {
 	private int topLeftUpdating;
 	private int bottomRightUpdating;
 
-	public Tilemap( Object tx, TextureFilm tileset ) {
+	public TileMap( Object tx, TextureFilm tileSet ) {
 
 		super( 0, 0, 0, 0 );
 
 		this.texture = TextureCache.get( tx );
-		this.tileset = tileset;
+		this.tileSet = tileSet;
 
-		RectF r = tileset.get( 0 );
-		cellW = tileset.width( r );
-		cellH = tileset.height( r );
+		RectF r = tileSet.get( 0 );
+		cellW = tileSet.width( r );
+		cellH = tileSet.height( r );
 
 		vertices = new float[16];
 
@@ -93,7 +93,7 @@ public class Tilemap extends Visual {
 			return null;
 		} else {
 			Image img = new Image(texture);
-			img.frame(tileset.get(data[x + mapWidth * y]));
+			img.frame(tileSet.get(data[x + mapWidth * y]));
 			return img;
 		}
 	}
@@ -141,7 +141,7 @@ public class Tilemap extends Visual {
 
 				((Buffer)quads).position(pos*16);
 				
-				uv = tileset.get(data[pos]);
+				uv = tileSet.get(data[pos]);
 				
 				if (needsRender(pos) && uv != null) {
 
@@ -202,7 +202,7 @@ public class Tilemap extends Visual {
 		if (!updated.isEmpty()) {
 			updateVertices();
 			if (buffer == null)
-				buffer = new Vertexbuffer(quads);
+				buffer = new VertexBuffer(quads);
 			else {
 				if (fullUpdate) {
 					buffer.updateVertices(quads);

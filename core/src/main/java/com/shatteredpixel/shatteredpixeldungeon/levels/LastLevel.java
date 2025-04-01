@@ -34,7 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.watabou.noosa.Group;
-import com.watabou.noosa.Tilemap;
+import com.watabou.noosa.TileMap;
 import com.watabou.noosa.audio.Music;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
@@ -267,8 +267,8 @@ public class LastLevel extends Level {
 		};
 
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 
 			int candlesStart = AMULET_POS - 3 - 3*Dungeon.level.width();
 
@@ -344,8 +344,8 @@ public class LastLevel extends Level {
 		};
 
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 			v.map(map, tileW);
 			return v;
 		}
@@ -373,8 +373,8 @@ public class LastLevel extends Level {
 		};
 
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 			v.map(map, tileW);
 			return v;
 		}

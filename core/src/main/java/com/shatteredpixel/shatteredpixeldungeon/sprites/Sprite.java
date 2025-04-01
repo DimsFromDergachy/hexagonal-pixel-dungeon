@@ -6,7 +6,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
 import com.watabou.glwrap.Matrix;
-import com.watabou.glwrap.Vertexbuffer;
+import com.watabou.glwrap.VertexBuffer;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.NoosaScript;
@@ -72,7 +72,7 @@ public class Sprite extends MovieClip {
 				((Buffer)verticesBuffer).position(0);
 				verticesBuffer.put(vertices);
 				if (buffer == null)
-					buffer = new Vertexbuffer(verticesBuffer);
+					buffer = new VertexBuffer(verticesBuffer);
 				else
 					buffer.updateVertices(verticesBuffer);
 				dirty = false;

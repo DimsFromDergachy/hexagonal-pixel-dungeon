@@ -30,7 +30,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.watabou.glscripts.Script;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Blending;
-import com.watabou.glwrap.Vertexbuffer;
+import com.watabou.glwrap.VertexBuffer;
 import com.watabou.input.ControllerHandler;
 import com.watabou.input.InputHandler;
 import com.watabou.noosa.audio.Music;
@@ -122,7 +122,7 @@ public class Game implements ApplicationListener {
 		versionContextRef = Gdx.graphics.getGLVersion();
 		Blending.useDefault();
 		TextureCache.reload();
-		Vertexbuffer.reload();
+		VertexBuffer.reload();
 	}
 
 	private GLVersion versionContextRef;
@@ -139,7 +139,7 @@ public class Game implements ApplicationListener {
 			versionContextRef = Gdx.graphics.getGLVersion();
 			Blending.useDefault();
 			TextureCache.reload();
-			Vertexbuffer.reload();
+			VertexBuffer.reload();
 		}
 
 		height -= bottomInset;
@@ -270,7 +270,7 @@ public class Game implements ApplicationListener {
 			scene.destroy();
 		}
 		//clear any leftover vertex buffers
-		Vertexbuffer.clear();
+		VertexBuffer.clear();
 		scene = requestedScene;
 		if (onChange != null) onChange.beforeCreate();
 		scene.create();

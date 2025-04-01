@@ -54,7 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.Tilemap;
+import com.watabou.noosa.TileMap;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
@@ -656,8 +656,8 @@ public class CavesBossLevel extends Level {
 		};
 
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 			int[] data = new int[tileW*tileH];
 			int entryPos = 0;
 			for (int i = 0; i < data.length; i++){
@@ -704,8 +704,8 @@ public class CavesBossLevel extends Level {
 		};
 
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 			int[] data = new int[tileW*tileH];
 			int entryPos = 0;
 			for (int i = 0; i < data.length; i++){
@@ -734,8 +734,8 @@ public class CavesBossLevel extends Level {
 		}
 
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 			updateState( );
 
 			return v;

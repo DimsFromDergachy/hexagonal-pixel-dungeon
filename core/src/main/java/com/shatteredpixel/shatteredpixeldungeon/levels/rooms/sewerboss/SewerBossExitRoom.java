@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit.ExitRoom;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.Tilemap;
+import com.watabou.noosa.TileMap;
 import com.watabou.utils.Point;
 
 public class SewerBossExitRoom extends ExitRoom {
@@ -93,8 +93,8 @@ public class SewerBossExitRoom extends ExitRoom {
 		};
 		
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 			v.map(layout, 3);
 			return v;
 		}
@@ -123,8 +123,8 @@ public class SewerBossExitRoom extends ExitRoom {
 		};
 		
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 			v.map(layout, 3);
 			return v;
 		}

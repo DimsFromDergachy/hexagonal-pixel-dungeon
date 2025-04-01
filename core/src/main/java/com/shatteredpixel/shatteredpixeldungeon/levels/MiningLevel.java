@@ -59,7 +59,7 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
-import com.watabou.noosa.Tilemap;
+import com.watabou.noosa.TileMap;
 import com.watabou.noosa.audio.Music;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
@@ -345,8 +345,8 @@ public class MiningLevel extends CavesLevel {
 		}
 
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 			int[] data = new int[tileW*tileH];
 			Arrays.fill(data, 1);
 			v.map( data, tileW );
@@ -366,8 +366,8 @@ public class MiningLevel extends CavesLevel {
 		}
 
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 			int[] data = new int[tileW*tileH];
 			for (int i = 0; i < data.length; i++){
 				if (i % tileW == 0 || i % tileW == tileW-1){

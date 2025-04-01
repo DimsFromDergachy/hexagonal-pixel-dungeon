@@ -27,10 +27,10 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.HallsBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.noosa.TextureFilm;
-import com.watabou.noosa.Tilemap;
+import com.watabou.noosa.TileMap;
 
 
-public class WallBlockingTilemap extends Tilemap {
+public class WallBlockingTilemap extends TileMap {
 
 	public static final int SIZE = 16;
 

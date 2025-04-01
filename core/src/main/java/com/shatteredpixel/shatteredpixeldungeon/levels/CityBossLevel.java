@@ -42,7 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
-import com.watabou.noosa.Tilemap;
+import com.watabou.noosa.TileMap;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundle;
@@ -434,8 +434,8 @@ public class CityBossLevel extends Level {
 		private static final int STAIR_ROWS = 7;
 
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 			int[] data = new int[tileW*tileH];
 
 			int[] map = Dungeon.level.map;
@@ -617,8 +617,8 @@ public class CityBossLevel extends Level {
 		}
 
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 			int[] data = new int[tileW*tileH];
 
 			int[] map = Dungeon.level.map;
