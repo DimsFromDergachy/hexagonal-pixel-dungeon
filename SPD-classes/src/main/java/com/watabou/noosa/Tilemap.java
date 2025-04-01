@@ -25,6 +25,7 @@ import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.Quad;
 import com.watabou.glwrap.Vertexbuffer;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.Rect;
 import com.watabou.utils.RectF;
 
@@ -120,14 +121,14 @@ public class Tilemap extends Visual {
 		int pos;
 		RectF uv;
 
-		y1 = cellH * updating.top;
-		y2 = y1 + 0.75f * cellH;
+		y1 = 0.1f * cellH + cellH * updating.top;
+		y2 = y1 + 0.8f * cellH;
 
 		for (int i=updating.top; i < updating.bottom; i++) {
 
-			x1 = cellW * updating.left;
+			x1 = 0.1f * cellW + cellW * updating.left;
 			x1 += (i % 2 == 0) ? 0 : 0.5 * cellW;
-			x2 = x1 + 0.75f * cellW;
+			x2 = x1 + 0.8f * cellW;
 
 			pos = i * mapWidth + updating.left;
 
@@ -180,12 +181,12 @@ public class Tilemap extends Visual {
 				quads.put(vertices);
 
 				pos++;
-				x1 = x1 + cellW;
-				x2 = x1 + 0.75f * cellW;
+				x1 += cellW;
+				x2 += cellW;
 			}
 
-			y1 = y1 + cellH;
-			y2 = y1 + 0.75f * cellH;
+			y1 += cellH;
+			y2 += cellH;
 		}
 
 	}

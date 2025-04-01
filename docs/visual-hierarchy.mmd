@@ -1,0 +1,65 @@
+classDiagram
+    Visual <|-- Image
+    Image <|-- MovieClip
+    Image <|-- RenderedText
+    Image <|-- SkinnedBlock
+    Image <|-- NinePatch
+    Visual <|-- BitmapText
+    Visual <|-- Tilemap
+    MovieClip <|-- CharSprite
+    MovieClip <|-- Fireball
+    CharSprite <|-- MobSprite
+    MobSprite <|-- GuardSprite
+    MobSprite <|-- CrystalGuardianSprite
+    Image <|-- ItemSprite
+
+    class Visual {
+        #float x, y
+        #float width, height
+        #float angle
+        #PointF scale
+        #PointF origin
+        +void update()
+        +void draw()
+        #void updateMatrix()
+    }
+
+    class Image {
+        #SmartTexture texture
+        #RectF frame
+        #boolean flipHorizontal
+        #boolean flipVertical
+        +void updateVertices()
+        +void frame(RectF)
+    }
+
+    class MovieClip {
+        #Animation curAnim
+        #int curFrame
+        #boolean finished
+        +void play(Animation)
+        +void update()
+    }
+
+    class CharSprite {
+        #Animation idle, run, attack
+        #Emitter effects
+        +void move(int, int)
+        +void turnTo(int, int)
+        +void die()
+    }
+
+    class SmartTexture {
+        +int width
+        +int height
+        +Pixmap bitmap
+        +void filter()
+        +void wrap()
+    }
+
+    class TextureFilm {
+        -HashMap~Object,RectF~ frames
+        +RectF get(Object)
+        +float width()
+        +float height()
+    } 
