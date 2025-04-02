@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.watabou.noosa.HexTileMap;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.TileMap;
@@ -30,7 +31,7 @@ import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 
-public abstract class DungeonTilemap extends TileMap {
+public abstract class DungeonTilemap extends HexTileMap {
 
 	public static final int SIZE = 16;
 

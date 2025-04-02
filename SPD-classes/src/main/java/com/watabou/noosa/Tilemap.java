@@ -50,11 +50,11 @@ public class TileMap extends Visual {
 	protected FloatBuffer quads;
 	protected VertexBuffer buffer;
 
-	private volatile Rect updated;
-	private boolean fullUpdate;
-	private Rect updating;
-	private int topLeftUpdating;
-	private int bottomRightUpdating;
+	protected volatile Rect updated;
+	protected boolean fullUpdate;
+	protected Rect updating;
+	protected int topLeftUpdating;
+	protected int bottomRightUpdating;
 
 	public TileMap( Object tx, TextureFilm tileSet ) {
 
@@ -127,7 +127,7 @@ public class TileMap extends Visual {
 		for (int i=updating.top; i < updating.bottom; i++) {
 
 			x1 = cellW * (updating.left + GameMath.PIXEL);
-			x1 += (i % 2 == 0) ? 0 : 0.5 * cellW;
+			// x1 += (i&1) * 0.5 * cellW;
 			x2 = x1 + cellW * (1 - GameMath.PIXEL);
 
 			pos = i * mapWidth + updating.left;
