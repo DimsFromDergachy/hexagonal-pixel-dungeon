@@ -22,7 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.noosa.tweeners.ScaleTweener;
@@ -57,7 +57,7 @@ public class MobSprite extends CharSprite {
 	
 	public void fall() {
 		
-		origin.set( width / 2, height - DungeonTilemap.SIZE / 2 );
+		origin.set( width / 2, height - DungeonTileMap.SIZE / 2 );
 		angularSpeed = Random.Int( 2 ) == 0 ? -720 : 720;
 		am = 1;
 

@@ -21,7 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.sprites;
 
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.Game;
 
 public class DiscardedItemSprite extends ItemSprite {
@@ -32,7 +32,7 @@ public class DiscardedItemSprite extends ItemSprite {
 		am = 1;
 		if (emitter != null) emitter.killAndErase();
 
-		origin.set( width/2, height - DungeonTilemap.SIZE/2);
+		origin.set( width/2, height - DungeonTileMap.SIZE/2);
 		angularSpeed = 720;
 	}
 	

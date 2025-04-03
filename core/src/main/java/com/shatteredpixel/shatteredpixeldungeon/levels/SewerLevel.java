@@ -47,7 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WornDartTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.SurfaceScene;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -231,7 +231,7 @@ public class SewerLevel extends RegularLevel {
 			
 			this.pos = pos;
 			
-			PointF p = DungeonTilemap.tileCenterToWorld( pos );
+			PointF p = DungeonTileMap.tileCenterToWorld( pos );
 			pos( p.x - 2, p.y + 3, 4, 0 );
 			
 			pour( factory, 0.1f );
@@ -246,7 +246,7 @@ public class SewerLevel extends RegularLevel {
 				if (!isFrozen() && (rippleDelay -= Game.elapsed) <= 0) {
 					Ripple ripple = GameScene.ripple( pos + Dungeon.level.width() );
 					if (ripple != null) {
-						ripple.y -= DungeonTilemap.SIZE / 2;
+						ripple.y -= DungeonTileMap.SIZE / 2;
 						rippleDelay = Random.Float(0.4f, 0.6f);
 					}
 				}

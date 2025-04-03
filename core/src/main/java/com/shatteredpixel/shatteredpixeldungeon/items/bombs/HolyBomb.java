@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Flare;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
@@ -52,7 +52,7 @@ public class HolyBomb extends Bomb {
 		super.explode(cell);
 		
 		if (Dungeon.level.heroFOV[cell]) {
-			new Flare(10, 64).show(Dungeon.hero.sprite.parent, DungeonTilemap.tileCenterToWorld(cell), 2f);
+			new Flare(10, 64).show(Dungeon.hero.sprite.parent, DungeonTileMap.tileCenterToWorld(cell), 2f);
 		}
 		
 		ArrayList<Char> affected = new ArrayList<>();

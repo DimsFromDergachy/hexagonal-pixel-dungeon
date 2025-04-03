@@ -24,7 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonWallsTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonWallsTileMap;
 import com.watabou.noosa.TextureFilm;
 
 public class FungalCoreSprite extends MobSprite {
@@ -61,11 +61,11 @@ public class FungalCoreSprite extends MobSprite {
 		super.update();
 		if (curAnim != die && ch != null && visible != wasVisible){
 			if (visible){
-				DungeonWallsTilemap.skipCells.add(ch.pos - 2* Dungeon.level.width());
-				DungeonWallsTilemap.skipCells.add(ch.pos - Dungeon.level.width());
+				DungeonWallsTileMap.skipCells.add(ch.pos - 2* Dungeon.level.width());
+				DungeonWallsTileMap.skipCells.add(ch.pos - Dungeon.level.width());
 			} else {
-				DungeonWallsTilemap.skipCells.remove(ch.pos - 2*Dungeon.level.width());
-				DungeonWallsTilemap.skipCells.remove(ch.pos - Dungeon.level.width());
+				DungeonWallsTileMap.skipCells.remove(ch.pos - 2*Dungeon.level.width());
+				DungeonWallsTileMap.skipCells.remove(ch.pos - Dungeon.level.width());
 			}
 			GameScene.updateMap(ch.pos-2*Dungeon.level.width());
 			GameScene.updateMap(ch.pos-Dungeon.level.width());
@@ -77,8 +77,8 @@ public class FungalCoreSprite extends MobSprite {
 	public void die() {
 		super.die();
 		if (ch != null && visible){
-			DungeonWallsTilemap.skipCells.remove(ch.pos - 2*Dungeon.level.width());
-			DungeonWallsTilemap.skipCells.remove(ch.pos - Dungeon.level.width());
+			DungeonWallsTileMap.skipCells.remove(ch.pos - 2*Dungeon.level.width());
+			DungeonWallsTileMap.skipCells.remove(ch.pos - Dungeon.level.width());
 			GameScene.updateMap(ch.pos-2*Dungeon.level.width());
 			GameScene.updateMap(ch.pos-Dungeon.level.width());
 		}

@@ -99,7 +99,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -532,7 +532,7 @@ public class CursedWand {
 			if (ch != null){
 				user.sprite.parent.addToFront(new Lightning(user.sprite.center(), ch.sprite.center(), null));
 			} else {
-				user.sprite.parent.addToFront(new Lightning(user.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(bolt.collisionPos), null));
+				user.sprite.parent.addToFront(new Lightning(user.sprite.center(), DungeonTileMap.raisedTileCenterToWorld(bolt.collisionPos), null));
 			}
 			Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 			callback.call();

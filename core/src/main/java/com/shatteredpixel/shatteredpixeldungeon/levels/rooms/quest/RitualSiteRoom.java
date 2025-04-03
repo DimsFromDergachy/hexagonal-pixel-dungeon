@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTileMap;
 import com.watabou.noosa.TileMap;
 import com.watabou.utils.Point;
 
@@ -79,7 +79,7 @@ public class RitualSiteRoom extends StandardRoom {
 		return super.canPlaceItem(p, l) && l.distance(CeremonialCandle.ritualPos, l.pointToCell(p)) >= 2;
 	}
 
-	public static class RitualMarker extends CustomTilemap {
+	public static class RitualMarker extends CustomTileMap {
 		
 		{
 			texture = Assets.Environment.PRISON_QUEST;

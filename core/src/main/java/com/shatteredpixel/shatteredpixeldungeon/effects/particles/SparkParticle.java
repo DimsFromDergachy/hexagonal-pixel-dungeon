@@ -21,7 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.effects.particles;
 
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.Emitter.Factory;
@@ -89,7 +89,7 @@ public class SparkParticle extends PixelParticle {
 		acc.set(0);
 		speed.set((attracting.x + attracting.width / 2f) - x,
 				(attracting.y + attracting.height / 2f) - y);
-		speed.normalize().scale(DungeonTilemap.SIZE * 3f);
+		speed.normalize().scale(DungeonTileMap.SIZE * 3f);
 
 		//offset the particles slightly so they don't go too far outside of the cell
 		this.x -= speed.x / 8f;

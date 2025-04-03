@@ -35,7 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTileMap;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TileMap;
 import com.watabou.utils.Random;
@@ -123,7 +123,7 @@ public class MassGraveRoom extends SpecialRoom {
 		return super.canConnect(r);
 	}
 
-	public static class Bones extends CustomTilemap {
+	public static class Bones extends CustomTileMap {
 
 		private static final int WALL_OVERLAP   = 3;
 		private static final int FLOOR          = 7;

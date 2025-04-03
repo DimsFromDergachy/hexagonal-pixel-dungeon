@@ -24,7 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.effects;
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -39,7 +39,7 @@ import java.util.ArrayList;
 public class FloatingText extends RenderedTextBlock {
 
 	private static final float LIFESPAN	= 1f;
-	private static final float DISTANCE	= DungeonTilemap.SIZE;
+	private static final float DISTANCE	= DungeonTileMap.SIZE;
 
 	public static final int ICON_SIZE = 7;
 	public static TextureFilm iconFilm = new TextureFilm( Assets.Effects.TEXT_ICONS, ICON_SIZE, ICON_SIZE );

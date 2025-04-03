@@ -22,7 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.effects.particles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.Emitter.Factory;
 import com.watabou.noosa.particles.PixelParticle;
@@ -77,8 +77,8 @@ public class FlowParticle extends PixelParticle {
 			
 			this.pos = pos;
 
-			PointF p = DungeonTilemap.tileToWorld( pos );
-			pos( p.x, p.y + DungeonTilemap.SIZE - 1, DungeonTilemap.SIZE, 0);
+			PointF p = DungeonTileMap.tileToWorld( pos );
+			pos( p.x, p.y + DungeonTileMap.SIZE - 1, DungeonTileMap.SIZE, 0);
 
 			pour(FACTORY, 0.05f);
 		}

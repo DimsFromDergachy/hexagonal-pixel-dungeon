@@ -26,11 +26,11 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.noosa.Image;
 import com.watabou.utils.PathFinder;
 
-public class DungeonTerrainTilemap extends DungeonTilemap {
+public class DungeonTerrainTileMap extends DungeonTileMap {
 
-	static DungeonTerrainTilemap instance;
+	static DungeonTerrainTileMap instance;
 
-	public DungeonTerrainTilemap(){
+	public DungeonTerrainTileMap(){
 		super(Dungeon.level.tilesTex());
 
 		map( Dungeon.level.map, Dungeon.level.width() );

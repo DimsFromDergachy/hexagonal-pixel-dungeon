@@ -21,7 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -36,7 +36,7 @@ public class TargetedCell extends Image {
 
 		origin.set( width/2f );
 
-		point( DungeonTilemap.tileToWorld( pos ) );
+		point( DungeonTileMap.tileToWorld( pos ) );
 
 		alpha = 1f;
 	}

@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Archs;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
@@ -67,7 +67,7 @@ public class JournalScene extends PixelScene {
 		Ring.clearGems();
 
 		//need to re-initialize the texture here, as it may be invalid
-		new TerrainFeaturesTilemap(new SparseArray<>(), new SparseArray<>());
+		new TerrainFeaturesTileMap(new SparseArray<>(), new SparseArray<>());
 
 		Music.INSTANCE.playTracks(
 				new String[]{Assets.Music.THEME_1, Assets.Music.THEME_2},

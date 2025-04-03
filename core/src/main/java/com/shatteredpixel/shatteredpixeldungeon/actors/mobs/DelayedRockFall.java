@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.EarthParticle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
@@ -85,7 +85,7 @@ public class DelayedRockFall extends FlavourBuff {
 		if (on && rockPositions != null){
 			for (int i : this.rockPositions){
 				Emitter e = CellEmitter.get(i);
-				e.y -= DungeonTilemap.SIZE*0.2f;
+				e.y -= DungeonTileMap.SIZE*0.2f;
 				e.height *= 0.4f;
 				e.pour(EarthParticle.FALLING, 0.1f);
 				rockEmitters.add(e);

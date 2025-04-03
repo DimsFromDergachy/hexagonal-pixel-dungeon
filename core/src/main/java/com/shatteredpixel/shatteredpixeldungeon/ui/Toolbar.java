@@ -38,7 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndKeyBindings;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndMessage;
@@ -954,7 +954,7 @@ public class Toolbar extends Component {
 			visible =
 				true;
 			
-			PointF tile = DungeonTerrainTilemap.raisedTileCenterToWorld(cell);
+			PointF tile = DungeonTerrainTileMap.raisedTileCenterToWorld(cell);
 			Point screen = Camera.main.cameraToScreen(tile.x, tile.y);
 			PointF start = camera().screenToCamera(screen.x, screen.y);
 			

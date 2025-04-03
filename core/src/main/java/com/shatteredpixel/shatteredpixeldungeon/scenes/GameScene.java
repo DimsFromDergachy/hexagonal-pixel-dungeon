@@ -78,16 +78,16 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DiscardedItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.HeroSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTileMap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonWallsTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonWallsTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.FogOfWar;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.GridTileMap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.RaisedTerrainTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.WallBlockingTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.RaisedTerrainTileMap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTileMap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.WallBlockingTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ActionIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Banner;
@@ -155,12 +155,12 @@ public class GameScene extends PixelScene {
 	static GameScene scene;
 
 	private SkinnedBlock water;
-	private DungeonTerrainTilemap tiles;
+	private DungeonTerrainTileMap tiles;
 	private GridTileMap visualGrid;
-	private TerrainFeaturesTilemap terrainFeatures;
-	private RaisedTerrainTilemap raisedTerrain;
-	private DungeonWallsTilemap walls;
-	private WallBlockingTilemap wallBlocking;
+	private TerrainFeaturesTileMap terrainFeatures;
+	private RaisedTerrainTileMap raisedTerrain;
+	private DungeonWallsTileMap walls;
+	private WallBlockingTileMap wallBlocking;
 	//private FogOfWar fog;
 	private HeroSprite hero;
 
@@ -237,8 +237,8 @@ public class GameScene extends PixelScene {
 		add( terrain );
 
 		water = new SkinnedBlock(
-			Dungeon.level.width() * DungeonTilemap.SIZE,
-			Dungeon.level.height() * DungeonTilemap.SIZE,
+			Dungeon.level.width() * DungeonTileMap.SIZE,
+			Dungeon.level.height() * DungeonTileMap.SIZE,
 			Dungeon.level.waterTex() ){
 
 			@Override
@@ -262,20 +262,20 @@ public class GameScene extends PixelScene {
 
 		DungeonTileSheet.setupVariance(Dungeon.level.map.length, Dungeon.seedCurDepth());
 		
-		tiles = new DungeonTerrainTilemap();
+		tiles = new DungeonTerrainTileMap();
 		terrain.add( tiles );
 
 		customTiles = new Group();
 		terrain.add(customTiles);
 
-		for( CustomTilemap visual : Dungeon.level.customTiles){
+		for( CustomTileMap visual : Dungeon.level.customTiles){
 			addCustomTile(visual);
 		}
 
 		visualGrid = new GridTileMap();
 		terrain.add( visualGrid );
 
-		terrainFeatures = new TerrainFeaturesTilemap(Dungeon.level.plants, Dungeon.level.traps);
+		terrainFeatures = new TerrainFeaturesTileMap(Dungeon.level.plants, Dungeon.level.traps);
 		terrain.add(terrainFeatures);
 		
 		levelVisuals = Dungeon.level.addVisuals();
@@ -309,23 +309,23 @@ public class GameScene extends PixelScene {
 			addMobSprite( mob );
 		}
 		
-		raisedTerrain = new RaisedTerrainTilemap();
+		raisedTerrain = new RaisedTerrainTileMap();
 		add( raisedTerrain );
 
-		walls = new DungeonWallsTilemap();
+		walls = new DungeonWallsTileMap();
 		add(walls);
 
 		customWalls = new Group();
 		add(customWalls);
 
-		for( CustomTilemap visual : Dungeon.level.customWalls){
+		for( CustomTileMap visual : Dungeon.level.customWalls){
 			addCustomWall(visual);
 		}
 
 		levelWallVisuals = Dungeon.level.addWallVisuals();
 		add( levelWallVisuals );
 
-		wallBlocking = new WallBlockingTilemap();
+		wallBlocking = new WallBlockingTileMap();
 		add (wallBlocking);
 
 		add( emitters );
@@ -458,10 +458,10 @@ public class GameScene extends PixelScene {
 
 		switch (InterlevelScene.mode){
 			case FALL: case DESCEND: case CONTINUE:
-				Camera.main.snapTo(hero.center().x, hero.center().y - DungeonTilemap.SIZE * (defaultZoom/Camera.main.zoom));
+				Camera.main.snapTo(hero.center().x, hero.center().y - DungeonTileMap.SIZE * (defaultZoom/Camera.main.zoom));
 				break;
 			case ASCEND:
-				Camera.main.snapTo(hero.center().x, hero.center().y + DungeonTilemap.SIZE * (defaultZoom/Camera.main.zoom));
+				Camera.main.snapTo(hero.center().x, hero.center().y + DungeonTileMap.SIZE * (defaultZoom/Camera.main.zoom));
 				break;
 			default:
 				Camera.main.snapTo(hero.center().x, hero.center().y);
@@ -898,11 +898,11 @@ public class GameScene extends PixelScene {
 		}
 	}
 
-	public void addCustomTile( CustomTilemap visual){
+	public void addCustomTile( CustomTileMap visual){
 		customTiles.add( visual.create() );
 	}
 
-	public void addCustomWall( CustomTilemap visual){
+	public void addCustomWall( CustomTileMap visual){
 		customWalls.add( visual.create() );
 	}
 	
@@ -1063,7 +1063,7 @@ public class GameScene extends PixelScene {
 		if (scene != null) scene.healthIndicators.add(indicator);
 	}
 	
-	public static void add( CustomTilemap t, boolean wall ){
+	public static void add( CustomTileMap t, boolean wall ){
 		if (scene == null) return;
 		if (wall){
 			scene.addCustomWall(t);
@@ -1642,10 +1642,10 @@ public class GameScene extends PixelScene {
 				image = new ItemSprite((Heap) objects.get(0));
 			} else if (objects.get(0) instanceof Plant) {
 				title = textLines.remove(0);
-				image = TerrainFeaturesTilemap.tile(cell, Dungeon.level.map[cell]);
+				image = TerrainFeaturesTileMap.tile(cell, Dungeon.level.map[cell]);
 			} else if (objects.get(0) instanceof Trap) {
 				title = textLines.remove(0);
-				image = TerrainFeaturesTilemap.tile(cell, Dungeon.level.map[cell]);
+				image = TerrainFeaturesTileMap.tile(cell, Dungeon.level.map[cell]);
 			}
 
 			//determine first text line

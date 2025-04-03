@@ -31,13 +31,13 @@ import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 
-public abstract class DungeonTilemap extends HexTileMap {
+public abstract class DungeonTileMap extends HexTileMap {
 
 	public static final int SIZE = 16;
 
 	protected int[] map;
 
-	public DungeonTilemap(String tex) {
+	public DungeonTileMap(String tex) {
 		super(tex, new TextureFilm( tex, SIZE, SIZE ) );
 	}
 

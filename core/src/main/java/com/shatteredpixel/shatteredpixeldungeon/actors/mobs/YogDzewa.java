@@ -47,7 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.LarvaSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.YogSprite;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
@@ -196,7 +196,7 @@ public class YogDzewa extends Mob {
 				for (int i : targetedCells) {
 					Ballistica b = new Ballistica(pos, i, Ballistica.WONT_STOP);
 					//shoot beams
-					sprite.parent.add(new Beam.DeathRay(sprite.center(), DungeonTilemap.raisedTileCenterToWorld(b.collisionPos)));
+					sprite.parent.add(new Beam.DeathRay(sprite.center(), DungeonTileMap.raisedTileCenterToWorld(b.collisionPos)));
 					for (int p : b.path) {
 						Char ch = Actor.findChar(p);
 						if (ch != null && (ch.alignment != alignment || ch instanceof Bee)) {

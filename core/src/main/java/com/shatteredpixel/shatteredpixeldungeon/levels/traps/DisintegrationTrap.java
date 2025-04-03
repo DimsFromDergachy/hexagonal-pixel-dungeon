@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Random;
@@ -79,7 +79,7 @@ public class DisintegrationTrap extends Trap {
 		if (target != null) {
 			if (Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[target.pos]) {
 				Sample.INSTANCE.play(Assets.Sounds.RAY);
-				ShatteredPixelDungeon.scene().add(new Beam.DeathRay(DungeonTilemap.tileCenterToWorld(pos), target.sprite.center()));
+				ShatteredPixelDungeon.scene().add(new Beam.DeathRay(DungeonTileMap.tileCenterToWorld(pos), target.sprite.center()));
 			}
 			target.damage( Random.NormalIntRange(30, 50) + scalingDepth(), this );
 			if (target == Dungeon.hero){

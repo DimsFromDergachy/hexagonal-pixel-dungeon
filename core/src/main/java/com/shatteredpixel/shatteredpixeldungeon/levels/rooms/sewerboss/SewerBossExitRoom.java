@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.exit.ExitRoom;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTileMap;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TileMap;
 import com.watabou.utils.Point;
@@ -67,7 +67,7 @@ public class SewerBossExitRoom extends ExitRoom {
 		exit.right++;
 		level.transitions.add(exit);
 		
-		CustomTilemap vis = new SewerExit();
+		CustomTileMap vis = new SewerExit();
 		vis.pos(c.x-1, c.y);
 		level.customTiles.add(vis);
 		
@@ -77,7 +77,7 @@ public class SewerBossExitRoom extends ExitRoom {
 		
 	}
 	
-	public static class SewerExit extends CustomTilemap {
+	public static class SewerExit extends CustomTileMap {
 		
 		{
 			texture = Assets.Environment.SEWER_BOSS;
@@ -108,7 +108,7 @@ public class SewerBossExitRoom extends ExitRoom {
 		}
 	}
 	
-	public static class SewerExitOverhang extends CustomTilemap {
+	public static class SewerExitOverhang extends CustomTileMap {
 		
 		{
 			texture = Assets.Environment.SEWER_BOSS;

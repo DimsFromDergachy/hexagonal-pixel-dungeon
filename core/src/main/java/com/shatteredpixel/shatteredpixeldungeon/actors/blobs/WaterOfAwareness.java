@@ -35,7 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Notes.Landmark;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 
@@ -80,7 +80,7 @@ public class WaterOfAwareness extends WellWater {
 			ScrollOfIdentify.IDItem(item);
 			
 			Sample.INSTANCE.play( Assets.Sounds.DRINK );
-			emitter.parent.add( new Identification( DungeonTilemap.tileCenterToWorld( pos ) ) );
+			emitter.parent.add( new Identification( DungeonTileMap.tileCenterToWorld( pos ) ) );
 			
 			return item;
 		}

@@ -40,7 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -267,8 +267,8 @@ public class WandOfBlastWave extends DamageWand {
 		public void reset(int pos, float size) {
 			revive();
 
-			x = (pos % Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - width) / 2;
-			y = (pos / Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - height) / 2;
+			x = (pos % Dungeon.level.width()) * DungeonTileMap.SIZE + (DungeonTileMap.SIZE - width) / 2;
+			y = (pos / Dungeon.level.width()) * DungeonTileMap.SIZE + (DungeonTileMap.SIZE - height) / 2;
 
 			time = TIME_TO_FADE;
 			this.size = size;

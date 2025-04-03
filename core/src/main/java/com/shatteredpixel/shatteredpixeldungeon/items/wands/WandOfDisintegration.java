@@ -35,7 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.utils.Callback;
 import com.watabou.utils.Random;
 
@@ -145,7 +145,7 @@ public class WandOfDisintegration extends DamageWand {
 	public void fx(Ballistica beam, Callback callback) {
 		
 		int cell = beam.path.get(Math.min(beam.dist, distance()));
-		curUser.sprite.parent.add(new Beam.DeathRay(curUser.sprite.center(), DungeonTilemap.raisedTileCenterToWorld( cell )));
+		curUser.sprite.parent.add(new Beam.DeathRay(curUser.sprite.center(), DungeonTileMap.raisedTileCenterToWorld( cell )));
 		callback.call();
 	}
 

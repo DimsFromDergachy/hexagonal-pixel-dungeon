@@ -45,7 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Game;
@@ -171,7 +171,7 @@ public class HallsBossLevel extends Level {
 		exit.right++;
 		transitions.add(exit);
 
-		CustomTilemap vis = new CenterPieceVisuals();
+		CustomTileMap vis = new CenterPieceVisuals();
 		vis.pos(ROOM_LEFT, ROOM_TOP+1);
 		customTiles.add(vis);
 
@@ -287,12 +287,12 @@ public class HallsBossLevel extends Level {
 		CellEmitter.get(exit()-1).burst(ShadowParticle.UP, 25);
 		CellEmitter.get(exit()).burst(ShadowParticle.UP, 100);
 		CellEmitter.get(exit()+1).burst(ShadowParticle.UP, 25);
-		for( CustomTilemap t : customTiles){
+		for( CustomTileMap t : customTiles){
 			if (t instanceof CenterPieceVisuals){
 				((CenterPieceVisuals) t).updateState();
 			}
 		}
-		for( CustomTilemap t : customWalls){
+		for( CustomTileMap t : customWalls){
 			if (t instanceof CenterPieceWalls){
 				((CenterPieceWalls) t).updateState();
 			}
@@ -394,7 +394,7 @@ public class HallsBossLevel extends Level {
 		return visuals;
 	}
 
-	public static class CenterPieceVisuals extends CustomTilemap {
+	public static class CenterPieceVisuals extends CustomTileMap {
 
 		{
 			texture = Assets.Environment.HALLS_SP;
@@ -433,7 +433,7 @@ public class HallsBossLevel extends Level {
 		}
 	}
 
-	public static class CenterPieceWalls extends CustomTilemap {
+	public static class CenterPieceWalls extends CustomTileMap {
 
 		{
 			texture = Assets.Environment.HALLS_SP;

@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.CrystalWisp;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.TorchHalo;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.tweeners.AlphaTweener;
@@ -72,7 +72,7 @@ public abstract class CrystalWispSprite extends MobSprite {
 			public void onComplete() {
 				light.alpha(0.3f);
 				((CrystalWisp)ch).onZapComplete();
-				Beam ray = new Beam.LightRay(center(), DungeonTilemap.raisedTileCenterToWorld(cell));
+				Beam ray = new Beam.LightRay(center(), DungeonTileMap.raisedTileCenterToWorld(cell));
 				ray.hardlight(blood() & 0x00FFFFFF);
 				parent.add( ray );
 			}

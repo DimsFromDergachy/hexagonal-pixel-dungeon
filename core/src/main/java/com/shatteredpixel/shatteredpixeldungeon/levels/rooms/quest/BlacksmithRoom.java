@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.BurningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTileMap;
 import com.watabou.noosa.TileMap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -114,7 +114,7 @@ public class BlacksmithRoom extends StandardRoom {
 		}
 	}
 
-	public static class QuestEntrance extends CustomTilemap {
+	public static class QuestEntrance extends CustomTileMap {
 
 		{
 			texture = Assets.Environment.CAVES_QUEST;

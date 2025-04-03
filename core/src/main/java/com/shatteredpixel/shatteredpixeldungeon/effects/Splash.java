@@ -22,7 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.PixelParticle;
@@ -34,7 +34,7 @@ import java.util.HashMap;
 public class Splash {
 	
 	public static void at( int cell, final int color, int n ) {
-		at( DungeonTilemap.tileCenterToWorld( cell ), color, n );
+		at( DungeonTileMap.tileCenterToWorld( cell ), color, n );
 	}
 	
 	public static void at( PointF p, final int color, int n ) {

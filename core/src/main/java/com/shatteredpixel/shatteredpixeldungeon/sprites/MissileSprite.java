@@ -38,7 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingSp
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.ThrowingSpike;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Trident;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.Visual;
 import com.watabou.noosa.tweeners.PosTweener;
 import com.watabou.noosa.tweeners.Tweener;
@@ -54,19 +54,19 @@ public class MissileSprite extends ItemSprite implements Tweener.Listener {
 	private Callback callback;
 	
 	public void reset( int from, int to, Item item, Callback listener ) {
-		reset(Dungeon.level.solid[from] ? DungeonTilemap.raisedTileCenterToWorld(from) : DungeonTilemap.raisedTileCenterToWorld(from),
-				Dungeon.level.solid[to] ? DungeonTilemap.raisedTileCenterToWorld(to) : DungeonTilemap.raisedTileCenterToWorld(to),
+		reset(Dungeon.level.solid[from] ? DungeonTileMap.raisedTileCenterToWorld(from) : DungeonTileMap.raisedTileCenterToWorld(from),
+				Dungeon.level.solid[to] ? DungeonTileMap.raisedTileCenterToWorld(to) : DungeonTileMap.raisedTileCenterToWorld(to),
 				item, listener);
 	}
 
 	public void reset( Visual from, int to, Item item, Callback listener ) {
 		reset(from.center(),
-				Dungeon.level.solid[to] ? DungeonTilemap.raisedTileCenterToWorld(to) : DungeonTilemap.raisedTileCenterToWorld(to),
+				Dungeon.level.solid[to] ? DungeonTileMap.raisedTileCenterToWorld(to) : DungeonTileMap.raisedTileCenterToWorld(to),
 				item, listener );
 	}
 
 	public void reset( int from, Visual to, Item item, Callback listener ) {
-		reset(Dungeon.level.solid[from] ? DungeonTilemap.raisedTileCenterToWorld(from) : DungeonTilemap.raisedTileCenterToWorld(from),
+		reset(Dungeon.level.solid[from] ? DungeonTileMap.raisedTileCenterToWorld(from) : DungeonTileMap.raisedTileCenterToWorld(from),
 				to.center(),
 				item, listener );
 	}

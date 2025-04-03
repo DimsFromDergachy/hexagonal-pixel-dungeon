@@ -21,7 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -112,16 +112,16 @@ public class Lightning extends Group {
 		private PointF start, end;
 
 		public Arc(int from, int to){
-			this( DungeonTilemap.tileCenterToWorld(from),
-					DungeonTilemap.tileCenterToWorld(to));
+			this( DungeonTileMap.tileCenterToWorld(from),
+					DungeonTileMap.tileCenterToWorld(to));
 		}
 
 		public Arc(PointF from, int to){
-			this( from, DungeonTilemap.tileCenterToWorld(to));
+			this( from, DungeonTileMap.tileCenterToWorld(to));
 		}
 
 		public Arc(int from, PointF to){
-			this( DungeonTilemap.tileCenterToWorld(from), to);
+			this( DungeonTileMap.tileCenterToWorld(from), to);
 		}
 
 		public Arc(PointF from, PointF to){

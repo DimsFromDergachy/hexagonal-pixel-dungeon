@@ -38,7 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportat
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -131,14 +131,14 @@ public class BeamingRay extends TargetedClericSpell {
 			GameScene.add((Mob) ally);
 			hero.buff(Stasis.StasisBuff.class).detach();
 			hero.sprite.parent.add(
-					new Beam.SunRay(hero.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(telePos)));
+					new Beam.SunRay(hero.sprite.center(), DungeonTileMap.raisedTileCenterToWorld(telePos)));
 
 			if (ally.buff(LifeLink.class) != null){
 				Buff.prolong(Dungeon.hero, LifeLink.class, ally.buff(LifeLink.class).cooldown()).object = ally.id();
 			}
 		} else {
 			hero.sprite.parent.add(
-					new Beam.SunRay(ally.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(telePos)));
+					new Beam.SunRay(ally.sprite.center(), DungeonTileMap.raisedTileCenterToWorld(telePos)));
 		}
 
 		hero.sprite.zap(telePos);

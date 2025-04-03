@@ -35,7 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
@@ -73,7 +73,7 @@ public class FlashBangBomb extends Bomb {
 			int damage = Math.round(Random.NormalIntRange(4 + Dungeon.scalingDepth(), 12 + 3*Dungeon.scalingDepth()) / 4f);
 			ch.damage(damage, new Electricity());
 			if (ch.isAlive()) Buff.prolong(ch, Paralysis.class, Paralysis.DURATION);
-			arcs.add(new Lightning.Arc(DungeonTilemap.tileCenterToWorld(cell), ch.sprite.center()));
+			arcs.add(new Lightning.Arc(DungeonTileMap.tileCenterToWorld(cell), ch.sprite.center()));
 
 			if (ch == Dungeon.hero){
 				GameScene.flash(0x80FFFFFF);

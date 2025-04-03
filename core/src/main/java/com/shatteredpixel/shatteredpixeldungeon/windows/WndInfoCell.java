@@ -26,9 +26,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTilemap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTileMap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTerrainTileMap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.RenderedTextBlock;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Window;
 import com.watabou.noosa.Image;
@@ -50,7 +50,7 @@ public class WndInfoCell extends Window {
 		Image customImage = null;
 		int x = cell % Dungeon.level.width();
 		int y = cell / Dungeon.level.width();
-		for (CustomTilemap i : Dungeon.level.customTiles){
+		for (CustomTileMap i : Dungeon.level.customTiles){
 			if ((x >= i.tileX && x < i.tileX+i.tileW) &&
 					(y >= i.tileY && y < i.tileY+i.tileH)){
 				if ((customImage = i.image(x - i.tileX, y - i.tileY)) != null) {
@@ -65,20 +65,20 @@ public class WndInfoCell extends Window {
 
 			if (tile == Terrain.WATER) {
 				Image water = new Image(Dungeon.level.waterTex());
-				water.frame(0, 0, DungeonTilemap.SIZE, DungeonTilemap.SIZE);
+				water.frame(0, 0, DungeonTileMap.SIZE, DungeonTileMap.SIZE);
 				return water;
 			} else {
-				return DungeonTerrainTilemap.tile(cell, tile);
+				return DungeonTerrainTileMap.tile(cell, tile);
 			}
 		}
 	}
 
 	public static String cellName( int cell ){
 
-		CustomTilemap customTile = null;
+		CustomTileMap customTile = null;
 		int x = cell % Dungeon.level.width();
 		int y = cell / Dungeon.level.width();
-		for (CustomTilemap i : Dungeon.level.customTiles){
+		for (CustomTileMap i : Dungeon.level.customTiles){
 			if ((x >= i.tileX && x < i.tileX+i.tileW) &&
 					(y >= i.tileY && y < i.tileY+i.tileH)){
 				if (i.image(x - i.tileX, y - i.tileY) != null) {
@@ -101,10 +101,10 @@ public class WndInfoCell extends Window {
 		
 		super();
 
-		CustomTilemap customTile = null;
+		CustomTileMap customTile = null;
 		int x = cell % Dungeon.level.width();
 		int y = cell / Dungeon.level.width();
-		for (CustomTilemap i : Dungeon.level.customTiles){
+		for (CustomTileMap i : Dungeon.level.customTiles){
 			if ((x >= i.tileX && x < i.tileX+i.tileW) &&
 					(y >= i.tileY && y < i.tileY+i.tileH)){
 				if (i.image(x - i.tileX, y - i.tileY) != null) {

@@ -31,7 +31,7 @@ import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.TileMap;
 
 
-public class WallBlockingTilemap extends HexTileMap {
+public class WallBlockingTileMap extends HexTileMap {
 
 	public static final int SIZE = 16;
 
@@ -42,7 +42,7 @@ public class WallBlockingTilemap extends HexTileMap {
 	private static final int BLOCK_ALL      = 2;
 	private static final int BLOCK_BELOW    = 3;
 
-	public WallBlockingTilemap() {
+	public WallBlockingTileMap() {
 		super(Assets.Environment.WALL_BLOCKING, new TextureFilm( Assets.Environment.WALL_BLOCKING, SIZE, SIZE ) );
 		map( new int[Dungeon.level.length()], Dungeon.level.width());
 	}

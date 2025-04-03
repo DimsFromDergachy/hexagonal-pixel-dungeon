@@ -96,7 +96,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Swiftthistle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.InterlevelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -181,8 +181,8 @@ public abstract class Level implements Bundlable {
 	public HashMap<Class<? extends Blob>,Blob> blobs;
 	public SparseArray<Plant> plants;
 	public SparseArray<Trap> traps;
-	public HashSet<CustomTilemap> customTiles;
-	public HashSet<CustomTilemap> customWalls;
+	public HashSet<CustomTileMap> customTiles;
+	public HashSet<CustomTileMap> customWalls;
 	
 	protected ArrayList<Item> itemsToSpawn = new ArrayList<>();
 
@@ -408,13 +408,13 @@ public abstract class Level implements Bundlable {
 
 		collection = bundle.getCollection( CUSTOM_TILES );
 		for (Bundlable p : collection) {
-			CustomTilemap vis = (CustomTilemap)p;
+			CustomTileMap vis = (CustomTileMap)p;
 			customTiles.add(vis);
 		}
 
 		collection = bundle.getCollection( CUSTOM_WALLS );
 		for (Bundlable p : collection) {
-			CustomTilemap vis = (CustomTilemap)p;
+			CustomTileMap vis = (CustomTileMap)p;
 			customWalls.add(vis);
 		}
 		
@@ -1064,7 +1064,7 @@ public abstract class Level implements Bundlable {
 		Point p = cellToPoint(cell);
 
 		//if a custom tilemap is over that cell, don't put water there
-		for (CustomTilemap cust : customTiles){
+		for (CustomTileMap cust : customTiles){
 			Point custPoint = new Point(p);
 			custPoint.x -= cust.tileX;
 			custPoint.y -= cust.tileY;

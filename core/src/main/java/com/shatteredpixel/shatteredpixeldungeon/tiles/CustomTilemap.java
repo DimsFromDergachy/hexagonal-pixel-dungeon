@@ -30,9 +30,9 @@ import com.watabou.noosa.TileMap;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 
-public abstract class CustomTilemap implements Bundlable {
+public abstract class CustomTileMap implements Bundlable {
 
-	protected static final int SIZE = DungeonTilemap.SIZE;
+	protected static final int SIZE = DungeonTileMap.SIZE;
 
 	public int tileX, tileY;   //x and y coords for texture within a level
 	public int tileW = 1, tileH = 1; //width and height in tiles

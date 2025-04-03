@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Halo;
 import com.watabou.noosa.audio.Sample;
@@ -62,7 +62,7 @@ public class SuperNovaTracker extends Buff {
 			return true;
 		}
 
-		PointF p = DungeonTilemap.raisedTileCenterToWorld(pos);
+		PointF p = DungeonTileMap.raisedTileCenterToWorld(pos);
 		if (fieldOfView == null){
 			fieldOfView = new boolean[Dungeon.level.length()];
 		}
@@ -141,7 +141,7 @@ public class SuperNovaTracker extends Buff {
 		if (on && depth == Dungeon.depth && branch == Dungeon.branch
 				&& (halo == null || halo.parent == null)){
 			halo = new NovaVFX();
-			PointF p = DungeonTilemap.raisedTileCenterToWorld(pos);
+			PointF p = DungeonTileMap.raisedTileCenterToWorld(pos);
 			halo.hardlight(1, 1, 0f);
 			halo.radius(5 + 2*(10-turnsLeft));
 			halo.alpha(1.25f - 0.075f*turnsLeft);
@@ -184,7 +184,7 @@ public class SuperNovaTracker extends Buff {
 		public void update() {
 			am = brightness + 0.1f*(float)Math.cos(20*Game.timeTotal);
 			scale.set((radius + (float)Math.cos(20*Game.timeTotal))/RADIUS);
-			PointF p = DungeonTilemap.raisedTileCenterToWorld(pos);
+			PointF p = DungeonTileMap.raisedTileCenterToWorld(pos);
 			point(p.x, p.y);
 			super.update();
 		}

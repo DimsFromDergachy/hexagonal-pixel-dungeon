@@ -23,7 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.effects;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Random;
 import com.watabou.utils.RectF;
@@ -53,7 +53,7 @@ public class BlobEmitter extends Emitter {
 			blob.setupArea();
 		
 		int[] map = blob.cur;
-		float size = DungeonTilemap.SIZE;
+		float size = DungeonTileMap.SIZE;
 
 		int cell;
 		for (int i = blob.area.left; i < blob.area.right; i++) {

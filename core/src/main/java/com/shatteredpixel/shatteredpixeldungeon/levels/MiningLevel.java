@@ -53,7 +53,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRo
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
 import com.watabou.noosa.Game;
@@ -128,7 +128,7 @@ public class MiningLevel extends CavesLevel {
 	@Override
 	protected boolean build() {
 		if (super.build()){
-			CustomTilemap vis = new BorderTopDarken();
+			CustomTileMap vis = new BorderTopDarken();
 			vis.setRect(0, 0, width, 1);
 			customTiles.add(vis);
 
@@ -338,7 +338,7 @@ public class MiningLevel extends CavesLevel {
 		return false; //solid tiles are fine for hero to be in here
 	}
 
-	public static class BorderTopDarken extends CustomTilemap {
+	public static class BorderTopDarken extends CustomTileMap {
 
 		{
 			texture = Assets.Environment.CAVES_QUEST;
@@ -359,7 +359,7 @@ public class MiningLevel extends CavesLevel {
 		}
 	}
 
-	public static class BorderWallsDarken extends CustomTilemap {
+	public static class BorderWallsDarken extends CustomTileMap {
 
 		{
 			texture = Assets.Environment.CAVES_QUEST;

@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTileMap;
 import com.watabou.noosa.TileMap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -69,14 +69,14 @@ public class WeakFloorRoom extends SpecialRoom {
 		}
 		
 		Painter.set(level, well, Terrain.CHASM);
-		CustomTilemap vis = new HiddenWell();
+		CustomTileMap vis = new HiddenWell();
 		vis.pos(well.x, well.y);
 		level.customTiles.add(vis);
 
 		Blob.seed( well.x + level.width() * well.y, 1, WellID.class, level );
 	}
 
-	public static class HiddenWell extends CustomTilemap {
+	public static class HiddenWell extends CustomTileMap {
 
 		{
 			texture = Assets.Environment.WEAK_FLOOR;

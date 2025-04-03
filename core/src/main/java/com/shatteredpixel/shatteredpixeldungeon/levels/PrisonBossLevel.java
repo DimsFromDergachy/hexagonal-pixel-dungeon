@@ -48,7 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.watabou.utils.BArray;
 import com.watabou.noosa.Camera;
@@ -293,7 +293,7 @@ public class PrisonBossLevel extends Level {
 			}
 		}
 		
-		CustomTilemap vis = new ExitVisual();
+		CustomTileMap vis = new ExitVisual();
 		vis.pos(11, 10);
 		customTiles.add(vis);
 		GameScene.add(vis, false);
@@ -371,7 +371,7 @@ public class PrisonBossLevel extends Level {
 		addVisuals(); //this also resets existing visuals
 		traps.clear();
 
-		for (CustomTilemap t : customTiles){
+		for (CustomTileMap t : customTiles){
 			if (t instanceof FadingTraps){
 				((FadingTraps) t).remove();
 			}
@@ -628,7 +628,7 @@ public class PrisonBossLevel extends Level {
 		Painter.fill(this, tenguCell, 1, Terrain.EMPTY);
 		buildFlagMaps();
 
-		for (CustomTilemap vis : customTiles){
+		for (CustomTileMap vis : customTiles){
 			if (vis instanceof FadingTraps){
 				((FadingTraps) vis).remove();
 			}
@@ -740,7 +740,7 @@ public class PrisonBossLevel extends Level {
 	}
 	
 	//TODO consider making this external to the prison boss level
-	public static class FadingTraps extends CustomTilemap {
+	public static class FadingTraps extends CustomTileMap {
 		
 		{
 			texture = Assets.Environment.TERRAIN_FEATURES;
@@ -847,7 +847,7 @@ public class PrisonBossLevel extends Level {
 		
 	}
 	
-	public static class ExitVisual extends CustomTilemap {
+	public static class ExitVisual extends CustomTileMap {
 		
 		{
 			texture = Assets.Environment.PRISON_EXIT;
@@ -893,7 +893,7 @@ public class PrisonBossLevel extends Level {
 		}
 	}
 	
-	public static class ExitVisualWalls extends CustomTilemap {
+	public static class ExitVisualWalls extends CustomTileMap {
 		
 		{
 			texture = Assets.Environment.PRISON_EXIT;

@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.tweeners.AlphaTweener;
 
@@ -68,7 +68,7 @@ public class WardSprite extends MobSprite {
 		if (Actor.findChar(pos) != null){
 			parent.add(new Beam.DeathRay(center(), Actor.findChar(pos).sprite.center()));
 		} else {
-			parent.add(new Beam.DeathRay(center(), DungeonTilemap.raisedTileCenterToWorld(pos)));
+			parent.add(new Beam.DeathRay(center(), DungeonTileMap.raisedTileCenterToWorld(pos)));
 		}
 		((WandOfWarding.Ward)ch).onZapComplete();
 	}

@@ -22,7 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -37,9 +37,9 @@ public class CheckedCell extends Image {
 
 		origin.set( 0.5f );
 		
-		point( DungeonTilemap.tileToWorld( pos ).offset(
-			DungeonTilemap.SIZE / 2,
-			DungeonTilemap.SIZE / 2 ) );
+		point( DungeonTileMap.tileToWorld( pos ).offset(
+			DungeonTileMap.SIZE / 2,
+			DungeonTileMap.SIZE / 2 ) );
 		
 		alpha = 0.8f;
 	}
@@ -60,7 +60,7 @@ public class CheckedCell extends Image {
 			alpha( 0 );
 		} else if ((alpha -= Game.elapsed) > 0) {
 			alpha( alpha );
-			scale.set( DungeonTilemap.SIZE * alpha );
+			scale.set( DungeonTileMap.SIZE * alpha );
 		} else {
 			killAndErase();
 		}

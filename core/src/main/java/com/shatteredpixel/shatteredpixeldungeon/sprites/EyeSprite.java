@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Eye;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
@@ -129,7 +129,7 @@ public class EyeSprite extends MobSprite {
 			if (Actor.findChar(zapPos) != null){
 				parent.add(new Beam.DeathRay(center(), Actor.findChar(zapPos).sprite.center()));
 			} else {
-				parent.add(new Beam.DeathRay(center(), DungeonTilemap.raisedTileCenterToWorld(zapPos)));
+				parent.add(new Beam.DeathRay(center(), DungeonTileMap.raisedTileCenterToWorld(zapPos)));
 			}
 			((Eye)ch).deathGaze();
 			ch.next();

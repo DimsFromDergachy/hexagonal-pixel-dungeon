@@ -48,7 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WeakeningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.glwrap.Blending;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -225,10 +225,10 @@ public class HallsLevel extends RegularLevel {
 					
 					delay = Random.Float( 2 );
 					
-					PointF p = DungeonTilemap.tileToWorld( pos );
+					PointF p = DungeonTileMap.tileToWorld( pos );
 					((FireParticle)recycle( FireParticle.class )).reset(
-						p.x + Random.Float( DungeonTilemap.SIZE ),
-						p.y + Random.Float( DungeonTilemap.SIZE ) );
+						p.x + Random.Float( DungeonTileMap.SIZE ),
+						p.y + Random.Float( DungeonTileMap.SIZE ) );
 				}
 			}
 		}

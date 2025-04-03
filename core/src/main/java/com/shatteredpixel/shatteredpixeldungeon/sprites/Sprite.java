@@ -24,7 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.sprites;
 import java.nio.Buffer;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.glwrap.Matrix;
 import com.watabou.glwrap.VertexBuffer;
 import com.watabou.noosa.Camera;
@@ -55,7 +55,7 @@ public class Sprite extends MovieClip {
 	}
 
 	public PointF worldToCamera( int cell ) {
-		final int csize = DungeonTilemap.SIZE;
+		final int csize = DungeonTileMap.SIZE;
 
 		int posX = cell % Dungeon.level.width();
 		int posY = cell / Dungeon.level.width();

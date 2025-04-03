@@ -21,7 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
@@ -45,8 +45,8 @@ public class Chains extends Group {
 	private PointF from, to;
 
 	public Chains(int from, int to, Effects.Type type, Callback callback){
-		this(DungeonTilemap.tileCenterToWorld(from),
-				DungeonTilemap.tileCenterToWorld(to),
+		this(DungeonTileMap.tileCenterToWorld(from),
+				DungeonTileMap.tileCenterToWorld(to),
 				type,
 				callback);
 	}

@@ -66,7 +66,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.TenguSprite;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -614,7 +614,7 @@ public class Tengu extends Mob {
 				fx(true);
 			}
 			
-			PointF p = DungeonTilemap.raisedTileCenterToWorld(bombPos);
+			PointF p = DungeonTileMap.raisedTileCenterToWorld(bombPos);
 			if (timer == 3) {
 				FloatingText.show(p.x, p.y, bombPos, "3...", CharSprite.WARNING);
 			} else if (timer == 2){

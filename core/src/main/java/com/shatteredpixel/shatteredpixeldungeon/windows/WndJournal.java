@@ -58,7 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesGrid;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BadgesList;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CustomNoteButton;
@@ -928,7 +928,7 @@ public class WndJournal extends WndTabbed {
 			} else if (Trap.class.isAssignableFrom(entityCls)){
 
 				Trap trap = (Trap) Reflection.newInstance(entityCls);
-				icon = TerrainFeaturesTilemap.getTrapVisual(trap);
+				icon = TerrainFeaturesTileMap.getTrapVisual(trap);
 
 				if (seen) {
 					title = Messages.titleCase(trap.name());
@@ -945,7 +945,7 @@ public class WndJournal extends WndTabbed {
 			} else if (Plant.class.isAssignableFrom(entityCls)){
 
 				Plant plant = (Plant) Reflection.newInstance(entityCls);
-				icon = TerrainFeaturesTilemap.getPlantVisual(plant);
+				icon = TerrainFeaturesTileMap.getPlantVisual(plant);
 
 				if (seen) {
 					title = Messages.titleCase(plant.name());

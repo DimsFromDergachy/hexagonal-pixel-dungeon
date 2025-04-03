@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.secret.SecretRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CaveRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTileMap;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TileMap;
 import com.watabou.utils.GameMath;
@@ -149,7 +149,7 @@ public class MineEntrance extends CaveRoom {
 		}
 	}
 
-	public static class QuestExit extends CustomTilemap {
+	public static class QuestExit extends CustomTileMap {
 
 		{
 			texture = Assets.Environment.CAVES_QUEST;

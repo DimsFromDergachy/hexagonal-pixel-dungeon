@@ -26,11 +26,11 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 
 import java.util.HashSet;
 
-public class DungeonWallsTilemap extends DungeonTilemap {
+public class DungeonWallsTileMap extends DungeonTileMap {
 
 	public static HashSet<Integer> skipCells = new HashSet<>();
 
-	public DungeonWallsTilemap(){
+	public DungeonWallsTileMap(){
 		super(Dungeon.level.tilesTex());
 		skipCells.clear();
 		map( Dungeon.level.map, Dungeon.level.width() );

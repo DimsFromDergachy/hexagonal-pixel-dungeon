@@ -45,7 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TeleportationTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ToxicTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Halo;
@@ -218,7 +218,7 @@ public class PrisonLevel extends RegularLevel {
 			
 			this.pos = pos;
 			
-			PointF p = DungeonTilemap.tileCenterToWorld( pos );
+			PointF p = DungeonTileMap.tileCenterToWorld( pos );
 			pos( p.x - 1, p.y + 2, 2, 0 );
 			
 			pour( FlameParticle.FACTORY, 0.15f );

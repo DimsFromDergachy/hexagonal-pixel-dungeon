@@ -36,7 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.ui.QuickSlotButton;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -89,7 +89,7 @@ public class Sunray extends TargetedClericSpell {
 		hero.sprite.zap(target);
 
 		hero.sprite.parent.add(
-				new Beam.SunRay(hero.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(aim.collisionPos)));
+				new Beam.SunRay(hero.sprite.center(), DungeonTileMap.raisedTileCenterToWorld(aim.collisionPos)));
 
 		Char ch = Actor.findChar( aim.collisionPos );
 		if (ch != null) {

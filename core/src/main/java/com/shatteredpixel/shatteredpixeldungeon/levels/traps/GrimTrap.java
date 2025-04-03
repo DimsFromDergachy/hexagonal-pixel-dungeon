@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -98,7 +98,7 @@ public class GrimTrap extends Trap {
 					if (Dungeon.level.heroFOV[pos] || Dungeon.level.heroFOV[target.pos]) {
 						((MagicMissile)finalTarget.sprite.parent.recycle(MagicMissile.class)).reset(
 								MagicMissile.SHADOW,
-								DungeonTilemap.tileCenterToWorld(pos),
+								DungeonTileMap.tileCenterToWorld(pos),
 								finalTarget.sprite.center(),
 								new Callback() {
 									@Override

@@ -25,7 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTileMap;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TileMap;
 import com.watabou.utils.Point;
@@ -63,7 +63,7 @@ public abstract class GooBossRoom extends StandardRoom {
 		level.customTiles.add(nest);
 	}
 	
-	public static class GooNest extends CustomTilemap {
+	public static class GooNest extends CustomTileMap {
 		
 		{
 			texture = Assets.Environment.SEWER_BOSS;

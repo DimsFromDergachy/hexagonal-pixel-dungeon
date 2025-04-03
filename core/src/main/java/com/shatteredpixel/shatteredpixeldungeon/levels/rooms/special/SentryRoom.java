@@ -46,7 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MobSprite;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
@@ -380,7 +380,7 @@ public class SentryRoom extends SpecialRoom {
 			if (Actor.findChar(pos) != null){
 				parent.add(new Beam.DeathRay(center(), Actor.findChar(pos).sprite.center()));
 			} else {
-				parent.add(new Beam.DeathRay(center(), DungeonTilemap.raisedTileCenterToWorld(pos)));
+				parent.add(new Beam.DeathRay(center(), DungeonTileMap.raisedTileCenterToWorld(pos)));
 			}
 			((Sentry)ch).onZapComplete();
 		}

@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTileMap;
 import com.watabou.noosa.TileMap;
 import com.watabou.utils.Point;
 
@@ -79,7 +79,7 @@ public class DemonSpawnerRoom extends SpecialRoom {
 		return false;
 	}
 
-	public static class CustomFloor extends CustomTilemap {
+	public static class CustomFloor extends CustomTileMap {
 
 		{
 			texture = Assets.Environment.HALLS_SP;

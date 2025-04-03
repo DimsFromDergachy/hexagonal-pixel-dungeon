@@ -22,7 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.effects.particles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.particles.Emitter.Factory;
 import com.watabou.noosa.particles.PixelParticle;
@@ -82,8 +82,8 @@ public class WindParticle extends PixelParticle {
 			super();
 
 			this.pos = pos;
-			PointF p = DungeonTilemap.tileToWorld( pos );
-			pos(p.x, p.y, DungeonTilemap.SIZE, DungeonTilemap.SIZE);
+			PointF p = DungeonTileMap.tileToWorld( pos );
+			pos(p.x, p.y, DungeonTileMap.SIZE, DungeonTileMap.SIZE);
 			
 			pour(FACTORY, 2.5f);
 		}

@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Amulet;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.TileMap;
@@ -136,7 +136,7 @@ public class LastLevel extends Level {
 		feeling = Feeling.NONE;
 		viewDistance = 4;
 
-		CustomTilemap vis = new CustomFloor();
+		CustomTileMap vis = new CustomFloor();
 		vis.setRect( 5, 0, 7, height - ROOM_TOP);
 		customTiles.add(vis);
 
@@ -250,7 +250,7 @@ public class LastLevel extends Level {
 		}
 	}
 
-	public static class CustomFloor extends CustomTilemap {
+	public static class CustomFloor extends CustomTileMap {
 
 		{
 			texture = Assets.Environment.HALLS_SP;
@@ -321,7 +321,7 @@ public class LastLevel extends Level {
 
 	}
 
-	public static class CenterPieceVisuals extends CustomTilemap {
+	public static class CenterPieceVisuals extends CustomTileMap {
 
 		{
 			texture = Assets.Environment.HALLS_SP;
@@ -351,7 +351,7 @@ public class LastLevel extends Level {
 		}
 	}
 
-	public static class CenterPieceWalls extends CustomTilemap {
+	public static class CenterPieceWalls extends CustomTileMap {
 
 		{
 			texture = Assets.Environment.HALLS_SP;

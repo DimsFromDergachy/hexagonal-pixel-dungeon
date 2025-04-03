@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.cleric.Pow
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 
@@ -80,7 +80,7 @@ public class LifeLinkSpell extends ClericSpell {
 			ally = Stasis.getStasisAlly();
 			hero.sprite.operate(hero.pos);
 			hero.sprite.parent.add(
-					new Beam.HealthRay(DungeonTilemap.tileCenterToWorld(hero.pos), hero.sprite.center()));
+					new Beam.HealthRay(DungeonTileMap.tileCenterToWorld(hero.pos), hero.sprite.center()));
 		}
 
 		Buff.prolong(ally, LifeLink.class, duration).object = hero.id();

@@ -42,7 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
@@ -155,7 +155,7 @@ public class WandOfPrismaticLight extends DamageWand {
 	@Override
 	public void fx(Ballistica beam, Callback callback) {
 		curUser.sprite.parent.add(
-				new Beam.LightRay(curUser.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(beam.collisionPos)));
+				new Beam.LightRay(curUser.sprite.center(), DungeonTileMap.raisedTileCenterToWorld(beam.collisionPos)));
 		callback.call();
 	}
 

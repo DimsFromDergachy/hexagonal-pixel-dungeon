@@ -51,7 +51,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.BlacksmithSprite;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndTitledMessage;
@@ -280,18 +280,18 @@ public class CavesLevel extends RegularLevel {
 					
 					delay = Random.Float();
 
-					PointF p = DungeonTilemap.tileToWorld( pos );
+					PointF p = DungeonTileMap.tileToWorld( pos );
 					if (includeOverhang && !DungeonTileSheet.wallStitcheable(Dungeon.level.map[pos-Dungeon.level.width()])){
 						//also sparkles in the bottom 1/2 of the upper tile. Increases particle frequency by 50% accordingly.
 						delay *= 0.67f;
-						p.y -= DungeonTilemap.SIZE/2f;
+						p.y -= DungeonTileMap.SIZE/2f;
 						((Sparkle)recycle( Sparkle.class )).reset(
-								p.x + Random.Float( DungeonTilemap.SIZE ),
-								p.y + Random.Float( DungeonTilemap.SIZE*1.5f ) );
+								p.x + Random.Float( DungeonTileMap.SIZE ),
+								p.y + Random.Float( DungeonTileMap.SIZE*1.5f ) );
 					} else {
 						((Sparkle)recycle( Sparkle.class )).reset(
-								p.x + Random.Float( DungeonTilemap.SIZE ),
-								p.y + Random.Float( DungeonTilemap.SIZE ) );
+								p.x + Random.Float( DungeonTileMap.SIZE ),
+								p.y + Random.Float( DungeonTileMap.SIZE ) );
 					}
 				}
 			}

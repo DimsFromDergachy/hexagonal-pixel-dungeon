@@ -24,9 +24,9 @@ package com.shatteredpixel.shatteredpixeldungeon.tiles;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 
-public class RaisedTerrainTilemap extends DungeonTilemap {
+public class RaisedTerrainTileMap extends DungeonTileMap {
 	
-	public RaisedTerrainTilemap() {
+	public RaisedTerrainTileMap() {
 		super(Dungeon.level.tilesTex());
 		map( Dungeon.level.map, Dungeon.level.width() );
 	}
@@ -36,7 +36,7 @@ public class RaisedTerrainTilemap extends DungeonTilemap {
 		
 		if (flat) return -1;
 
-		if (DungeonWallsTilemap.skipCells.contains(pos)){
+		if (DungeonWallsTileMap.skipCells.contains(pos)){
 			return -1;
 		}
 

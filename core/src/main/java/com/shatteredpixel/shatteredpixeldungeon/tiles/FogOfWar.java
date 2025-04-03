@@ -106,7 +106,7 @@ public class FogOfWar extends Image {
 			height2 <<= 1;
 		}
 
-		float size = DungeonTilemap.SIZE / PIX_PER_TILE;
+		float size = DungeonTileMap.SIZE / PIX_PER_TILE;
 		width = width2 * size;
 		height = height2 * size;
 

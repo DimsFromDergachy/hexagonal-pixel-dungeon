@@ -38,7 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ImpShopRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
@@ -208,7 +208,7 @@ public class CityBossLevel extends Level {
 		Painter.fill(this, end.right-3, end.top+12, 2, 2, Terrain.WALL);
 		Painter.fill(this, end.right-3, end.top+17, 2, 2, Terrain.WALL);
 
-		CustomTilemap customVisuals = new CustomGroundVisuals();
+		CustomTileMap customVisuals = new CustomGroundVisuals();
 		customVisuals.setRect(0, 0, width(), height());
 		customTiles.add(customVisuals);
 
@@ -423,7 +423,7 @@ public class CityBossLevel extends Level {
 		return visuals;
 	}
 
-	public static class CustomGroundVisuals extends CustomTilemap {
+	public static class CustomGroundVisuals extends CustomTileMap {
 
 		{
 			texture = Assets.Environment.CITY_BOSS;
@@ -609,7 +609,7 @@ public class CityBossLevel extends Level {
 		}
 	}
 
-	public static class CustomWallVisuals extends CustomTilemap {
+	public static class CustomWallVisuals extends CustomTileMap {
 		{
 			texture = Assets.Environment.CITY_BOSS;
 			tileW = 15;

@@ -37,7 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -151,7 +151,7 @@ public class WandOfLightning extends DamageWand {
 			arcs.add( new Lightning.Arc(curUser.sprite.center(), ch.sprite.center()));
 			arc(ch);
 		} else {
-			arcs.add( new Lightning.Arc(curUser.sprite.center(), DungeonTilemap.raisedTileCenterToWorld(bolt.collisionPos)));
+			arcs.add( new Lightning.Arc(curUser.sprite.center(), DungeonTileMap.raisedTileCenterToWorld(bolt.collisionPos)));
 			CellEmitter.center( cell ).burst( SparkParticle.FACTORY, 3 );
 		}
 

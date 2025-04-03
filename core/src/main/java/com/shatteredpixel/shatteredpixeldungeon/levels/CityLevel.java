@@ -45,7 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WarpingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.WeakeningTrap;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.audio.Music;
 import com.watabou.noosa.particles.Emitter;
@@ -197,7 +197,7 @@ public class CityLevel extends RegularLevel {
 			
 			this.pos = pos;
 			
-			PointF p = DungeonTilemap.tileCenterToWorld( pos );
+			PointF p = DungeonTileMap.tileCenterToWorld( pos );
 			pos( p.x - 6, p.y - 4, 12, 12 );
 			
 			pour( factory, 0.2f );

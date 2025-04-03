@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.input.ControllerHandler;
 import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;
@@ -51,11 +51,11 @@ public class CellSelector extends ScrollArea {
 	
 	private float dragThreshold;
 	
-	public CellSelector( DungeonTilemap map ) {
+	public CellSelector( DungeonTileMap map ) {
 		super( map );
 		camera = map.camera();
 		
-		dragThreshold = PixelScene.defaultZoom * DungeonTilemap.SIZE / 2;
+		dragThreshold = PixelScene.defaultZoom * DungeonTileMap.SIZE / 2;
 		
 		mouseZoom = camera.zoom;
 		KeyEvent.addKeyListener( keyListener );
@@ -90,7 +90,7 @@ public class CellSelector extends ScrollArea {
 
 			//hero first
 			if (Dungeon.hero.sprite != null && Dungeon.hero.sprite.overlapsPoint( p.x, p.y )){
-				PointF c = DungeonTilemap.tileCenterToWorld(Dungeon.hero.pos);
+				PointF c = DungeonTileMap.tileCenterToWorld(Dungeon.hero.pos);
 				if (Math.abs(p.x - c.x) <= 12 && Math.abs(p.y - c.y) <= 12) {
 					select(Dungeon.hero.pos, event.button);
 					return;
@@ -100,7 +100,7 @@ public class CellSelector extends ScrollArea {
 			//then mobs
 			for (Char mob : Dungeon.level.mobs.toArray(new Mob[0])){
 				if (mob.sprite != null && mob.sprite.overlapsPoint( p.x, p.y )){
-					PointF c = DungeonTilemap.tileCenterToWorld(mob.pos);
+					PointF c = DungeonTileMap.tileCenterToWorld(mob.pos);
 					if (Math.abs(p.x - c.x) <= 12 && Math.abs(p.y - c.y) <= 12) {
 						select(mob.pos, event.button);
 						return;
@@ -111,7 +111,7 @@ public class CellSelector extends ScrollArea {
 			//then heaps
 			for (Heap heap : Dungeon.level.heaps.valueList()){
 				if (heap.sprite != null && heap.sprite.overlapsPoint( p.x, p.y)){
-					PointF c = DungeonTilemap.tileCenterToWorld(heap.pos);
+					PointF c = DungeonTileMap.tileCenterToWorld(heap.pos);
 					if (Math.abs(p.x - c.x) <= 12 && Math.abs(p.y - c.y) <= 12) {
 						select(heap.pos, event.button);
 						return;
@@ -119,7 +119,7 @@ public class CellSelector extends ScrollArea {
 				}
 			}
 			
-			select( ((DungeonTilemap)target).screenToTile(
+			select( ((DungeonTileMap)target).screenToTile(
 				(int) event.current.x,
 				(int) event.current.y,
 					true ), event.button );

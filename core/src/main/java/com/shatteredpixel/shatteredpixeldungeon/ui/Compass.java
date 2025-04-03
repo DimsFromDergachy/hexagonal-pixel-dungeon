@@ -22,7 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.ui;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Image;
 import com.watabou.utils.PointF;
@@ -44,7 +44,7 @@ public class Compass extends Image {
 		origin.set( width / 2, RADIUS );
 		
 		this.cell = cell;
-		cellCenter = DungeonTilemap.tileCenterToWorld( cell );
+		cellCenter = DungeonTileMap.tileCenterToWorld( cell );
 		visible = false;
 	}
 	

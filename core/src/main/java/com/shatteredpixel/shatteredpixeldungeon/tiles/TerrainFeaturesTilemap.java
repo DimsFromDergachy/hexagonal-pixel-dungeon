@@ -33,14 +33,14 @@ import com.watabou.utils.PointF;
 import com.watabou.utils.RectF;
 import com.watabou.utils.SparseArray;
 
-public class TerrainFeaturesTilemap extends DungeonTilemap {
+public class TerrainFeaturesTileMap extends DungeonTileMap {
 
-	private static TerrainFeaturesTilemap instance;
+	private static TerrainFeaturesTileMap instance;
 
 	private SparseArray<Plant> plants;
 	private SparseArray<Trap> traps;
 
-	public TerrainFeaturesTilemap(SparseArray<Plant> plants, SparseArray<Trap> traps) {
+	public TerrainFeaturesTileMap(SparseArray<Plant> plants, SparseArray<Trap> traps) {
 		super(Assets.Environment.TERRAIN_FEATURES);
 
 		this.plants = plants;
@@ -83,7 +83,7 @@ public class TerrainFeaturesTilemap extends DungeonTilemap {
 	}
 
 	public static Image getTrapVisual( Trap trap ){
-		if (instance == null) instance = new TerrainFeaturesTilemap(null, null);
+		if (instance == null) instance = new TerrainFeaturesTileMap(null, null);
 
 		RectF uv = instance.tileSet.get((trap.active ? trap.color : Trap.BLACK) + (trap.shape * 16));
 		if (uv == null) return null;
@@ -94,7 +94,7 @@ public class TerrainFeaturesTilemap extends DungeonTilemap {
 	}
 
 	public static Image getPlantVisual( Plant plant ){
-		if (instance == null) instance = new TerrainFeaturesTilemap(null, null);
+		if (instance == null) instance = new TerrainFeaturesTileMap(null, null);
 
 		RectF uv = instance.tileSet.get(plant.image + 7*16);
 		if (uv == null) return null;
@@ -119,7 +119,7 @@ public class TerrainFeaturesTilemap extends DungeonTilemap {
 		
 		plant.origin.set( 8, 12 );
 		plant.scale.set( 0 );
-		plant.point( DungeonTilemap.tileToWorld( pos ) );
+		plant.point( DungeonTileMap.tileToWorld( pos ) );
 
 		parent.add( plant );
 

@@ -48,7 +48,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.PylonSprite;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
@@ -158,7 +158,7 @@ public class CavesBossLevel extends Level {
 		exit.set(14, 0, 18, 2);
 		transitions.add(exit);
 
-		CustomTilemap customVisuals = new CityEntrance();
+		CustomTileMap customVisuals = new CityEntrance();
 		customVisuals.setRect(0, 0, width(), 11);
 		customTiles.add(customVisuals);
 
@@ -189,7 +189,7 @@ public class CavesBossLevel extends Level {
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
 
-		for (CustomTilemap c : customTiles){
+		for (CustomTileMap c : customTiles){
 			if (c instanceof ArenaVisuals){
 				customArenaVisuals = (ArenaVisuals) c;
 			}
@@ -635,7 +635,7 @@ public class CavesBossLevel extends Level {
 	 * Visual Effects
 	 */
 
-	public static class CityEntrance extends CustomTilemap{
+	public static class CityEntrance extends CustomTileMap{
 
 		{
 			texture = Assets.Environment.CAVES_BOSS;
@@ -683,7 +683,7 @@ public class CavesBossLevel extends Level {
 
 	}
 
-	public static class EntranceOverhang extends CustomTilemap{
+	public static class EntranceOverhang extends CustomTileMap{
 
 		{
 			texture = Assets.Environment.CAVES_BOSS;
@@ -727,7 +727,7 @@ public class CavesBossLevel extends Level {
 
 	}
 
-	public static class ArenaVisuals extends CustomTilemap {
+	public static class ArenaVisuals extends CustomTileMap {
 
 		{
 			texture = Assets.Environment.CAVES_BOSS;

@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.RainbowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Visual;
@@ -93,8 +93,8 @@ public class MagicMissile extends Emitter {
 	
 	public void reset( int type, int from, int to, Callback callback ) {
 		reset( type,
-				DungeonTilemap.raisedTileCenterToWorld( from ),
-				DungeonTilemap.raisedTileCenterToWorld( to ),
+				DungeonTileMap.raisedTileCenterToWorld( from ),
+				DungeonTileMap.raisedTileCenterToWorld( to ),
 				callback );
 	}
 
@@ -108,7 +108,7 @@ public class MagicMissile extends Emitter {
 	public void reset( int type, Visual from, int to, Callback callback ) {
 		reset( type,
 				from.center(),
-				DungeonTilemap.raisedTileCenterToWorld( to ),
+				DungeonTileMap.raisedTileCenterToWorld( to ),
 				callback);
 	}
 

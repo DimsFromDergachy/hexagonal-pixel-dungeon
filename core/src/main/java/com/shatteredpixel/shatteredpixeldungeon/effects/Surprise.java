@@ -23,7 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.effects;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
@@ -43,8 +43,8 @@ public class Surprise extends Image {
 	public void reset(int p) {
 		revive();
 
-		x = (p % Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - width) / 2;
-		y = (p / Dungeon.level.width()) * DungeonTilemap.SIZE + (DungeonTilemap.SIZE - height) / 2;
+		x = (p % Dungeon.level.width()) * DungeonTileMap.SIZE + (DungeonTileMap.SIZE - width) / 2;
+		y = (p / Dungeon.level.width()) * DungeonTileMap.SIZE + (DungeonTileMap.SIZE - height) / 2;
 
 		time = TIME_TO_FADE;
 	}

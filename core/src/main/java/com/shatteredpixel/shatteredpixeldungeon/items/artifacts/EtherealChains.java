@@ -44,7 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.utils.BArray;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -255,7 +255,7 @@ public class EtherealChains extends Artifact {
 		throwSound();
 		Sample.INSTANCE.play( Assets.Sounds.CHAINS );
 		hero.sprite.parent.add(new Chains(hero.sprite.center(),
-				DungeonTilemap.raisedTileCenterToWorld(newHeroPos),
+				DungeonTileMap.raisedTileCenterToWorld(newHeroPos),
 				Effects.Type.ETHEREAL_CHAIN,
 				new Callback() {
 			public void call() {
