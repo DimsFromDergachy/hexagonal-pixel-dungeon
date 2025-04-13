@@ -60,7 +60,7 @@ public class HexTileMap extends TileMap {
 		for (int i=updating.top; i < updating.bottom; i++) {
 
 			x1 = cellW * (updating.left + GameMath.PIXEL);
-			x1 += (i % 2 == 0) ? 0 : 0.5 * cellW;
+			x1 += (i&1) * 0.5f * cellW;
 			x2 = x1 + cellW * (1 - GameMath.PIXEL);
 
 			pos = i * mapWidth + updating.left;
@@ -121,6 +121,5 @@ public class HexTileMap extends TileMap {
 			y1 += cellH;
 			y2 += cellH;
 		}
-
 	}
 }

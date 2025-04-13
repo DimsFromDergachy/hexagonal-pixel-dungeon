@@ -23,7 +23,7 @@ This diagram shows the class hierarchy for visual elements in Shattered Pixel Du
 5. Supporting Classes
    - `SmartTexture`: Advanced texture management
    - `TextureFilm`: Sprite sheet handling
-   - `Tilemap`: Map rendering
+   - `TileMap`: Map rendering
    - `RenderedText`: Text display
    - `SkinnedBlock`: Repeating textures
    - `NinePatch`: UI elements with borders

@@ -127,7 +127,6 @@ public class TileMap extends Visual {
 		for (int i=updating.top; i < updating.bottom; i++) {
 
 			x1 = cellW * (updating.left + GameMath.PIXEL);
-			// x1 += (i&1) * 0.5 * cellW;
 			x2 = x1 + cellW * (1 - GameMath.PIXEL);
 
 			pos = i * mapWidth + updating.left;
