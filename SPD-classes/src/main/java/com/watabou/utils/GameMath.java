@@ -46,4 +46,6 @@ public class GameMath {
 
 	public static float RATIO = 0.75f; //2f / (float) Math.sqrt(3);
 	public static float PIXEL = 1f / 16f;
+
+	public static float HexMode = 0f; // 0f to disable hex mode
 }

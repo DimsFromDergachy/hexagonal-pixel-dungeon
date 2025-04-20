@@ -30,6 +30,7 @@ import com.watabou.glwrap.VertexBuffer;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.NoosaScript;
+import com.watabou.utils.GameMath;
 import com.watabou.utils.PointF;
 
 public class Sprite extends MovieClip {
@@ -55,18 +56,16 @@ public class Sprite extends MovieClip {
 	}
 
 	public PointF worldToCamera( int cell ) {
-		final int csize = DungeonTileMap.SIZE;
+		final int size = DungeonTileMap.SIZE;
 
 		int posX = cell % Dungeon.level.width();
 		int posY = cell / Dungeon.level.width();
 		
 		return new PointF(
-			//x1 += (i&1) * 0.5f * cellW;
-			
-			PixelScene.align(Camera.main, (posX + (posY % 2 == 0 ? 0.5f : 1.0f)) * csize - width() * 0.5f),
-			PixelScene.align(Camera.main, (posY + 1.0f) * csize - height() - csize * perspectiveRaise)
+			PixelScene.align(Camera.main, (posX + 0.5f) * size - width() * 0.5f),
+			PixelScene.align(Camera.main, (posY + GameMath.HexMode * (posX & 1) * 0.5f) * size - height() - size * perspectiveRaise)
 		);
-}
+	}
 
 	public void place( int cell ) {
 		point( worldToCamera( cell ) );

@@ -50,22 +50,23 @@ public class HexTileMap extends TileMap {
 
 		moveToUpdating();
 
-		float x1, y1, x2, y2;
+		float x1, y1, x2, y2, y0;
 		int pos;
 		RectF uv;
 
-		y1 = cellH * (updating.top + GameMath.PIXEL);
-		y2 = y1 + cellH * (1 - GameMath.PIXEL);
+		y0 = cellH * (updating.top + GameMath.HexMode * (updating.left & 1) * 0.5f + 0.5f * GameMath.PIXEL);
 
 		for (int i=updating.top; i < updating.bottom; i++) {
 
-			x1 = cellW * (updating.left + GameMath.PIXEL);
-			x1 += (i&1) * 0.5f * cellW;
-			x2 = x1 + cellW * (1 - GameMath.PIXEL);
+			x1 = cellW * (updating.left + 0.5f * GameMath.PIXEL);
+			x2 = x1 + cellW * (1 - 1.0f * GameMath.PIXEL);
 
 			pos = i * mapWidth + updating.left;
 
 			for (int j=updating.left; j < updating.right; j++) {
+
+				y1 = y0 + GameMath.HexMode * (j & 1) * 0.5f * cellH;
+				y2 = y1 + cellH * (1 - 1.0f * GameMath.PIXEL);
 
 				if (topLeftUpdating == -1)
 					topLeftUpdating = pos;
@@ -118,8 +119,7 @@ public class HexTileMap extends TileMap {
 				x2 += cellW;
 			}
 
-			y1 += cellH;
-			y2 += cellH;
+			y0 += cellH;
 		}
 	}
 }
