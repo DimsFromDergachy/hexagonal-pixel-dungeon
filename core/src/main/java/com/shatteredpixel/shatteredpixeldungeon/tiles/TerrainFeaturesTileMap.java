@@ -54,6 +54,7 @@ public class TerrainFeaturesTileMap extends DungeonTileMap {
 	}
 
 	protected int getTileVisual(int pos, int tile, boolean flat){
+
 		if (traps.get(pos) != null){
 			Trap trap = traps.get(pos);
 			if (!trap.visible)

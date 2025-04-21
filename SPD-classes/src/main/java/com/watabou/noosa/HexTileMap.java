@@ -24,7 +24,9 @@ package com.watabou.noosa;
 import java.nio.Buffer;
 import java.util.Arrays;
 
+import com.watabou.glwrap.VertexBuffer;
 import com.watabou.utils.GameMath;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Rect;
 import com.watabou.utils.RectF;
 
@@ -54,7 +56,7 @@ public class HexTileMap extends TileMap {
 		int pos;
 		RectF uv;
 
-		y0 = cellH * (updating.top + GameMath.HexMode * (updating.left & 1) * 0.5f + 0.5f * GameMath.PIXEL);
+		y0 = cellH * (updating.top + 0.5f * GameMath.PIXEL);
 
 		for (int i=updating.top; i < updating.bottom; i++) {
 

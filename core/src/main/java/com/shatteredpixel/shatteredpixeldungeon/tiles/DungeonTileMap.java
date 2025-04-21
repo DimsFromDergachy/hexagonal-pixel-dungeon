@@ -25,7 +25,6 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.watabou.noosa.HexTileMap;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
-import com.watabou.noosa.TileMap;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
@@ -42,7 +41,7 @@ public abstract class DungeonTileMap extends HexTileMap {
 	}
 
 	@Override
-	//we need to retain two arrays, map is the dungeon tilemap which we can reference.
+	//we need to retain two arrays, map is the dungeon tileMap which we can reference.
 	// Data is our own internal image representation of the tiles, which may differ.
 	public void map(int[] data, int cols) {
 		map = data;
@@ -58,7 +57,7 @@ public abstract class DungeonTileMap extends HexTileMap {
 
 	@Override
 	public synchronized void updateMapCell(int cell) {
-		//update in a 3x3 grid to account for neighbours which might also be affected
+		//update in a 3x3 grid to account for neighbors which might also be affected
 		if (Dungeon.level.insideMap(cell)) {
 			for (int i : PathFinder.NEIGHBOURS9) {
 				data[cell + i] = getTileVisual(cell + i, map[cell + i], false);

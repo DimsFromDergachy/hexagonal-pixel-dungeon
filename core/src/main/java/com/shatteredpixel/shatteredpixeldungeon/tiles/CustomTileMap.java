@@ -53,14 +53,6 @@ public abstract class CustomTileMap implements Bundlable {
 		this.tileY = tileY;
 	}
 
-	public void setRect(int topLeft, int bottomRight){
-		setRect( topLeft%Dungeon.level.width(),
-				topLeft/Dungeon.level.width(),
-				bottomRight%Dungeon.level.width() - topLeft%Dungeon.level.width(),
-				bottomRight/Dungeon.level.width() - topLeft/Dungeon.level.width()
-		);
-	}
-
 	public void setRect(int tileX, int tileY, int tileW, int tileH){
 		this.tileX = tileX;
 		this.tileY = tileY;

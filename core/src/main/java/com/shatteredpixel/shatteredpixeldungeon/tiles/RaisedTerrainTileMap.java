@@ -33,7 +33,7 @@ public class RaisedTerrainTileMap extends DungeonTileMap {
 	
 	@Override
 	protected int getTileVisual(int pos, int tile, boolean flat) {
-		
+
 		if (flat) return -1;
 
 		if (DungeonWallsTileMap.skipCells.contains(pos)){
