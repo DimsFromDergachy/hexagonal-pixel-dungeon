@@ -70,12 +70,12 @@ public class TextureFilm {
 		}
 	}
 	
-	public TextureFilm( TextureFilm atlas, Object key, int width, int height ) {
+	public TextureFilm( TextureFilm textureFilm, Object key, int width, int height ) {
 	
-		texWidth = atlas.texWidth;
-		texHeight = atlas.texHeight;
+		texWidth = textureFilm.texWidth;
+		texHeight = textureFilm.texHeight;
 		
-		RectF patch = atlas.get( key );
+		RectF patch = textureFilm.get( key );
 		
 		float uw = (float)width / texWidth;
 		float vh = (float)height / texHeight;

@@ -6,3 +6,6 @@ Build:
 
 Run:
 > ./gradlew desktop:debug
+
+Adjust tiles:
+> python3 ./image_tools/process_tiles.py

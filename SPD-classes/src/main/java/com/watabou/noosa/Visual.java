@@ -78,7 +78,7 @@ public class Visual extends Gizmo {
 	}
 	
 	@Override
-	//TODO caching the last value of all these variables does improve performance a bunch
+	// TODO caching the last value of all these variables does improve performance a bunch
 	// by letting us skip many calls to updateMatrix, but it is quite messy. It would be better to
 	// control their editing and have a single boolean to tell if the matrix needs updating.
 	public void draw() {

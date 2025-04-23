@@ -26,7 +26,6 @@ import java.util.Arrays;
 
 import com.watabou.glwrap.VertexBuffer;
 import com.watabou.utils.GameMath;
-import com.watabou.utils.PointF;
 import com.watabou.utils.Rect;
 import com.watabou.utils.RectF;
 

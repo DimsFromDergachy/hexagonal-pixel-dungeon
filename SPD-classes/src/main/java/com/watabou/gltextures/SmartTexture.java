@@ -37,8 +37,6 @@ public class SmartTexture extends Texture {
 	public int wModeV;
 	
 	public Pixmap bitmap;
-	
-	public Atlas atlas;
 
 	public SmartTexture( Pixmap bitmap ) {
 		this( bitmap, NEAREST, CLAMP, false );
