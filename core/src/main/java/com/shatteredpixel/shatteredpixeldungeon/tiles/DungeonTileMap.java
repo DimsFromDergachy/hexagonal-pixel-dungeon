@@ -88,7 +88,7 @@ public abstract class DungeonTileMap extends HexTileMap {
 			offset( this.point().negate() ).
 			invScale( SIZE );
 		
-		//snap to the edges of the tilemap
+		// snap to the edges of the tileMap
 		p.x = GameMath.gate(0, p.x, Dungeon.level.width()-0.001f);
 		p.y = GameMath.gate(0, p.y, Dungeon.level.height()-0.001f);
 
@@ -141,8 +141,8 @@ public abstract class DungeonTileMap extends HexTileMap {
 		int y = pos / Dungeon.level.width();
 
 		return new PointF(
-			PixelScene.align(Camera.main, GameMath.RATIO * ((x + 0.5f) * size - adjustX)),
-			PixelScene.align(Camera.main, (1f + y + (GameMath.HexMode ? (x & 1) * 0.5f : 0) * size - adjustY))
+			PixelScene.align(Camera.main, GameMath.HEX_RATIO * ((x + 0.5f) * size - adjustX)),
+			PixelScene.align(Camera.main, (1f + y + (GameMath.HEX_MODE ? (x & 1) * 0.5f : 0) * size - adjustY))
 		);
 	}
 	

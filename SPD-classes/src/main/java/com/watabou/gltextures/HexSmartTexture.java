@@ -33,11 +33,4 @@ public class HexSmartTexture extends SmartTexture {
 		// 	throw new RuntimeException("DEBUG ASSERT: Bitmap should be 16x16" + bitmap.getHeight() + bitmap.getWidth());
 
 	}
-
-	public int getPixel( int x, int y ){
-		int color = bitmap.getPixel(x, y);
-		// convert from libGdx RGBA to Noosa ARGB
-		return ( (color << 24) | (color >>> 8) | 0xDD000000);
-	}
-
 }

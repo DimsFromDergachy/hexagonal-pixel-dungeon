@@ -44,8 +44,7 @@ public class GameMath {
 		}
 	}
 
-	public static boolean HexMode = true;
+	public static boolean HEX_MODE = true;
 
-	public static float RATIO = HexMode ? 12f / 16f : 1f;
-	public static float BORDER = 0f / 16f;
+	public static float HEX_RATIO = HEX_MODE ? 12f / 16f : 1f;
 }

@@ -25,7 +25,7 @@ import java.nio.Buffer;
 import java.util.Arrays;
 
 import com.badlogic.gdx.graphics.Pixmap;
-import com.watabou.gltextures.HexSmartTexture;
+import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.VertexBuffer;
 import com.watabou.utils.GameMath;
@@ -55,9 +55,12 @@ public class HexTileMap extends TileMap {
 		Pixmap original = TextureCache.getBitmap( tx );
 
 		if (original.getHeight() % 16 != 0 || original.getWidth() % 16 != 0)
-			throw new RuntimeException("DEBUG ASSERT: Bitmap should be 16x16" + original.getHeight() + original.getWidth() + tx.toString());
+			throw new RuntimeException( "DEBUG ASSERT: Bitmap should be 16x16" + original.getHeight() + original.getWidth() + tx.toString() );
 
-		Pixmap hexagonal = new Pixmap(original.getWidth(), original.getHeight(), original.getFormat());
+		Pixmap hexagonal = new Pixmap( original.getWidth(), original.getHeight(), original.getFormat() );
+
+		hexagonal.setColor( 0x00000000 );
+		hexagonal.fill();
 
 		for (int i = 0; i < original.getWidth() / 16; i++)
 			for (int j = 0; j < original.getHeight() / 16; j++)
@@ -77,16 +80,15 @@ public class HexTileMap extends TileMap {
 						int d = Math.min( Math.min( d1, d2 ), Math.min( d3, d4 ) );
 
 						if (d < 0)
-							hexagonal.setColor( 0x00000000 );
-						else
-							hexagonal.setColor( original.getPixel( x, y ) );
+							continue;
 
+						hexagonal.setColor( original.getPixel( x, y ) );
 						hexagonal.drawPixel(x, y);
 					}
 
 		original.dispose(); // keep it for info cells?
 
-		this.texture = new HexSmartTexture(hexagonal);
+		this.texture = new SmartTexture( hexagonal );
 
 		RectF r = tileSet.get( 0 );
 		cellW = tileSet.width( r );
@@ -106,19 +108,19 @@ public class HexTileMap extends TileMap {
 		int pos;
 		RectF uv;
 
-		y0 = cellH * (updating.top + 0.5f * GameMath.BORDER);
+		y0 = cellH * updating.top;
 
 		for (int i=updating.top; i < updating.bottom; i++) {
 
-			x1 = GameMath.RATIO * cellW * (updating.left + 0.5f * GameMath.BORDER);
-			x2 = x1 + cellW * (1 - 1.0f * GameMath.BORDER);
+			x1 = GameMath.HEX_RATIO * cellW * updating.left;
+			x2 = x1 + cellW;
 
 			pos = i * mapWidth + updating.left;
 
 			for (int j=updating.left; j < updating.right; j++) {
 
-				y1 = y0 + (GameMath.HexMode ? (j & 1) * 0.5f * cellH : 0);
-				y2 = y1 + cellH * (1 - 1.0f * GameMath.BORDER);
+				y1 = y0 + (GameMath.HEX_MODE ? (j & 1) * 0.5f * cellH : 0);
+				y2 = y1 + cellH;
 
 				if (topLeftUpdating == -1)
 					topLeftUpdating = pos;
@@ -167,8 +169,8 @@ public class HexTileMap extends TileMap {
 				quads.put(vertices);
 
 				pos++;
-				x1 += cellW * GameMath.RATIO;
-				x2 += cellW * GameMath.RATIO;
+				x1 += cellW * GameMath.HEX_RATIO;
+				x2 += cellW * GameMath.HEX_RATIO;
 			}
 
 			y0 += cellH;
