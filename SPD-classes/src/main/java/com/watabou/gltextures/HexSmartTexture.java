@@ -19,33 +19,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>
  */
 
-package com.watabou.utils;
+package com.watabou.gltextures;
 
-import com.watabou.noosa.Game;
+import com.badlogic.gdx.graphics.Pixmap;
 
-public class GameMath {
+public class HexSmartTexture extends SmartTexture {
 
-	public static float speed( float speed, float acc ) {
-		
-		if (acc != 0) {
-			speed += acc * Game.elapsed;
-		}
-		
-		return speed;
+	public HexSmartTexture( Pixmap bitmap ) {
+		super( bitmap, NEAREST, CLAMP, false );
+
+		// Debug asserts
+		// if (bitmap.getHeight() != 16 || bitmap.getWidth() != 16)
+		// 	throw new RuntimeException("DEBUG ASSERT: Bitmap should be 16x16" + bitmap.getHeight() + bitmap.getWidth());
+
 	}
 
-	public static float gate( float min, float value, float max ) {
-		if (value < min) {
-			return min;
-		} else if (value > max) {
-			return max;
-		} else {
-			return value;
-		}
+	public int getPixel( int x, int y ){
+		int color = bitmap.getPixel(x, y);
+		// convert from libGdx RGBA to Noosa ARGB
+		return ( (color << 24) | (color >>> 8) | 0xDD000000);
 	}
 
-	public static boolean HexMode = true;
-
-	public static float RATIO = HexMode ? 12f / 16f : 1f;
-	public static float BORDER = 0f / 16f;
 }

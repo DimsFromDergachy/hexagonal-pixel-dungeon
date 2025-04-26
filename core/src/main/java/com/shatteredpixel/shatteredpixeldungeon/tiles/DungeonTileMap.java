@@ -22,6 +22,8 @@
 package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
+import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
+import com.watabou.noosa.Camera;
 import com.watabou.noosa.HexTileMap;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TextureFilm;
@@ -78,7 +80,7 @@ public abstract class DungeonTileMap extends HexTileMap {
 		return screenToTile(x, y, false);
 	}
 
-	//wall assist is used to make raised perspective tapping a bit easier.
+	// wall assist is used to make raised perspective tapping a bit easier.
 	// If the pressed tile is a wall tile, the tap can be 'bumped' down into a none-wall tile.
 	// currently this happens if the bottom 1/4 of the wall tile is pressed.
 	public int screenToTile(int x, int y, boolean wallAssist ) {
@@ -130,21 +132,30 @@ public abstract class DungeonTileMap extends HexTileMap {
 			}
 		} );
 	}
-	
-	public static PointF tileToWorld( int pos ) {
-		return new PointF( pos % Dungeon.level.width(), pos / Dungeon.level.width()  ).scale( SIZE );
+
+	// inline
+	public static PointF tileToWorld( int pos, float adjustX, float adjustY ) {
+		final int size = DungeonTileMap.SIZE;
+
+		int x = pos % Dungeon.level.width();
+		int y = pos / Dungeon.level.width();
+
+		return new PointF(
+			PixelScene.align(Camera.main, GameMath.RATIO * ((x + 0.5f) * size - adjustX)),
+			PixelScene.align(Camera.main, (1f + y + (GameMath.HexMode ? (x & 1) * 0.5f : 0) * size - adjustY))
+		);
 	}
 	
+	public static PointF tileToWorld( int pos ) {
+		return tileToWorld(pos, 0, 0);
+	}
+
 	public static PointF tileCenterToWorld( int pos ) {
-		return new PointF(
-			(pos % Dungeon.level.width() + 0.5f) * SIZE,
-			(pos / Dungeon.level.width() + 0.5f) * SIZE );
+		return tileToWorld(pos, 0.5f * SIZE, 0.5f * SIZE);
 	}
 
 	public static PointF raisedTileCenterToWorld( int pos ) {
-		return new PointF(
-				(pos % Dungeon.level.width() + 0.5f) * SIZE,
-				(pos / Dungeon.level.width() + 0.1f) * SIZE );
+		return tileToWorld(pos, 0.5f * SIZE, 0.1f * SIZE);
 	}
 	
 	@Override

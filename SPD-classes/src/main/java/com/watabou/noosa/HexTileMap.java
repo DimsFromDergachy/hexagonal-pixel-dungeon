@@ -24,6 +24,9 @@ package com.watabou.noosa;
 import java.nio.Buffer;
 import java.util.Arrays;
 
+import com.badlogic.gdx.graphics.Pixmap;
+import com.watabou.gltextures.HexSmartTexture;
+import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.VertexBuffer;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.Rect;
@@ -35,7 +38,55 @@ public class HexTileMap extends TileMap {
 	private float cellH;
 
 	public HexTileMap(Object tx, TextureFilm tileSet) {
+
 		super(tx, tileSet);
+
+		// TODO: Inject hex transformation
+		// tx is string (filename of the asset)
+		// tileSet has the bitmap (16x16 each tile?)
+
+		// 1. Transform the image
+		// 2. Put to the TextureCache (by the same key)
+
+		// protected SmartTexture texture; - transform to hexagonal
+		// protected TextureFilm tileSet;  - transform to hexagonal
+
+
+		Pixmap original = TextureCache.getBitmap( tx );
+
+		if (original.getHeight() % 16 != 0 || original.getWidth() % 16 != 0)
+			throw new RuntimeException("DEBUG ASSERT: Bitmap should be 16x16" + original.getHeight() + original.getWidth() + tx.toString());
+
+		Pixmap hexagonal = new Pixmap(original.getWidth(), original.getHeight(), original.getFormat());
+
+		for (int i = 0; i < original.getWidth() / 16; i++)
+			for (int j = 0; j < original.getHeight() / 16; j++)
+				for (int px = 0; px < 16; px++)
+					for (int py = 0; py < 16; py++)
+					{
+						int x = i * 16 + px;
+						int y = j * 16 + py;
+
+						int d1 = -16 + 4 * px + 2 * py + 3;		//	2x + y =   8
+						int d2 =  48 - 4 * px + 2 * py - 1;		//	2x - y =  24
+						int d3 =  80 - 4 * px - 2 * py - 3;		//	2x + y =  40
+						int d4 =  16 + 4 * px - 2 * py + 1;		//	2x - y =  -8
+
+						// sqrt(2) / 2 * sqrt(5) ~ 0.316f
+						// distance to the line: d * 0.316f + 0.5f
+						int d = Math.min( Math.min( d1, d2 ), Math.min( d3, d4 ) );
+
+						if (d < 0)
+							hexagonal.setColor( 0x00000000 );
+						else
+							hexagonal.setColor( original.getPixel( x, y ) );
+
+						hexagonal.drawPixel(x, y);
+					}
+
+		original.dispose(); // keep it for info cells?
+
+		this.texture = new HexSmartTexture(hexagonal);
 
 		RectF r = tileSet.get( 0 );
 		cellW = tileSet.width( r );
@@ -55,19 +106,19 @@ public class HexTileMap extends TileMap {
 		int pos;
 		RectF uv;
 
-		y0 = cellH * (updating.top + 0.5f * GameMath.PIXEL);
+		y0 = cellH * (updating.top + 0.5f * GameMath.BORDER);
 
 		for (int i=updating.top; i < updating.bottom; i++) {
 
-			x1 = cellW * (updating.left + 0.5f * GameMath.PIXEL);
-			x2 = x1 + cellW * (1 - 1.0f * GameMath.PIXEL);
+			x1 = GameMath.RATIO * cellW * (updating.left + 0.5f * GameMath.BORDER);
+			x2 = x1 + cellW * (1 - 1.0f * GameMath.BORDER);
 
 			pos = i * mapWidth + updating.left;
 
 			for (int j=updating.left; j < updating.right; j++) {
 
-				y1 = y0 + GameMath.HexMode * (j & 1) * 0.5f * cellH;
-				y2 = y1 + cellH * (1 - 1.0f * GameMath.PIXEL);
+				y1 = y0 + (GameMath.HexMode ? (j & 1) * 0.5f * cellH : 0);
+				y2 = y1 + cellH * (1 - 1.0f * GameMath.BORDER);
 
 				if (topLeftUpdating == -1)
 					topLeftUpdating = pos;
@@ -116,8 +167,8 @@ public class HexTileMap extends TileMap {
 				quads.put(vertices);
 
 				pos++;
-				x1 += cellW;
-				x2 += cellW;
+				x1 += cellW * GameMath.RATIO;
+				x2 += cellW * GameMath.RATIO;
 			}
 
 			y0 += cellH;
