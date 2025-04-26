@@ -73,7 +73,7 @@ public class SPDSettings extends GameSettings {
 		((ShatteredPixelDungeon)ShatteredPixelDungeon.instance).updateDisplaySize();
 	}
 	
-	//can return null because we need to directly handle the case of landscape not being set
+	// can return null because we need to directly handle the case of landscape not being set
 	// as there are different defaults for different devices
 	public static Boolean landscape(){
 		if (contains(KEY_LANDSCAPE)){
@@ -148,7 +148,7 @@ public class SPDSettings extends GameSettings {
 
 	public static final String KEY_GAMES_SORT    = "games_sort";
 
-	//0 = mobile, 1 = mixed (large without inventory in main UI), 2 = large
+	// 0 = mobile, 1 = mixed (large without inventory in main UI), 2 = large
 	public static void interfaceSize( int value ){
 		put( KEY_UI_SIZE, value );
 	}

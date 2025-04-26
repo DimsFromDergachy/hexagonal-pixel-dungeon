@@ -57,42 +57,59 @@ public class HexTileMap extends TileMap {
 		if (original.getHeight() % 16 != 0 || original.getWidth() % 16 != 0)
 			throw new RuntimeException( "DEBUG ASSERT: Bitmap should be 16x16" + original.getHeight() + original.getWidth() + tx.toString() );
 
-		Pixmap hexagonal = new Pixmap( original.getWidth(), original.getHeight(), original.getFormat() );
+		Pixmap hexagonal = new Pixmap( original.getWidth() / 16 * 18, original.getHeight(), original.getFormat() );
 
 		hexagonal.setColor( 0x00000000 );
 		hexagonal.fill();
 
 		for (int i = 0; i < original.getWidth() / 16; i++)
 			for (int j = 0; j < original.getHeight() / 16; j++)
+			{
 				for (int px = 0; px < 16; px++)
 					for (int py = 0; py < 16; py++)
 					{
 						int x = i * 16 + px;
 						int y = j * 16 + py;
 
-						int d1 = -16 + 4 * px + 2 * py + 3;		//	2x + y =   8
-						int d2 =  48 - 4 * px + 2 * py - 1;		//	2x - y =  24
-						int d3 =  80 - 4 * px - 2 * py - 3;		//	2x + y =  40
-						int d4 =  16 + 4 * px - 2 * py + 1;		//	2x - y =  -8
+						int hx = i * 18 + px + 1;
+						int hy = y;
 
-						// sqrt(2) / 2 * sqrt(5) ~ 0.316f
-						// distance to the line: d * 0.316f + 0.5f
+						int d1 = -12 + 4 * px + 2 * py + 3;		//	2x + y =   6
+						int d2 =  52 - 4 * px + 2 * py - 1;		//	2x - y =  26
+						int d3 =  84 - 4 * px - 2 * py - 3;		//	2x + y =  42
+						int d4 =  20 + 4 * px - 2 * py + 1;		//	2x - y = -10
+
 						int d = Math.min( Math.min( d1, d2 ), Math.min( d3, d4 ) );
 
 						if (d < 0)
 							continue;
 
 						hexagonal.setColor( original.getPixel( x, y ) );
-						hexagonal.drawPixel(x, y);
+						hexagonal.drawPixel( hx, hy );
 					}
+
+				hexagonal.drawPixel( i * 18 +  0, j * 16 + 7,
+				  original.getPixel( i * 16 +  0, j * 16 + 7 ));
+				hexagonal.drawPixel( i * 18 +  0, j * 16 + 8,
+				  original.getPixel( i * 16 +  0, j * 16 + 8 ));
+				hexagonal.drawPixel( i * 18 + 17, j * 16 + 7,
+				  original.getPixel( i * 16 + 15, j * 16 + 7 ));
+				hexagonal.drawPixel( i * 18 + 17, j * 16 + 8,
+				  original.getPixel( i * 16 + 15, j * 16 + 8 ));
+			}
 
 		original.dispose(); // keep it for info cells?
 
 		this.texture = new SmartTexture( hexagonal );
+		this.tileSet = new TextureFilm( hexagonal, 18, 16 );
 
-		RectF r = tileSet.get( 0 );
-		cellW = tileSet.width( r );
-		cellH = tileSet.height( r );
+		RectF r = this.tileSet.get( 0 );
+		cellW = this.tileSet.width( r );
+		cellH = this.tileSet.height( r );
+
+		if (cellH != 16 || cellW != 18)
+			throw new RuntimeException( "DEBUG ASSERT: Bitmap should be 16x16: " + cellH + cellW + tx.toString() );
+
 	}
 
 	private synchronized void moveToUpdating(){
@@ -214,5 +231,4 @@ public class HexTileMap extends TileMap {
 		script.drawQuadSet( buffer, size, 0 );
 
 	}
-
 }
