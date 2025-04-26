@@ -43,7 +43,7 @@ public class WallBlockingTileMap extends HexTileMap {
 	private static final int BLOCK_BELOW    = 3;
 
 	public WallBlockingTileMap() {
-		super(Assets.Environment.WALL_BLOCKING, new TextureFilm( Assets.Environment.WALL_BLOCKING, SIZE, SIZE ) );
+		super(Assets.Environment.WALL_BLOCKING, SIZE, 18, 16 );
 		map( new int[Dungeon.level.length()], Dungeon.level.width());
 	}
 

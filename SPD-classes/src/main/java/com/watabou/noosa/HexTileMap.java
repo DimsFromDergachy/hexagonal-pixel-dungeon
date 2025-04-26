@@ -37,78 +37,73 @@ public class HexTileMap extends TileMap {
 	private float cellW;
 	private float cellH;
 
-	public HexTileMap(Object tx, TextureFilm tileSet) {
+	public HexTileMap(Object tx, int SIZE, int HEX_WIDTH, int HEX_HEIGHT) {
 
-		super(tx, tileSet);
+		super(tx, new TextureFilm( tx, SIZE, SIZE ) );
 
-		// TODO: Inject hex transformation
-		// tx is string (filename of the asset)
-		// tileSet has the bitmap (16x16 each tile?)
-
-		// 1. Transform the image
-		// 2. Put to the TextureCache (by the same key)
-
-		// protected SmartTexture texture; - transform to hexagonal
-		// protected TextureFilm tileSet;  - transform to hexagonal
-
+		if (!GameMath.HEX_MODE)
+		{
+			cellW = cellH = SIZE;
+			return;
+		}
 
 		Pixmap original = TextureCache.getBitmap( tx );
 
-		if (original.getHeight() % 16 != 0 || original.getWidth() % 16 != 0)
-			throw new RuntimeException( "DEBUG ASSERT: Bitmap should be 16x16" + original.getHeight() + original.getWidth() + tx.toString() );
+		if (SIZE != 16)
+			throw new RuntimeException( "DEBUG ASSERT: OriginalSize should be 16x16" + SIZE + original.getHeight() + original.getWidth() + tx.toString() );
 
-		Pixmap hexagonal = new Pixmap( original.getWidth() / 16 * 18, original.getHeight(), original.getFormat() );
+		Pixmap hexagonal = new Pixmap(
+			original.getWidth() / SIZE * HEX_WIDTH,
+			original.getHeight(),
+			original.getFormat() );
 
-		hexagonal.setColor( 0x00000000 );
+		hexagonal.setColor( 0x00000000 ); // RGBA only?
 		hexagonal.fill();
 
-		for (int i = 0; i < original.getWidth() / 16; i++)
-			for (int j = 0; j < original.getHeight() / 16; j++)
+		for (int i = 0; i < original.getWidth() / SIZE; i++)
+			for (int j = 0; j < original.getHeight() / SIZE; j++)
 			{
-				for (int px = 0; px < 16; px++)
-					for (int py = 0; py < 16; py++)
+				for (int px = 0; px < SIZE; px++)
+					for (int py = 0; py < SIZE; py++)
 					{
-						int x = i * 16 + px;
-						int y = j * 16 + py;
+						int x = i * SIZE + px;
+						int y = j * SIZE + py;
 
-						int hx = i * 18 + px + 1;
+						int hx = i * HEX_WIDTH + px + 1;
 						int hy = y;
 
-						int d1 = -12 + 4 * px + 2 * py + 3;		//	2x + y =   6
-						int d2 =  52 - 4 * px + 2 * py - 1;		//	2x - y =  26
-						int d3 =  84 - 4 * px - 2 * py - 3;		//	2x + y =  42
-						int d4 =  20 + 4 * px - 2 * py + 1;		//	2x - y = -10
+						// cut corners for making hexagonal shape
+						int d1 = 2 * (-6 + 2 * px + py) + 2 + 1;		//	-6 + 2x + y = 0
+						int d2 = 2 * (26 - 2 * px + py) - 2 + 1;		//	26 - 2x + y = 0
+						int d3 = 2 * (42 - 2 * px - py) - 2 - 1;		//	42 - 2x - y = 0
+						int d4 = 2 * (10 + 2 * px - py) + 2 - 1;		//	10 + 2x - y = 0
 
 						int d = Math.min( Math.min( d1, d2 ), Math.min( d3, d4 ) );
 
 						if (d < 0)
-							continue;
+							continue; // keep corners fully transparent
 
-						hexagonal.setColor( original.getPixel( x, y ) );
-						hexagonal.drawPixel( hx, hy );
+						hexagonal.drawPixel( hx, hy, original.getPixel( x, y ) );
 					}
 
-				hexagonal.drawPixel( i * 18 +  0, j * 16 + 7,
-				  original.getPixel( i * 16 +  0, j * 16 + 7 ));
-				hexagonal.drawPixel( i * 18 +  0, j * 16 + 8,
-				  original.getPixel( i * 16 +  0, j * 16 + 8 ));
-				hexagonal.drawPixel( i * 18 + 17, j * 16 + 7,
-				  original.getPixel( i * 16 + 15, j * 16 + 7 ));
-				hexagonal.drawPixel( i * 18 + 17, j * 16 + 8,
-				  original.getPixel( i * 16 + 15, j * 16 + 8 ));
+				// copy a couple of pixels by hands
+				hexagonal.drawPixel( i * HEX_WIDTH +  0, j * HEX_HEIGHT + 7,
+				  original.getPixel( i * SIZE      +  0, j * SIZE       + 7 ));
+				hexagonal.drawPixel( i * HEX_WIDTH +  0, j * HEX_HEIGHT + 8,
+				  original.getPixel( i * SIZE      +  0, j * SIZE       + 8 ));
+				hexagonal.drawPixel( i * HEX_WIDTH + 17, j * HEX_HEIGHT + 7,
+				  original.getPixel( i * SIZE      + 15, j * SIZE       + 7 ));
+				hexagonal.drawPixel( i * HEX_WIDTH + 17, j * HEX_HEIGHT + 8,
+				  original.getPixel( i * SIZE      + 15, j * SIZE       + 8 ));
 			}
 
 		original.dispose(); // keep it for info cells?
 
 		this.texture = new SmartTexture( hexagonal );
-		this.tileSet = new TextureFilm( hexagonal, 18, 16 );
+		this.tileSet = new TextureFilm( hexagonal, HEX_WIDTH, HEX_HEIGHT );
 
-		RectF r = this.tileSet.get( 0 );
-		cellW = this.tileSet.width( r );
-		cellH = this.tileSet.height( r );
-
-		if (cellH != 16 || cellW != 18)
-			throw new RuntimeException( "DEBUG ASSERT: Bitmap should be 16x16: " + cellH + cellW + tx.toString() );
+		cellW = HEX_WIDTH;
+		cellH = HEX_HEIGHT;
 
 	}
 

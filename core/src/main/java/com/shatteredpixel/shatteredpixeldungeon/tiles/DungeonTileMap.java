@@ -36,14 +36,17 @@ public abstract class DungeonTileMap extends HexTileMap {
 
 	public static final int SIZE = 16;
 
+	public static final int HEX_WIDTH  = GameMath.HEX_MODE ? 18 : 16;
+	public static final int HEX_HEIGHT = 16;
+
 	protected int[] map;
 
 	public DungeonTileMap(String tex) {
-		super(tex, new TextureFilm( tex, SIZE, SIZE ) );
+		super(tex, SIZE, HEX_WIDTH, HEX_HEIGHT );
 	}
 
 	@Override
-	//we need to retain two arrays, map is the dungeon tileMap which we can reference.
+	// we need to retain two arrays, map is the dungeon tileMap which we can reference.
 	// Data is our own internal image representation of the tiles, which may differ.
 	public void map(int[] data, int cols) {
 		map = data;
@@ -135,14 +138,15 @@ public abstract class DungeonTileMap extends HexTileMap {
 
 	// inline
 	public static PointF tileToWorld( int pos, float adjustX, float adjustY ) {
-		final int size = DungeonTileMap.SIZE;
+		final int height = DungeonTileMap.SIZE;
+		final int width = GameMath.HEX_MODE ? 18 : DungeonTileMap.SIZE;
 
 		int x = pos % Dungeon.level.width();
 		int y = pos / Dungeon.level.width();
 
 		return new PointF(
-			PixelScene.align(Camera.main, GameMath.HEX_RATIO * ((x + 0.5f) * size - adjustX)),
-			PixelScene.align(Camera.main, (1f + y + (GameMath.HEX_MODE ? (x & 1) * 0.5f : 0) * size - adjustY))
+			PixelScene.align(Camera.main, GameMath.HEX_RATIO * ((x + 0.5f) * width - adjustX)),
+			PixelScene.align(Camera.main, (1f + y + (GameMath.HEX_MODE ? (x & 1) * 0.5f : 0) * height - adjustY))
 		);
 	}
 	

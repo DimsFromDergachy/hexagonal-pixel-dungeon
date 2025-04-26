@@ -63,7 +63,7 @@ public class Sprite extends MovieClip {
 
 		if (GameMath.HEX_MODE)
 			return new PointF(
-				PixelScene.align(Camera.main, GameMath.HEX_RATIO * ((posX + 0.5f) * size - width() * 0.5f)),
+				PixelScene.align(Camera.main, GameMath.HEX_RATIO * ((posX + 0.5f) * 18 - width() * 0.5f)),
 				PixelScene.align(Camera.main, (1f + posY + (posX & 1) * 0.5f) * size - height() - size * perspectiveRaise)
 			);
 		else
