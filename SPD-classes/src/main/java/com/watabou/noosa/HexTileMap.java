@@ -28,9 +28,15 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
 import com.watabou.glwrap.VertexBuffer;
-import com.watabou.utils.GameMath;
+import com.watabou.utils.HexMath;
 import com.watabou.utils.Rect;
 import com.watabou.utils.RectF;
+
+/**
+ * <p>
+ * A HexTileMap transforms a regular TileMap to the hexagonal form.
+ * Each 16x16 tiles are become wider up to 18x16, than corners are cut for make hexagonal shape.
+ * Corners are kept fully transparent for good paving. */
 
 public class HexTileMap extends TileMap {
 
@@ -41,7 +47,7 @@ public class HexTileMap extends TileMap {
 
 		super(tx, new TextureFilm( tx, SIZE, SIZE ) );
 
-		if (!GameMath.HEX_MODE)
+		if (!HexMath.HEX_MODE)
 		{
 			cellW = cellH = SIZE;
 			return;
@@ -86,7 +92,7 @@ public class HexTileMap extends TileMap {
 						hexagonal.drawPixel( hx, hy, original.getPixel( x, y ) );
 					}
 
-				// copy a couple of pixels by hands
+				// copy a few pixels by hands
 				hexagonal.drawPixel( i * HEX_WIDTH +  0, j * HEX_HEIGHT + 7,
 				  original.getPixel( i * SIZE      +  0, j * SIZE       + 7 ));
 				hexagonal.drawPixel( i * HEX_WIDTH +  0, j * HEX_HEIGHT + 8,
@@ -124,14 +130,14 @@ public class HexTileMap extends TileMap {
 
 		for (int i=updating.top; i < updating.bottom; i++) {
 
-			x1 = GameMath.HEX_RATIO * cellW * updating.left;
+			x1 = HexMath.RATIO * cellW * updating.left;
 			x2 = x1 + cellW;
 
 			pos = i * mapWidth + updating.left;
 
 			for (int j=updating.left; j < updating.right; j++) {
 
-				y1 = y0 + (GameMath.HEX_MODE ? (j & 1) * 0.5f * cellH : 0);
+				y1 = y0 + (HexMath.HEX_MODE ? (j & 1) * 0.5f * cellH : 0);
 				y2 = y1 + cellH;
 
 				if (topLeftUpdating == -1)
@@ -181,8 +187,8 @@ public class HexTileMap extends TileMap {
 				quads.put(vertices);
 
 				pos++;
-				x1 += cellW * GameMath.HEX_RATIO;
-				x2 += cellW * GameMath.HEX_RATIO;
+				x1 += cellW * HexMath.RATIO;
+				x2 += cellW * HexMath.RATIO;
 			}
 
 			y0 += cellH;

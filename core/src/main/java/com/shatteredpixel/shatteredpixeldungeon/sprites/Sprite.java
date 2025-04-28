@@ -30,7 +30,7 @@ import com.watabou.glwrap.VertexBuffer;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.MovieClip;
 import com.watabou.noosa.NoosaScript;
-import com.watabou.utils.GameMath;
+import com.watabou.utils.HexMath;
 import com.watabou.utils.PointF;
 
 public class Sprite extends MovieClip {
@@ -61,9 +61,9 @@ public class Sprite extends MovieClip {
 		int posX = cell % Dungeon.level.width();
 		int posY = cell / Dungeon.level.width();
 
-		if (GameMath.HEX_MODE)
+		if (HexMath.HEX_MODE)
 			return new PointF(
-				PixelScene.align(Camera.main, GameMath.HEX_RATIO * ((posX + 0.5f) * 18 - width() * 0.5f)),
+				PixelScene.align(Camera.main, HexMath.RATIO * ((posX + 0.5f) * 18 - width() * 0.5f)),
 				PixelScene.align(Camera.main, (1f + posY + (posX & 1) * 0.5f) * size - height() - size * perspectiveRaise)
 			);
 		else

@@ -127,7 +127,7 @@ public class PotionOfDivineInspiration extends ExoticPotion {
 						WndHero.lastIdx = 1;
 					}
 
-					GameScene.showlevelUpStars();
+					GameScene.showLevelUpStars();
 
 					Sample.INSTANCE.play( Assets.Sounds.DRINK );
 					Sample.INSTANCE.playDelayed(Assets.Sounds.LEVELUP, 0.3f, 0.7f, 1.2f);

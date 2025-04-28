@@ -1188,7 +1188,7 @@ public class GameScene extends PixelScene {
 		if (scene != null && scene.menu != null) scene.menu.updateKeys();
 	}
 
-	public static void showlevelUpStars(){
+	public static void showLevelUpStars(){
 		if (scene != null && scene.status != null) scene.status.showStarParticles();
 	}
 
