@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
+import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.input.ControllerHandler;
 import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;
@@ -39,6 +40,7 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.ScrollArea;
 import com.watabou.utils.GameMath;
+import com.watabou.utils.HexMath;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Signal;
@@ -118,11 +120,14 @@ public class CellSelector extends ScrollArea {
 					}
 				}
 			}
-			
-			select( ((DungeonTileMap)target).screenToTile(
-				(int) event.current.x,
-				(int) event.current.y,
-					true ), event.button );
+
+			Point p1 = HexMath.PixelToHex(p);
+
+			int cell = p1.x + p1.y * Dungeon.level.width();
+
+			GLog.p("[DEBUG] Tile: %f %f (%d %d %d)", p.x, p.y, p1.x, p1.y, 0 - p1.x - p1.y);
+
+			select( cell, event.button );
 		}
 	}
 

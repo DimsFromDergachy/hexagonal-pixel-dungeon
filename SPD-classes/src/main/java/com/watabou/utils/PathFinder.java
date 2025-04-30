@@ -411,7 +411,6 @@ public class PathFinder {
 		}
 	}
 	
-	@SuppressWarnings("serial")
 	public static class Path extends LinkedList<Integer> {
 	}
 }

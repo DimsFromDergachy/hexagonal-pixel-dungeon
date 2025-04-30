@@ -90,7 +90,7 @@ public abstract class DungeonTileMap extends HexTileMap {
 		PointF p = camera().screenToCamera( x, y ).
 			offset( this.point().negate() ).
 			invScale( SIZE );
-		
+
 		// snap to the edges of the tileMap
 		p.x = GameMath.gate(0, p.x, Dungeon.level.width()-0.001f);
 		p.y = GameMath.gate(0, p.y, Dungeon.level.height()-0.001f);
