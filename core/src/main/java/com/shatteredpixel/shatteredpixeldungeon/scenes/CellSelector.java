@@ -125,6 +125,8 @@ public class CellSelector extends ScrollArea {
 
 			int cell = p1.x + p1.y * Dungeon.level.width();
 
+			cell = (int)GameMath.gate(0, cell, Dungeon.level.length());
+
 			GLog.p("[DEBUG] Tile: %f %f (%d %d %d)", p.x, p.y, p1.x, p1.y, 0 - p1.x - p1.y);
 
 			select( cell, event.button );
