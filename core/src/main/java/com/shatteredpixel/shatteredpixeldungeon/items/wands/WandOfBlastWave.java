@@ -267,8 +267,7 @@ public class WandOfBlastWave extends DamageWand {
 		public void reset(int pos, float size) {
 			revive();
 
-			x = (pos % Dungeon.level.width()) * DungeonTileMap.SIZE + (DungeonTileMap.SIZE - width) / 2;
-			y = (pos / Dungeon.level.width()) * DungeonTileMap.SIZE + (DungeonTileMap.SIZE - height) / 2;
+			point( DungeonTileMap.tileToWorld( pos ) );
 
 			time = TIME_TO_FADE;
 			this.size = size;
