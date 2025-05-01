@@ -26,7 +26,7 @@ import com.watabou.noosa.Image;
 
 public class Effects {
 
-	public enum  Type {
+	public enum Type {
 		RIPPLE,
 		LIGHTNING,
 		WOUND,

@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -38,10 +37,9 @@ public class Ripple extends Image {
 	
 	public void reset( int p ) {
 		revive();
-		
-		x = (p % Dungeon.level.width()) * DungeonTileMap.SIZE;
-		y = (p / Dungeon.level.width()) * DungeonTileMap.SIZE;
-		
+
+		point( DungeonTileMap.tileToWorld(p) );
+
 		origin.set( width / 2, height / 2 );
 		scale.set( 0 );
 		
