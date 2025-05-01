@@ -21,11 +21,8 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.effects;
 
-import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.Game;
-import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.Visual;
 
@@ -40,21 +37,12 @@ public class Surprise extends Image {
 		origin.set(width / 2, height / 2);
 	}
 
-	public void reset(int p) {
-		revive();
-
-		x = (p % Dungeon.level.width()) * DungeonTileMap.SIZE + (DungeonTileMap.SIZE - width) / 2;
-		y = (p / Dungeon.level.width()) * DungeonTileMap.SIZE + (DungeonTileMap.SIZE - height) / 2;
-
-		time = TIME_TO_FADE;
-	}
-
 	public void reset(Visual v) {
+
 		revive();
-
-		point(v.center(this));
-
+		point( v.point().offset( v.width / 2 - width / 2, - v.height / 2 - height / 2) );
 		time = TIME_TO_FADE;
+
 	}
 
 	@Override
@@ -84,15 +72,4 @@ public class Surprise extends Image {
 		}
 	}
 
-	public static void hit(int pos) {
-		hit(pos, 0);
-	}
-
-	public static void hit(int pos, float angle) {
-		Group parent = Dungeon.hero.sprite.parent;
-		Surprise s = (Surprise) parent.recycle(Surprise.class);
-		parent.bringToFront(s);
-		s.reset(pos);
-		s.angle = angle;
-	}
 }
