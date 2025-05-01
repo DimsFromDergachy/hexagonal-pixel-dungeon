@@ -35,13 +35,19 @@ public class GameMath {
 	}
 
 	public static float gate( float min, float value, float max ) {
-		if (value < min) {
-			return min;
-		} else if (value > max) {
-			return max;
-		} else {
-			return value;
-		}
+
+		if (value < min) return min;
+		if (max < value) return max;
+		return value;
+
+	}
+
+	public static int gate( int min, int value, int max) {
+
+		if (value < min) return min;
+		if (max < value) return max;
+		return value;
+
 	}
 
 }

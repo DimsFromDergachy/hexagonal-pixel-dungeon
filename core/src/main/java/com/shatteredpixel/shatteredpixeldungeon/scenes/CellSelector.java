@@ -29,7 +29,6 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
-import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.input.ControllerHandler;
 import com.watabou.input.GameAction;
 import com.watabou.input.KeyBindings;
@@ -40,7 +39,6 @@ import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.ScrollArea;
 import com.watabou.utils.GameMath;
-import com.watabou.utils.HexMath;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Signal;
@@ -121,15 +119,8 @@ public class CellSelector extends ScrollArea {
 				}
 			}
 
-			Point p1 = HexMath.PixelToHex(p);
-
-			int cell = p1.x + p1.y * Dungeon.level.width();
-
-			cell = (int)GameMath.gate(0, cell, Dungeon.level.length());
-
-			GLog.p("[DEBUG] Tile: %f %f (%d %d %d)", p.x, p.y, p1.x, p1.y, 0 - p1.x - p1.y);
-
-			select( cell, event.button );
+			select ( ((DungeonTileMap) target).screenToTile( p, true ),
+					event.button );
 		}
 	}
 
@@ -139,9 +130,9 @@ public class CellSelector extends ScrollArea {
 		SPDSettings.zoom((int) (value - PixelScene.defaultZoom));
 		camera.zoom( value );
 
-		//Resets char and item sprite positions with the new camera zoom
-		//This is important as sprites are centered on a 16x16 tile, but may have any sprite size
-		//This can lead to none-whole coordinate, which need to be aligned with the zoom
+		// Resets char and item sprite positions with the new camera zoom
+		// This is important as sprites are centered on a 16x16 tile, but may have any sprite size
+		// This can lead to none-whole coordinate, which need to be aligned with the zoom
 		for (Char c : Actor.chars()){
 			if (c.sprite != null && !c.sprite.isMoving){
 				c.sprite.point(c.sprite.worldToCamera(c.pos));

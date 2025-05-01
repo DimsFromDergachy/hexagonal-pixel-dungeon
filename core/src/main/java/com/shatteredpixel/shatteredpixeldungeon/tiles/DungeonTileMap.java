@@ -22,14 +22,13 @@
 package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
-import com.watabou.noosa.Camera;
 import com.watabou.noosa.HexTileMap;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.HexMath;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 
 public abstract class DungeonTileMap extends HexTileMap {
@@ -79,30 +78,25 @@ public abstract class DungeonTileMap extends HexTileMap {
 
 	protected abstract int getTileVisual(int pos, int tile, boolean flat);
 
-	public int screenToTile(int x, int y ){
-		return screenToTile(x, y, false);
-	}
-
 	// wall assist is used to make raised perspective tapping a bit easier.
 	// If the pressed tile is a wall tile, the tap can be 'bumped' down into a none-wall tile.
 	// currently this happens if the bottom 1/4 of the wall tile is pressed.
-	public int screenToTile(int x, int y, boolean wallAssist ) {
-		PointF p = camera().screenToCamera( x, y ).
-			offset( this.point().negate() ).
-			invScale( SIZE );
+	public int screenToTile(PointF point, boolean wallAssist ) {
+
+		Point p = HexMath.PixelToHex(point);
 
 		// snap to the edges of the tileMap
-		p.x = GameMath.gate(0, p.x, Dungeon.level.width()-0.001f);
-		p.y = GameMath.gate(0, p.y, Dungeon.level.height()-0.001f);
+		p.x = GameMath.gate(0, p.x, Dungeon.level.width() - 1);
+		p.y = GameMath.gate(0, p.y, Dungeon.level.height() - 1);
 
-		int cell = (int)p.x + (int)p.y * Dungeon.level.width();
+		int cell = p.x + p.y * Dungeon.level.width();
 
 		if (wallAssist
 				&& map != null
 				&& DungeonTileSheet.wallStitcheable(map[cell])){
 
 			if (cell + mapWidth < size
-					&& p.y % 1 >= 0.75f
+					// && p.y % 1 >= 0.75f
 					&& !DungeonTileSheet.wallStitcheable(map[cell + mapWidth])){
 				cell += mapWidth;
 			}
@@ -110,6 +104,7 @@ public abstract class DungeonTileMap extends HexTileMap {
 		}
 
 		return cell;
+
 	}
 	
 	@Override
@@ -118,7 +113,7 @@ public abstract class DungeonTileMap extends HexTileMap {
 	}
 	
 	public void discover( int pos, int oldValue ) {
-		
+
 		int visual = getTileVisual( pos, oldValue, false);
 		if (visual < 0) return;
 		
@@ -137,17 +132,13 @@ public abstract class DungeonTileMap extends HexTileMap {
 	}
 
 	// inline
-	public static PointF tileToWorld( int pos, float adjustX, float adjustY ) {
-		final int height = DungeonTileMap.SIZE;
-		final int width = HexMath.HEX_MODE ? 18 : DungeonTileMap.SIZE;
+	private static PointF tileToWorld( int pos, float adjustX, float adjustY ) {
 
 		int x = pos % Dungeon.level.width();
 		int y = pos / Dungeon.level.width();
 
-		return new PointF(
-			PixelScene.align(Camera.main, HexMath.RATIO * ((x + 0.5f) * width - adjustX)),
-			PixelScene.align(Camera.main, (1f + y + (HexMath.HEX_MODE ? (x & 1) * 0.5f : 0) * height - adjustY))
-		);
+		return HexMath.HexToPixel(x, y).offset(adjustX, adjustY);
+
 	}
 	
 	public static PointF tileToWorld( int pos ) {

@@ -585,7 +585,6 @@ public class GameScene extends PixelScene {
 
 			InterlevelScene.mode = InterlevelScene.Mode.NONE;
 
-			
 		}
 
 		//Tutorial
@@ -641,7 +640,7 @@ public class GameScene extends PixelScene {
 	}
 	
 	public void destroy() {
-		
+
 		//tell the actor thread to finish, then wait for it to complete any actions it may be doing.
 		if (!waitForActorThread( 4500, true )){
 			Throwable t = new Throwable();

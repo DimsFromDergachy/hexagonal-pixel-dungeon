@@ -4,6 +4,9 @@
  *
  * Shattered Pixel Dungeon
  * Copyright (C) 2014-2024 Evan Debenham
+ * 
+ * Hexagonal Pixel Dungeon
+ * Copyright (C) 2025 Dmitry Tyurnikov
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,7 +24,12 @@
 
 package com.watabou.utils;
 
-public class HexMath {
+/**
+ * <p>
+ * Hexagonal math contains utilities.
+ * Based on https://www.redblobgames.com/grids/hexagons */
+
+ public class HexMath {
 
 	public static boolean HEX_MODE = true;
 
@@ -30,13 +38,35 @@ public class HexMath {
 	/// Hex to pixel matrix:
 	/// [ 14,  0 ]
 	/// [  8, 16 ]
+	private static float	A11 = 14f,	A12 =  0f;
+	private static float	A21 =  8f,	A22 = 16f;
+
+	/// Invert:
+	/// [  1/14,    0 ]
+	/// [ -1/28, 1/16 ]
+	private static float 	H11 =  1f / 14f,	H12 = 0f;
+	private static float 	H21 = -1f / 28f,	H22 = 1f / 16f;
+
+	public static PointF HexToPixel(int x, int y)
+	{
+		// To cube coordinate
+		int q = x;
+		int r = y - x / 2;
+
+		return new PointF(A11 * q + A12 * r, A21 * q + A22 * r);
+	}
 
 	public static Point PixelToHex(PointF point)
 	{
-		float f_q = + (point.x - 9f) / 14f;
-		float f_r = - (point.x - 9f) / 28f + (point.y - 8f) / 16f;
+		// TODO: Get rid of this by offseting coords to [9f, 8f]
+		point = point.offset(-9f, -8f);
+
+		// To cube coordinate
+		float f_q = H11 * point.x + H12 * point.y;
+		float f_r = H21 * point.x + H22 * point.y;
 		float f_s = 0 - f_q - f_r;
 
+		// Round cube
 		int q = Math.round(f_q);
 		int r = Math.round(f_r);
 		int s = Math.round(f_s);
@@ -52,6 +82,7 @@ public class HexMath {
 		else
 			s = 0 - q - r;
 
+		// To offset coordinate (odd-q vertical layout)
 		return new Point(q, r + q / 2);
 	}
 }
