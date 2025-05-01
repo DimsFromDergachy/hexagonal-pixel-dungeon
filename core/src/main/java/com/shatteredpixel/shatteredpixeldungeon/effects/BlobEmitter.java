@@ -25,6 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.particles.Emitter;
+import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 import com.watabou.utils.RectF;
 
@@ -53,7 +54,6 @@ public class BlobEmitter extends Emitter {
 			blob.setupArea();
 		
 		int[] map = blob.cur;
-		float size = DungeonTileMap.SIZE;
 
 		int cell;
 		for (int i = blob.area.left; i < blob.area.right; i++) {
@@ -62,9 +62,10 @@ public class BlobEmitter extends Emitter {
 				if (cell < Dungeon.level.heroFOV.length
 						&& (Dungeon.level.heroFOV[cell] || blob.alwaysVisible)
 						&& map[cell] > 0) {
-					float x = (i + Random.Float(bound.left, bound.right)) * size;
-					float y = (j + Random.Float(bound.top, bound.bottom)) * size;
-					factory.emit(this, index, x, y);
+					PointF point = DungeonTileMap.tileToWorld(cell);
+					factory.emit(this, index,
+						point.x + Random.Float(bound.left, bound.right) * DungeonTileMap.WIDTH,
+						point.y + Random.Float(bound.top, bound.bottom) * DungeonTileMap.HEIGHT);
 				}
 			}
 		}
