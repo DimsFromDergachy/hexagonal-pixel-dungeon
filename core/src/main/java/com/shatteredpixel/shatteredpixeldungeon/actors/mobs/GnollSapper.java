@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollSapperSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
@@ -189,14 +189,14 @@ public class GnollSapper extends Mob {
 					// 50/50 to either throw a rock or do rockfall, but never do rockfall twice
 					// unless target is next to a barricade, then always try to throw
 					// unless nothing to throw, then always rockfall
-					Ballistica aim = GnollGeomancer.prepRockThrowAttack(enemy, GnollSapper.this);
+					Ballistic aim = GnollGeomancer.prepRockThrowAttack(enemy, GnollSapper.this);
 					if (aim != null && (targetNextToBarricade || lastAbilityWasRockfall || Random.Int(2) == 0)) {
 
 						lastAbilityWasRockfall = false;
 						throwingRockFromPos = aim.sourcePos;
 						throwingRockToPos = aim.collisionPos;
 
-						Ballistica warnPath = new Ballistica(aim.sourcePos, aim.collisionPos, Ballistica.STOP_SOLID);
+						Ballistic warnPath = new Ballistic(aim.sourcePos, aim.collisionPos, Ballistic.STOP_SOLID);
 						for (int i : warnPath.subPath(0, warnPath.dist)){
 							sprite.parent.add(new TargetedCell(i, 0xFF0000));
 						}

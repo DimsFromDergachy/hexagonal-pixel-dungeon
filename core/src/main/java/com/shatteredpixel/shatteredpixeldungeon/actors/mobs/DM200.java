@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Blob;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DM200Sprite;
 import com.watabou.utils.BArray;
@@ -118,7 +118,7 @@ public class DM200 extends Mob {
 		spend( TICK );
 		ventCooldown = 30;
 
-		Ballistica trajectory = new Ballistica(pos, enemy.pos, Ballistica.STOP_TARGET);
+		Ballistic trajectory = new Ballistic(pos, enemy.pos, Ballistic.STOP_TARGET);
 
 		for (int i : trajectory.subPath(0, trajectory.dist)){
 			GameScene.add(Blob.seed(i, 20, ToxicGas.class));

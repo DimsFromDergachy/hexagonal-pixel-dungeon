@@ -41,7 +41,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -194,7 +194,7 @@ public class YogDzewa extends Mob {
 			//delay fire on a rooted hero
 			if (!Dungeon.hero.rooted) {
 				for (int i : targetedCells) {
-					Ballistica b = new Ballistica(pos, i, Ballistica.WONT_STOP);
+					Ballistic b = new Ballistic(pos, i, Ballistic.WONT_STOP);
 					//shoot beams
 					sprite.parent.add(new Beam.DeathRay(sprite.center(), DungeonTileMap.raisedTileCenterToWorld(b.collisionPos)));
 					for (int p : b.path) {
@@ -255,7 +255,7 @@ public class YogDzewa extends Mob {
 								> Dungeon.level.trueDistance(pos, targetPos));
 					}
 					targetedCells.add(targetPos);
-					Ballistica b = new Ballistica(pos, targetPos, Ballistica.WONT_STOP);
+					Ballistic b = new Ballistic(pos, targetPos, Ballistic.WONT_STOP);
 					affectedCells.addAll(b.path);
 				}
 
@@ -271,7 +271,7 @@ public class YogDzewa extends Mob {
 					targetedCells.remove(targetedCells.size()-1);
 				}
 				for (int i : targetedCells){
-					Ballistica b = new Ballistica(pos, i, Ballistica.WONT_STOP);
+					Ballistic b = new Ballistic(pos, i, Ballistic.WONT_STOP);
 					for (int p : b.path){
 						sprite.parent.add(new TargetedCell(p, 0xFF0000));
 						affectedCells.add(p);

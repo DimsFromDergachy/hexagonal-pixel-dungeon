@@ -36,7 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.TenguDartTrap;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -56,7 +56,7 @@ public class WandOfBlastWave extends DamageWand {
 	{
 		image = ItemSpriteSheet.WAND_BLAST_WAVE;
 
-		collisionProperties = Ballistica.PROJECTILE;
+		collisionProperties = Ballistic.PROJECTILE;
 	}
 
 	public int min(int lvl){
@@ -68,7 +68,7 @@ public class WandOfBlastWave extends DamageWand {
 	}
 
 	@Override
-	public void onZap(Ballistica bolt) {
+	public void onZap(Ballistic bolt) {
 		Sample.INSTANCE.play( Assets.Sounds.BLAST );
 		BlastWave.blast(bolt.collisionPos);
 
@@ -90,7 +90,7 @@ public class WandOfBlastWave extends DamageWand {
 				//do not push chars that are dieing over a pit, or that move due to the damage
 				if ((ch.isAlive() || ch.flying || !Dungeon.level.pit[ch.pos])
 						&& ch.pos == bolt.collisionPos + i) {
-					Ballistica trajectory = new Ballistica(ch.pos, ch.pos + i, Ballistica.MAGIC_BOLT);
+					Ballistic trajectory = new Ballistic(ch.pos, ch.pos + i, Ballistic.MAGIC_BOLT);
 					int strength = 1 + Math.round(buffedLvl() / 2f);
 					throwChar(ch, trajectory, strength, false, true, this);
 				}
@@ -107,7 +107,7 @@ public class WandOfBlastWave extends DamageWand {
 			//do not push chars that are dieing over a pit, or that move due to the damage
 			if ((ch.isAlive() || ch.flying || !Dungeon.level.pit[ch.pos])
 					&& bolt.path.size() > bolt.dist+1 && ch.pos == bolt.collisionPos) {
-				Ballistica trajectory = new Ballistica(ch.pos, bolt.path.get(bolt.dist + 1), Ballistica.MAGIC_BOLT);
+				Ballistic trajectory = new Ballistic(ch.pos, bolt.path.get(bolt.dist + 1), Ballistic.MAGIC_BOLT);
 				int strength = buffedLvl() + 3;
 				throwChar(ch, trajectory, strength, false, true, this);
 			}
@@ -115,7 +115,7 @@ public class WandOfBlastWave extends DamageWand {
 		
 	}
 
-	public static void throwChar(final Char ch, final Ballistica trajectory, int power,
+	public static void throwChar(final Char ch, final Ballistic trajectory, int power,
 	                             boolean closeDoors, boolean collideDmg, Object cause){
 		if (ch.properties().contains(Char.Property.BOSS)) {
 			power = (power+1)/2;
@@ -234,7 +234,7 @@ public class WandOfBlastWave extends DamageWand {
 	}
 
 	@Override
-	public void fx(Ballistica bolt, Callback callback) {
+	public void fx(Ballistic bolt, Callback callback) {
 		MagicMissile.boltFromChar( curUser.sprite.parent,
 				MagicMissile.FORCE,
 				curUser.sprite,

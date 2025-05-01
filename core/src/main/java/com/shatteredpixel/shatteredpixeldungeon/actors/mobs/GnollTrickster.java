@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.Ghost;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollTricksterSprite;
 import com.watabou.utils.Bundle;
@@ -69,7 +69,7 @@ public class GnollTrickster extends Gnoll {
 	@Override
 	protected boolean canAttack( Char enemy ) {
 		return !Dungeon.level.adjacent( pos, enemy.pos )
-				&& (super.canAttack(enemy) || new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE).collisionPos == enemy.pos);
+				&& (super.canAttack(enemy) || new Ballistic( pos, enemy.pos, Ballistic.PROJECTILE).collisionPos == enemy.pos);
 	}
 
 	@Override

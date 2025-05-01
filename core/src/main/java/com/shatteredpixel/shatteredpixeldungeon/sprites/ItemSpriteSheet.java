@@ -42,8 +42,8 @@ public class ItemSpriteSheet {
 		film.add( item, x, y, x+width, y+height);
 	}
 
-	private static final int PLACEHOLDERS   =                               xy(1, 1);   //18 slots
-	//SOMETHING is the default item sprite at position 0. May show up ingame if there are bugs.
+	private static final int PLACEHOLDERS   = xy(1, 1);   //18 slots
+	//SOMETHING is the default item sprite at position 0. May show up in game if there are bugs.
 	public static final int SOMETHING       = PLACEHOLDERS+0;
 	public static final int WEAPON_HOLDER   = PLACEHOLDERS+1;
 	public static final int ARMOR_HOLDER    = PLACEHOLDERS+2;

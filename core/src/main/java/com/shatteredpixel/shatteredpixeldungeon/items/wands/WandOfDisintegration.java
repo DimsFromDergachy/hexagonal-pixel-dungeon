@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.PurpleParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
@@ -46,7 +46,7 @@ public class WandOfDisintegration extends DamageWand {
 	{
 		image = ItemSpriteSheet.WAND_DISINTEGRATION;
 
-		collisionProperties = Ballistica.WONT_STOP;
+		collisionProperties = Ballistic.WONT_STOP;
 	}
 
 
@@ -68,7 +68,7 @@ public class WandOfDisintegration extends DamageWand {
 	}
 
 	@Override
-	public void onZap(Ballistica beam) {
+	public void onZap(Ballistic beam) {
 		
 		boolean terrainAffected = false;
 		
@@ -142,7 +142,7 @@ public class WandOfDisintegration extends DamageWand {
 	}
 
 	@Override
-	public void fx(Ballistica beam, Callback callback) {
+	public void fx(Ballistic beam, Callback callback) {
 		
 		int cell = beam.path.get(Math.min(beam.dist, distance()));
 		curUser.sprite.parent.add(new Beam.DeathRay(curUser.sprite.center(), DungeonTileMap.raisedTileCenterToWorld( cell )));

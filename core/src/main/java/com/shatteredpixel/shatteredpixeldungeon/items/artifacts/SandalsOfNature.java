@@ -36,7 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.VelvetPouch;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Blindweed;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
@@ -340,7 +340,7 @@ public class SandalsOfNature extends Artifact {
 					GLog.w(Messages.get(SandalsOfNature.class, "out_of_range"));
 				} else {
 
-					Ballistica aim = new Ballistica(curUser.pos, cell, Ballistica.STOP_TARGET);
+					Ballistic aim = new Ballistic(curUser.pos, cell, Ballistic.STOP_TARGET);
 					for (int c : aim.subPath(0, aim.dist)){
 						CellEmitter.get( c ).burst( LeafParticle.GENERAL, 6 );
 					}

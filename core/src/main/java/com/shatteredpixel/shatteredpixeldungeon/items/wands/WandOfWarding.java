@@ -39,7 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -64,8 +64,8 @@ public class WandOfWarding extends Wand {
 	@Override
 	public int collisionProperties(int target) {
 		if (cursed)                                 return super.collisionProperties(target);
-		else if (!Dungeon.level.heroFOV[target])    return Ballistica.PROJECTILE;
-		else                                        return Ballistica.STOP_TARGET;
+		else if (!Dungeon.level.heroFOV[target])    return Ballistic.PROJECTILE;
+		else                                        return Ballistic.STOP_TARGET;
 	}
 
 	private boolean wardAvailable = true;
@@ -112,7 +112,7 @@ public class WandOfWarding extends Wand {
 	}
 	
 	@Override
-	public void onZap(Ballistica bolt) {
+	public void onZap(Ballistic bolt) {
 
 		int target = bolt.collisionPos;
 		Char ch = Actor.findChar(target);
@@ -157,7 +157,7 @@ public class WandOfWarding extends Wand {
 	}
 
 	@Override
-	public void fx(Ballistica bolt, Callback callback) {
+	public void fx(Ballistic bolt, Callback callback) {
 		MagicMissile m = MagicMissile.boltFromChar(curUser.sprite.parent,
 				MagicMissile.WARD,
 				curUser.sprite,
@@ -336,7 +336,7 @@ public class WandOfWarding extends Wand {
 
 		@Override
 		protected boolean canAttack( Char enemy ) {
-			return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
+			return new Ballistic( pos, enemy.pos, Ballistic.MAGIC_BOLT).collisionPos == enemy.pos;
 		}
 
 		@Override

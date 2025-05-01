@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.bags.Bag;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -104,7 +104,7 @@ public class HolyTome extends Artifact {
 		if (targetingSpell == null || targetingSpell.targetingFlags() == -1) {
 			return super.targetingPos(user, dst);
 		} else {
-			return new Ballistica( user.pos, dst, targetingSpell.targetingFlags() ).collisionPos;
+			return new Ballistic( user.pos, dst, targetingSpell.targetingFlags() ).collisionPos;
 		}
 	}
 

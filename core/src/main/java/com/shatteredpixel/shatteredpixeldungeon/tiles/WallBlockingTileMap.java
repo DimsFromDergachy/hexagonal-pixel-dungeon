@@ -141,7 +141,7 @@ public class WallBlockingTileMap extends HexTileMap {
 				
 				//Block the side of an internal wall if:
 				//- the cell above, below, or the cell itself is visible
-				//and all of the following are NOT true:
+				//  and all of the following are NOT true:
 				//- the cell has no neighbours on that side
 				//- the top-side neighbour is visible and the side neighbour isn't a wall.
 				//- the side neighbour is both not a wall and visible

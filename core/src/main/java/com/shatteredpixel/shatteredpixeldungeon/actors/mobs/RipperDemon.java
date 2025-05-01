@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Light;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.TargetedCell;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RipperSprite;
@@ -148,7 +148,7 @@ public class RipperDemon extends Mob {
 					return true;
 				}
 
-				Ballistica b = new Ballistica(pos, leapPos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID);
+				Ballistic b = new Ballistic(pos, leapPos, Ballistic.STOP_TARGET | Ballistic.STOP_SOLID);
 				leapPos = b.collisionPos;
 
 				final Char leapVictim = Actor.findChar(leapPos);
@@ -247,11 +247,11 @@ public class RipperDemon extends Mob {
 						targetPos = enemy.pos + PathFinder.CIRCLE8[(closestIdx+4)%8];
 					}
 
-					Ballistica b = new Ballistica(pos, targetPos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID);
+					Ballistic b = new Ballistic(pos, targetPos, Ballistic.STOP_TARGET | Ballistic.STOP_SOLID);
 					//try aiming directly at hero if aiming near them doesn't work
 					if (b.collisionPos != targetPos && targetPos != enemy.pos){
 						targetPos = enemy.pos;
-						b = new Ballistica(pos, targetPos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID);
+						b = new Ballistic(pos, targetPos, Ballistic.STOP_TARGET | Ballistic.STOP_SOLID);
 					}
 					if (b.collisionPos == targetPos){
 						//get ready to leap

@@ -34,7 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.MagicalFireRoom;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -56,7 +56,7 @@ public class WandOfFrost extends DamageWand {
 	}
 
 	@Override
-	public void onZap(Ballistica bolt) {
+	public void onZap(Ballistic bolt) {
 
 		Heap heap = Dungeon.level.heaps.get(bolt.collisionPos);
 		if (heap != null) {
@@ -115,7 +115,7 @@ public class WandOfFrost extends DamageWand {
 	}
 
 	@Override
-	public void fx(Ballistica bolt, Callback callback) {
+	public void fx(Ballistic bolt, Callback callback) {
 		MagicMissile.boltFromChar(curUser.sprite.parent,
 				MagicMissile.FROST,
 				curUser.sprite,

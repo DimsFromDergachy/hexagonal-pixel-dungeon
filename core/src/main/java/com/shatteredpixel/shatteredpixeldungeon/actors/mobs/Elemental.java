@@ -47,7 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTransmutat
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.RatSkull;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Shocking;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -133,7 +133,7 @@ public abstract class Elemental extends Mob {
 		if (super.canAttack(enemy)){
 			return true;
 		} else {
-			return rangedCooldown < 0 && new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT ).collisionPos == enemy.pos;
+			return rangedCooldown < 0 && new Ballistic( pos, enemy.pos, Ballistic.MAGIC_BOLT ).collisionPos == enemy.pos;
 		}
 	}
 	
@@ -141,7 +141,7 @@ public abstract class Elemental extends Mob {
 		
 		if (Dungeon.level.adjacent( pos, enemy.pos )
 				|| rangedCooldown > 0
-				|| new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT ).collisionPos != enemy.pos) {
+				|| new Ballistic( pos, enemy.pos, Ballistic.MAGIC_BOLT ).collisionPos != enemy.pos) {
 			
 			return super.doAttack( enemy );
 			
@@ -273,7 +273,7 @@ public abstract class Elemental extends Mob {
 			//fire a charged attack instead of any other action, as long as it is possible to do so
 			if (targetingPos != -1 && state == HUNTING){
 				//account for bolt hitting walls, in case position suddenly changed
-				targetingPos = new Ballistica( pos, targetingPos, Ballistica.STOP_SOLID | Ballistica.STOP_TARGET ).collisionPos;
+				targetingPos = new Ballistic( pos, targetingPos, Ballistic.STOP_SOLID | Ballistic.STOP_TARGET ).collisionPos;
 				if (sprite != null && (sprite.visible || Dungeon.level.heroFOV[targetingPos])) {
 					sprite.zap( targetingPos );
 					return false;
@@ -296,7 +296,7 @@ public abstract class Elemental extends Mob {
 			if (super.canAttack(enemy)){
 				return true;
 			} else {
-				return rangedCooldown < 0 && new Ballistica( pos, enemy.pos, Ballistica.STOP_SOLID | Ballistica.STOP_TARGET ).collisionPos == enemy.pos;
+				return rangedCooldown < 0 && new Ballistic( pos, enemy.pos, Ballistic.STOP_SOLID | Ballistic.STOP_TARGET ).collisionPos == enemy.pos;
 			}
 		}
 
@@ -306,13 +306,13 @@ public abstract class Elemental extends Mob {
 
 				return super.doAttack( enemy );
 
-			} else if (new Ballistica( pos, enemy.pos, Ballistica.STOP_SOLID | Ballistica.STOP_TARGET ).collisionPos == enemy.pos) {
+			} else if (new Ballistic( pos, enemy.pos, Ballistic.STOP_SOLID | Ballistic.STOP_TARGET ).collisionPos == enemy.pos) {
 
 				//set up an attack for next turn
 				ArrayList<Integer> candidates = new ArrayList<>();
 				for (int i : PathFinder.NEIGHBOURS8){
 					int target = enemy.pos + i;
-					if (target != pos && new Ballistica(pos, target, Ballistica.STOP_SOLID | Ballistica.STOP_TARGET).collisionPos == target){
+					if (target != pos && new Ballistic(pos, target, Ballistic.STOP_SOLID | Ballistic.STOP_TARGET).collisionPos == target){
 						candidates.add(target);
 					}
 				}
@@ -558,7 +558,7 @@ public abstract class Elemental extends Mob {
 		
 		@Override
 		protected void meleeProc( Char enemy, int damage ) {
-			Ballistica aim = new Ballistica(pos, enemy.pos, Ballistica.STOP_TARGET);
+			Ballistic aim = new Ballistic(pos, enemy.pos, Ballistic.STOP_TARGET);
 			//TODO shortcutting the fx seems fine for now but may cause problems with new cursed effects
 			//of course, not shortcutting it means actor ordering issues =S
 			CursedWand.randomValidEffect(null, this, aim, false).effect(null, this, aim, false);
@@ -584,7 +584,7 @@ public abstract class Elemental extends Mob {
 
 		@Override
 		protected void rangedProc( Char enemy ) {
-			CursedWand.cursedZap(null, this, new Ballistica(pos, enemy.pos, Ballistica.STOP_TARGET), new Callback() {
+			CursedWand.cursedZap(null, this, new Ballistic(pos, enemy.pos, Ballistic.STOP_TARGET), new Callback() {
 				@Override
 				public void call() {
 					next();

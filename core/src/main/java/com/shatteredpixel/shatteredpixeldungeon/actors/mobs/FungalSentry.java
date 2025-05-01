@@ -25,7 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.ToxicGas;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.FungalSentrySprite;
 import com.watabou.utils.Random;
 
@@ -75,7 +75,7 @@ public class FungalSentry extends Mob {
 	//TODO attack is a little permissive atm?
 	protected boolean canAttack( Char enemy ) {
 		return super.canAttack(enemy)
-				|| new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
+				|| new Ballistic( pos, enemy.pos, Ballistic.MAGIC_BOLT).collisionPos == enemy.pos;
 	}
 
 	//TODO if we want to allow them to be literally killed, probably should give them a heal if hero is out of FOV, or similar

@@ -24,7 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.items.stones;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 
 public class StoneOfBlink extends Runestone {
@@ -33,11 +33,11 @@ public class StoneOfBlink extends Runestone {
 		image = ItemSpriteSheet.STONE_BLINK;
 	}
 	
-	private static Ballistica throwPath;
+	private static Ballistic throwPath;
 	
 	@Override
 	public int throwPos(Hero user, int dst) {
-		throwPath = new Ballistica( user.pos, dst, Ballistica.PROJECTILE );
+		throwPath = new Ballistic( user.pos, dst, Ballistic.PROJECTILE );
 		return throwPath.collisionPos;
 	}
 	

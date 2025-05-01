@@ -36,7 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.CorrosionParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -51,11 +51,11 @@ public class WandOfCorrosion extends Wand {
 	{
 		image = ItemSpriteSheet.WAND_CORROSION;
 
-		collisionProperties = Ballistica.STOP_TARGET | Ballistica.STOP_SOLID;
+		collisionProperties = Ballistic.STOP_TARGET | Ballistic.STOP_SOLID;
 	}
 
 	@Override
-	public void onZap(Ballistica bolt) {
+	public void onZap(Ballistic bolt) {
 		CorrosiveGas gas = Blob.seed(bolt.collisionPos, 50 + 10 * buffedLvl(), CorrosiveGas.class);
 		CellEmitter.get(bolt.collisionPos).burst(Speck.factory(Speck.CORROSION), 10 );
 		gas.setStrength(2 + buffedLvl(), getClass());
@@ -79,7 +79,7 @@ public class WandOfCorrosion extends Wand {
 	}
 
 	@Override
-	public void fx(Ballistica bolt, Callback callback) {
+	public void fx(Ballistic bolt, Callback callback) {
 		MagicMissile.boltFromChar(
 				curUser.sprite.parent,
 				MagicMissile.CORROSION,

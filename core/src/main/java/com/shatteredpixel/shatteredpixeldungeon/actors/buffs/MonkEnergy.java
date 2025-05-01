@@ -38,7 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.Door;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -488,7 +488,7 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 					return;
 				}
 
-				Ballistica dash = new Ballistica(hero.pos, target, Ballistica.PROJECTILE);
+				Ballistic dash = new Ballistic(hero.pos, target, Ballistic.PROJECTILE);
 
 				if (!dash.collisionPos.equals(target)
 						|| (Dungeon.level.solid[target] && !Dungeon.level.passable[target])){
@@ -570,9 +570,9 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 
 						if (oldPos == enemy.pos){
 							//trace a ballistica to our target (which will also extend past them
-							Ballistica trajectory = new Ballistica(hero.pos, enemy.pos, Ballistica.STOP_TARGET);
+							Ballistic trajectory = new Ballistic(hero.pos, enemy.pos, Ballistic.STOP_TARGET);
 							//trim it to just be the part that goes past them
-							trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
+							trajectory = new Ballistic(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistic.PROJECTILE);
 							//knock them back along that ballistica
 							WandOfBlastWave.throwChar(enemy, trajectory, 6, true, false, hero);
 
@@ -591,9 +591,9 @@ public class MonkEnergy extends Buff implements ActionIndicator.Action {
 										&& ch.alignment == Char.Alignment.ENEMY
 										&& Dungeon.level.adjacent(ch.pos, hero.pos)){
 									//trace a ballistica to our target (which will also extend past them
-									Ballistica trajectory = new Ballistica(hero.pos, ch.pos, Ballistica.STOP_TARGET);
+									Ballistic trajectory = new Ballistic(hero.pos, ch.pos, Ballistic.STOP_TARGET);
 									//trim it to just be the part that goes past them
-									trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
+									trajectory = new Ballistic(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistic.PROJECTILE);
 									//knock them back along that ballistica
 									WandOfBlastWave.throwChar(ch, trajectory, 6, true, false, hero);
 

@@ -36,7 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfDisintegration;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.DisintegrationTrap;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -83,7 +83,7 @@ public class Eye extends Mob {
 		return super.drRoll() + Random.NormalIntRange(0, 10);
 	}
 	
-	private Ballistica beam;
+	private Ballistic beam;
 	private int beamTarget = -1;
 	private int beamCooldown;
 	public boolean beamCharged;
@@ -92,7 +92,7 @@ public class Eye extends Mob {
 	protected boolean canAttack( Char enemy ) {
 
 		if (beamCooldown == 0) {
-			Ballistica aim = new Ballistica(pos, enemy.pos, Ballistica.STOP_SOLID);
+			Ballistic aim = new Ballistic(pos, enemy.pos, Ballistic.STOP_SOLID);
 
 			if (enemy.invisible == 0 && !isCharmedBy(enemy) && fieldOfView[enemy.pos]
 					&& (super.canAttack(enemy) || aim.subPath(1, aim.dist).contains(enemy.pos))){
@@ -115,7 +115,7 @@ public class Eye extends Mob {
 			sprite.idle();
 		}
 		if (beam == null && beamTarget != -1) {
-			beam = new Ballistica(pos, beamTarget, Ballistica.STOP_SOLID);
+			beam = new Ballistic(pos, beamTarget, Ballistic.STOP_SOLID);
 			sprite.turnTo(pos, beamTarget);
 		}
 		if (beamCooldown > 0)
@@ -126,7 +126,7 @@ public class Eye extends Mob {
 	@Override
 	protected boolean doAttack( Char enemy ) {
 
-		beam = new Ballistica(pos, beamTarget, Ballistica.STOP_SOLID);
+		beam = new Ballistic(pos, beamTarget, Ballistic.STOP_SOLID);
 		if (beamCooldown > 0 || (!beamCharged && !beam.subPath(1, beam.dist).contains(enemy.pos))) {
 			return super.doAttack(enemy);
 		} else if (!beamCharged){

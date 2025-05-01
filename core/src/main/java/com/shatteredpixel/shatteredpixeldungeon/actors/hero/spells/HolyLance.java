@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -78,7 +78,7 @@ public class HolyLance extends TargetedClericSpell {
 
 	@Override
 	public int targetingFlags() {
-		return Ballistica.PROJECTILE;
+		return Ballistic.PROJECTILE;
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class HolyLance extends TargetedClericSpell {
 			return;
 		}
 
-		Ballistica aim = new Ballistica(hero.pos, target, targetingFlags());
+		Ballistic aim = new Ballistic(hero.pos, target, targetingFlags());
 
 		if (Actor.findChar( aim.collisionPos ) == hero){
 			GLog.i( Messages.get(Wand.class, "self_target") );

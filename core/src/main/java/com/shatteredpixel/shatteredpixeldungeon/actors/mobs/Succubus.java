@@ -37,7 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.Scroll;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfIdentify;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfUpgrade;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SuccubusSprite;
 import com.watabou.noosa.audio.Sample;
@@ -128,7 +128,7 @@ public class Succubus extends Mob {
 	
 	private boolean blink( int target ) {
 		
-		Ballistica route = new Ballistica( pos, target, Ballistica.PROJECTILE);
+		Ballistic route = new Ballistic( pos, target, Ballistic.PROJECTILE);
 		int cell = route.collisionPos;
 
 		//can't occupy the same cell as another char, so move back one.

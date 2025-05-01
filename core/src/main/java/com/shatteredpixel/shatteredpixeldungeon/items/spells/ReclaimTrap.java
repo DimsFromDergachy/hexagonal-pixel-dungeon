@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging
 import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -69,7 +69,7 @@ public class ReclaimTrap extends TargetedSpell {
 	}
 
 	@Override
-	protected void affectTarget(Ballistica bolt, Hero hero) {
+	protected void affectTarget(Ballistic bolt, Hero hero) {
 		Class<?extends Trap> storedTrap = null;
 		//pre-v3.0.0
 		if (this.storedTrap != null){

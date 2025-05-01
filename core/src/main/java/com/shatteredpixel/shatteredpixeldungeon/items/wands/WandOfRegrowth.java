@@ -39,7 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
@@ -64,7 +64,7 @@ public class WandOfRegrowth extends Wand {
 		image = ItemSpriteSheet.WAND_REGROWTH;
 
 		//only used for targeting, actual projectile logic is Ballistica.STOP_SOLID
-		collisionProperties = Ballistica.WONT_STOP;
+		collisionProperties = Ballistic.WONT_STOP;
 	}
 	
 	private int totChrgUsed = 0;
@@ -84,7 +84,7 @@ public class WandOfRegrowth extends Wand {
 	}
 
 	@Override
-	public void onZap(Ballistica bolt) {
+	public void onZap(Ballistic bolt) {
 
 		ArrayList<Integer> cells = new ArrayList<>(cone.cells);
 
@@ -241,7 +241,7 @@ public class WandOfRegrowth extends Wand {
 
 	}
 
-	public void fx(Ballistica bolt, Callback callback) {
+	public void fx(Ballistic bolt, Callback callback) {
 
 		// 4/6/8 distance
 		int maxDist = 2 + 2*chargesPerCast();
@@ -249,11 +249,11 @@ public class WandOfRegrowth extends Wand {
 		cone = new ConeAOE( bolt,
 				maxDist,
 				20 + 10*chargesPerCast(),
-				Ballistica.STOP_SOLID | Ballistica.STOP_TARGET);
+				Ballistic.STOP_SOLID | Ballistic.STOP_TARGET);
 
 		//cast to cells at the tip, rather than all cells, better performance.
-		Ballistica longestRay = null;
-		for (Ballistica ray : cone.outerRays){
+		Ballistic longestRay = null;
+		for (Ballistic ray : cone.outerRays){
 			if (longestRay == null || ray.dist > longestRay.dist){
 				longestRay = ray;
 			}

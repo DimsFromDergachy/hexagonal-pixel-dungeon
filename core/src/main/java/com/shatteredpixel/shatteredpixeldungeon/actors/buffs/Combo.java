@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.DwarfKing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.items.BrokenSeal;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -371,9 +371,9 @@ public class Combo extends Buff implements ActionIndicator.Action {
 				case CLOBBER:
 					if (!wasAlly) hit(enemy);
 					//trace a ballistica to our target (which will also extend past them
-					Ballistica trajectory = new Ballistica(target.pos, enemy.pos, Ballistica.STOP_TARGET);
+					Ballistic trajectory = new Ballistic(target.pos, enemy.pos, Ballistic.STOP_TARGET);
 					//trim it to just be the part that goes past them
-					trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
+					trajectory = new Ballistic(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistic.PROJECTILE);
 					//knock them back along that ballistica, ensuring they don't fall into a pit
 					int dist = 2;
 					if (enemy.isAlive() && count >= 7 && hero.pointsInTalent(Talent.ENHANCED_COMBO) >= 1) {
@@ -496,7 +496,7 @@ public class Combo extends Buff implements ActionIndicator.Action {
 					|| Dungeon.level.distance(target.pos, enemy.pos) > 1 + target.buff(Combo.class).count/3){
 					GLog.w(Messages.get(Combo.class, "bad_target"));
 				} else {
-					Ballistica c = new Ballistica(target.pos, enemy.pos, Ballistica.PROJECTILE);
+					Ballistic c = new Ballistic(target.pos, enemy.pos, Ballistic.PROJECTILE);
 					if (c.collisionPos == enemy.pos){
 						final int leapPos = c.path.get(c.dist-1);
 						if (!Dungeon.level.passable[leapPos] && !(target.flying && Dungeon.level.avoid[leapPos])){

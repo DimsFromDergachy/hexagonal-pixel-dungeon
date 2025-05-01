@@ -90,7 +90,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GeyserTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.PitfallTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ShockingTrap;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.SummoningTrap;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ShadowCaster;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Languages;
@@ -118,7 +118,7 @@ import java.util.ArrayList;
 //helper class to contain all the cursed wand zapping logic, so the main wand class doesn't get huge.
 public class CursedWand {
 
-	public static void cursedZap(final Item origin, final Char user, final Ballistica bolt, final Callback afterZap){
+	public static void cursedZap(final Item origin, final Char user, final Ballistic bolt, final Callback afterZap){
 
 		boolean positiveOnly = user == Dungeon.hero && Random.Float() < WondrousResin.positiveCurseEffectChance();
 		CursedEffect effect = randomValidEffect(origin, user, bolt, positiveOnly);
@@ -142,11 +142,11 @@ public class CursedWand {
 
 	public static abstract class CursedEffect {
 
-		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly){
+		public boolean valid(Item origin, Char user, Ballistic bolt, boolean positiveOnly){
 			return true;
 		}
 
-		public void FX(final Item origin, final Char user, final Ballistica bolt, final Callback callback){
+		public void FX(final Item origin, final Char user, final Ballistic bolt, final Callback callback){
 			MagicMissile.boltFromChar(user.sprite.parent,
 					MagicMissile.RAINBOW,
 					user.sprite,
@@ -155,7 +155,7 @@ public class CursedWand {
 			Sample.INSTANCE.play( Assets.Sounds.ZAP );
 		}
 
-		public abstract boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly);
+		public abstract boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly);
 
 	}
 
@@ -175,7 +175,7 @@ public class CursedWand {
 		}
 	}
 
-	public static CursedEffect randomValidEffect(Item origin, Char user, Ballistica bolt, boolean positiveOnly){
+	public static CursedEffect randomValidEffect(Item origin, Char user, Ballistic bolt, boolean positiveOnly){
 		switch (Random.chances(EFFECT_CAT_CHANCES)){
 			case 0: default:
 				return randomValidCommonEffect(origin, user, bolt, positiveOnly);
@@ -208,7 +208,7 @@ public class CursedWand {
 		return Random.element(COMMON_EFFECTS);
 	}
 
-	public static CursedEffect randomValidCommonEffect(Item origin, Char user, Ballistica bolt, boolean positiveOnly){
+	public static CursedEffect randomValidCommonEffect(Item origin, Char user, Ballistic bolt, boolean positiveOnly){
 		CursedEffect effect;
 		do {
 			effect = Random.element(COMMON_EFFECTS);
@@ -218,7 +218,7 @@ public class CursedWand {
 
 	public static class BurnAndFreeze extends CursedEffect {
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			Char target = Actor.findChar(bolt.collisionPos);
 			//doesn't affect caster if positive only
 			if (Random.Int(2) == 0) {
@@ -235,7 +235,7 @@ public class CursedWand {
 
 	public static class SpawnRegrowth extends CursedEffect {
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean postiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean postiveOnly) {
 			if (Actor.findChar(bolt.collisionPos) == null){
 				Dungeon.level.pressCell(bolt.collisionPos);
 			}
@@ -247,7 +247,7 @@ public class CursedWand {
 
 	public static class RandomTeleport extends CursedEffect {
 		@Override
-		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean valid(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			Char target = Actor.findChar(bolt.collisionPos);
 			if (positiveOnly && (target == null || Char.hasProp(target, Char.Property.IMMOVABLE))){
 				return false;
@@ -258,7 +258,7 @@ public class CursedWand {
 		//might be nice to have no fx if self teleports?
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			Char target = Actor.findChar( bolt.collisionPos );
 			//can only teleport target if positive only
 			if (target != null && !Char.hasProp(target, Char.Property.IMMOVABLE) && (positiveOnly || Random.Int(2) == 0)){
@@ -278,7 +278,7 @@ public class CursedWand {
 
 	public static class RandomGas extends CursedEffect {
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			Sample.INSTANCE.play( Assets.Sounds.GAS );
 			tryForWandProc(Actor.findChar(bolt.collisionPos), origin);
 			if (Actor.findChar(bolt.collisionPos) == null){
@@ -300,7 +300,7 @@ public class CursedWand {
 
 	public static class RandomAreaEffect extends CursedEffect {
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			tryForWandProc(Actor.findChar(bolt.collisionPos), origin);
 			if (Actor.findChar(bolt.collisionPos) == null){
 				Dungeon.level.pressCell(bolt.collisionPos);
@@ -322,7 +322,7 @@ public class CursedWand {
 	public static class Bubbles extends CursedEffect {
 
 		@Override
-		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+		public void FX(Item origin, Char user, Ballistic bolt, Callback callback) {
 			MagicMissile.boltFromChar(user.sprite.parent,
 					MagicMissile.SPECK + Speck.BUBBLE,
 					user.sprite,
@@ -332,7 +332,7 @@ public class CursedWand {
 		}
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			if (Actor.findChar(bolt.collisionPos) == null){
 				Dungeon.level.pressCell(bolt.collisionPos);
 			}
@@ -351,14 +351,14 @@ public class CursedWand {
 		private Wand wand;
 
 		@Override
-		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean valid(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			//we have this limit atm because some wands are coded to depend on their fx logic
 			// and chaos elementals trigger the effect directly, with no FX first
 			return super.valid(origin, user, bolt, positiveOnly) && user instanceof Hero;
 		}
 
 		@Override
-		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+		public void FX(Item origin, Char user, Ballistic bolt, Callback callback) {
 			if (wand == null){
 				wand = (Wand)Generator.randomUsingDefaults(Generator.Category.WAND);
 			}
@@ -366,7 +366,7 @@ public class CursedWand {
 		}
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			if (wand == null){
 				wand = (Wand)Generator.randomUsingDefaults(Generator.Category.WAND);
 			}
@@ -385,12 +385,12 @@ public class CursedWand {
 	public static class SelfOoze extends CursedEffect{
 
 		@Override
-		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+		public void FX(Item origin, Char user, Ballistic bolt, Callback callback) {
 			callback.call(); //no fx
 		}
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			PathFinder.buildDistanceMap(user.pos, BArray.not( Dungeon.level.solid, null ), 2 );
 			for (int i = 0; i < PathFinder.distance.length; i++) {
 				if (PathFinder.distance[i] < Integer.MAX_VALUE) {
@@ -427,7 +427,7 @@ public class CursedWand {
 		return Random.element(UNCOMMON_EFFECTS);
 	}
 
-	public static CursedEffect randomValidUncommonEffect(Item origin, Char user, Ballistica bolt, boolean positiveOnly){
+	public static CursedEffect randomValidUncommonEffect(Item origin, Char user, Ballistic bolt, boolean positiveOnly){
 		CursedEffect effect;
 		do {
 			effect = Random.element(UNCOMMON_EFFECTS);
@@ -438,7 +438,7 @@ public class CursedWand {
 	public static class RandomPlant extends CursedEffect {
 
 		@Override
-		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean valid(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			int pos = bolt.collisionPos;
 
 			if (Dungeon.level.map[pos] != Terrain.ALCHEMY
@@ -452,7 +452,7 @@ public class CursedWand {
 		}
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			if (valid(origin, user, bolt, positiveOnly)) {
 				tryForWandProc(Actor.findChar(bolt.collisionPos), origin);
 				Dungeon.level.plant((Plant.Seed) Generator.randomUsingDefaults(Generator.Category.SEED), bolt.collisionPos);
@@ -466,12 +466,12 @@ public class CursedWand {
 	public static class HealthTransfer extends CursedEffect {
 
 		@Override
-		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean valid(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			return Actor.findChar( bolt.collisionPos ) != null;
 		}
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			final Char target = Actor.findChar( bolt.collisionPos );
 			if (target != null) {
 				int damage = Dungeon.scalingDepth() * 2;
@@ -517,7 +517,7 @@ public class CursedWand {
 
 	public static class Explosion extends CursedEffect {
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			new Bomb.ConjuredBomb().explode(bolt.collisionPos);
 			tryForWandProc(Actor.findChar(bolt.collisionPos), origin);
 			return true;
@@ -527,7 +527,7 @@ public class CursedWand {
 	public static class LightningBolt extends CursedEffect {
 
 		@Override
-		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+		public void FX(Item origin, Char user, Ballistic bolt, Callback callback) {
 			Char ch = Actor.findChar( bolt.collisionPos );
 			if (ch != null){
 				user.sprite.parent.addToFront(new Lightning(user.sprite.center(), ch.sprite.center(), null));
@@ -539,7 +539,7 @@ public class CursedWand {
 		}
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 
 			ArrayList<Char> affected = new ArrayList<>();
 
@@ -597,7 +597,7 @@ public class CursedWand {
 
 	public static class Geyser extends CursedEffect{
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			tryForWandProc(Actor.findChar(bolt.collisionPos), origin);
 			GeyserTrap geyser = new GeyserTrap();
 			geyser.pos = bolt.collisionPos;
@@ -609,7 +609,7 @@ public class CursedWand {
 
 	public static class SummonSheep extends CursedEffect{
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			tryForWandProc(Actor.findChar(bolt.collisionPos), origin);
 			new FlockTrap().set(bolt.collisionPos).activate();
 			return true;
@@ -619,12 +619,12 @@ public class CursedWand {
 	public static class Levitate extends CursedEffect {
 
 		@Override
-		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean valid(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			return positiveOnly || Actor.findChar(bolt.collisionPos) != null;
 		}
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			Char ch = Actor.findChar(bolt.collisionPos);
 			if ((!positiveOnly || (ch instanceof Piranha)) && ch != null && !ch.flying && !Char.hasProp(ch, Char.Property.IMMOVABLE)) {
 				Buff.affect(ch, Levitation.class, Levitation.DURATION);
@@ -638,12 +638,12 @@ public class CursedWand {
 	public static class Alarm extends CursedEffect {
 
 		@Override
-		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+		public void FX(Item origin, Char user, Ballistic bolt, Callback callback) {
 			callback.call(); //no vfx
 		}
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			for (Mob mob : Dungeon.level.mobs) {
 				mob.beckon( user.pos );
 			}
@@ -678,7 +678,7 @@ public class CursedWand {
 		return Random.element(RARE_EFFECTS);
 	}
 
-	public static CursedEffect randomValidRareEffect(Item origin, Char user, Ballistica bolt, boolean positiveOnly){
+	public static CursedEffect randomValidRareEffect(Item origin, Char user, Ballistic bolt, boolean positiveOnly){
 		CursedEffect effect;
 		do {
 			effect = Random.element(RARE_EFFECTS);
@@ -689,7 +689,7 @@ public class CursedWand {
 	public static class SheepPolymorph extends CursedEffect {
 
 		@Override
-		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean valid(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			Char ch = Actor.findChar( bolt.collisionPos );
 			if (ch != null && !(ch instanceof Hero)
 					//ignores bosses, questgivers, rat king, etc.
@@ -703,7 +703,7 @@ public class CursedWand {
 		}
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			if (valid(origin, user, bolt, positiveOnly)){
 				Char ch = Actor.findChar( bolt.collisionPos );
 				Sheep sheep = new Sheep();
@@ -728,7 +728,7 @@ public class CursedWand {
 	public static class CurseEquipment extends CursedEffect {
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			//hexes target if positive only or user isn't hero
 			if (positiveOnly || !(user instanceof Hero)){
 				Char ch = Actor.findChar( bolt.collisionPos );
@@ -746,12 +746,12 @@ public class CursedWand {
 	public static class InterFloorTeleport extends CursedEffect {
 
 		@Override
-		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+		public void FX(Item origin, Char user, Ballistic bolt, Callback callback) {
 			callback.call(); //no vfx
 		}
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			if (!positiveOnly && Dungeon.depth > 1 && Dungeon.interfloorTeleportAllowed() && user == Dungeon.hero) {
 
 				//starting from 10 floors up (or floor 1), each floor has 1 more weight
@@ -781,7 +781,7 @@ public class CursedWand {
 	public static class SummonMonsters extends CursedEffect {
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			//mirror images if positive only and user is hero
 			if (positiveOnly && user == Dungeon.hero){
 				ScrollOfMirrorImage.spawnImages(Dungeon.hero, bolt.collisionPos, 2);
@@ -795,7 +795,7 @@ public class CursedWand {
 	public static class FireBall extends CursedEffect {
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 
 			Point c = Dungeon.level.cellToPoint(bolt.collisionPos);
 			boolean[] fieldOfView = new boolean[Dungeon.level.length()];
@@ -837,18 +837,18 @@ public class CursedWand {
 		private ConeAOE cone = null;
 
 		@Override
-		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+		public void FX(Item origin, Char user, Ballistic bolt, Callback callback) {
 
 			//need to re-do bolt as it should go through chars
-			bolt = new Ballistica(bolt.sourcePos, bolt.collisionPos, Ballistica.STOP_SOLID);
+			bolt = new Ballistic(bolt.sourcePos, bolt.collisionPos, Ballistic.STOP_SOLID);
 
 			cone = new ConeAOE( bolt,
 					8,
 					90,
-					Ballistica.STOP_SOLID);
+					Ballistic.STOP_SOLID);
 
-			Ballistica longestRay = null;
-			for (Ballistica ray : cone.outerRays){
+			Ballistic longestRay = null;
+			for (Ballistic ray : cone.outerRays){
 				if (longestRay == null || ray.dist > longestRay.dist){
 					longestRay = ray;
 				}
@@ -870,7 +870,7 @@ public class CursedWand {
 		}
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 
 			ArrayList<Char> affectedChars = new ArrayList<>();
 			if (cone == null && Actor.findChar(bolt.collisionPos) != null){
@@ -947,12 +947,12 @@ public class CursedWand {
 	public static class MassInvuln extends CursedEffect {
 
 		@Override
-		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+		public void FX(Item origin, Char user, Ballistic bolt, Callback callback) {
 			callback.call(); //no vfx
 		}
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 
 			for (Char ch : Actor.chars()){
 				Buff.affect(ch, Invulnerability.class, 10f);
@@ -972,17 +972,17 @@ public class CursedWand {
 	public static class Petrify extends CursedEffect {
 
 		@Override
-		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean valid(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			return user == Dungeon.hero;
 		}
 
 		@Override
-		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+		public void FX(Item origin, Char user, Ballistic bolt, Callback callback) {
 			callback.call(); //no vfx
 		}
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 
 			Buff.affect(user, TimeStasis.class, 100f);
 			Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
@@ -1014,7 +1014,7 @@ public class CursedWand {
 		return Random.element(VERY_RARE_EFFECTS);
 	}
 
-	public static CursedEffect randomValidVeryRareEffect(Item origin, Char user, Ballistica bolt, boolean positiveOnly){
+	public static CursedEffect randomValidVeryRareEffect(Item origin, Char user, Ballistic bolt, boolean positiveOnly){
 		CursedEffect effect;
 		do {
 			effect = Random.element(VERY_RARE_EFFECTS);
@@ -1024,7 +1024,7 @@ public class CursedWand {
 
 	public static class ForestFire extends CursedEffect {
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			for (int i = 0; i < Dungeon.level.length(); i++){
 				GameScene.add( Blob.seed(i, 15, Regrowth.class));
 			}
@@ -1045,7 +1045,7 @@ public class CursedWand {
 
 	public static class SpawnGoldenMimic extends CursedEffect {
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			Char ch = Actor.findChar(bolt.collisionPos);
 			int spawnCell = bolt.collisionPos;
 			if (ch != null){
@@ -1093,7 +1093,7 @@ public class CursedWand {
 	public static class AbortRetryFail extends CursedEffect {
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			//appears to crash the game (actually just closes it)
 			try {
 				Dungeon.saveAll();
@@ -1141,7 +1141,7 @@ public class CursedWand {
 	public static class RandomTransmogrify extends CursedEffect {
 
 		@Override
-		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean valid(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			if (positiveOnly){
 				return true;
 			} else if (origin == null || user != Dungeon.hero || !Dungeon.hero.belongings.contains(origin)){
@@ -1152,7 +1152,7 @@ public class CursedWand {
 		}
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			//triggers metamorph effect if positive only
 			if (positiveOnly){
 				GameScene.show(new ScrollOfMetamorphosis.WndMetamorphChoose());
@@ -1184,12 +1184,12 @@ public class CursedWand {
 	public static class HeroShapeShift extends CursedEffect {
 
 		@Override
-		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean valid(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			return user instanceof Hero || Actor.findChar(bolt.collisionPos) instanceof Hero;
 		}
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			if (user instanceof Hero){
 				Buff.affect(user, HeroDisguise.class, HeroDisguise.DURATION);
 				GLog.w( Messages.get(CursedWand.class, "disguise") );
@@ -1205,7 +1205,7 @@ public class CursedWand {
 
 	public static class SuperNova extends CursedEffect {
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			SuperNovaTracker nova = Buff.append(Dungeon.hero, SuperNovaTracker.class);
 			nova.pos = bolt.collisionPos;
 			nova.harmsAllies = !positiveOnly;
@@ -1222,7 +1222,7 @@ public class CursedWand {
 	public static class SinkHole extends CursedEffect {
 
 		@Override
-		public boolean valid(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean valid(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			//can't happen on floors where chasms aren't allowed
 			if( Dungeon.bossLevel() || Dungeon.depth > 25 || Dungeon.branch != 0){
 				return false;
@@ -1231,12 +1231,12 @@ public class CursedWand {
 		}
 
 		@Override
-		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+		public void FX(Item origin, Char user, Ballistic bolt, Callback callback) {
 			callback.call(); //no vfx
 		}
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			boolean[] passable = BArray.not( Dungeon.level.solid, null );
 			BArray.or(passable, Dungeon.level.passable, passable);
 			PathFinder.buildDistanceMap( user.pos, passable, 5 );
@@ -1268,12 +1268,12 @@ public class CursedWand {
 	public static class GravityChaos extends CursedEffect{
 
 		@Override
-		public void FX(Item origin, Char user, Ballistica bolt, Callback callback) {
+		public void FX(Item origin, Char user, Ballistic bolt, Callback callback) {
 			callback.call(); //no vfx
 		}
 
 		@Override
-		public boolean effect(Item origin, Char user, Ballistica bolt, boolean positiveOnly) {
+		public boolean effect(Item origin, Char user, Ballistic bolt, boolean positiveOnly) {
 			Buff.append(user, GravityChaosTracker.class).positiveOnly = positiveOnly;
 			Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 			if (positiveOnly){

@@ -35,7 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.DriedRose;
 import com.shatteredpixel.shatteredpixeldungeon.items.keys.SkeletonKey;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.GooBlob;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -144,8 +144,8 @@ public class Goo extends Mob {
 			//we check both from and to in this case as projectile logic isn't always symmetrical.
 			//this helps trim out BS edge-cases
 			return Dungeon.level.distance(enemy.pos, pos) <= 2
-						&& new Ballistica( pos, enemy.pos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID).collisionPos == enemy.pos
-						&& new Ballistica( enemy.pos, pos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID).collisionPos == pos;
+						&& new Ballistic( pos, enemy.pos, Ballistic.STOP_TARGET | Ballistic.STOP_SOLID | Ballistic.IGNORE_SOFT_SOLID).collisionPos == enemy.pos
+						&& new Ballistic( enemy.pos, pos, Ballistic.STOP_TARGET | Ballistic.STOP_SOLID | Ballistic.IGNORE_SOFT_SOLID).collisionPos == pos;
 		} else {
 			return super.canAttack(enemy);
 		}

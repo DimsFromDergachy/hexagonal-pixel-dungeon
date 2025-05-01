@@ -52,7 +52,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Sickle;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.GeyserTrap;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -103,7 +103,7 @@ public abstract class YogFist extends Mob {
 	@Override
 	protected boolean canAttack(Char enemy) {
 		if (rangedCooldown <= 0){
-			return new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
+			return new Ballistic( pos, enemy.pos, Ballistic.MAGIC_BOLT).collisionPos == enemy.pos;
 		} else {
 			return super.canAttack(enemy);
 		}

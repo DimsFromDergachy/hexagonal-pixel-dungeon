@@ -25,7 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.watabou.utils.Random;
 
@@ -47,7 +47,7 @@ public class Repulsion extends Armor.Glyph {
 			float powerMulti = Math.max(1f, procChance);
 
 			int oppositeHero = attacker.pos + (attacker.pos - defender.pos);
-			Ballistica trajectory = new Ballistica(attacker.pos, oppositeHero, Ballistica.MAGIC_BOLT);
+			Ballistic trajectory = new Ballistic(attacker.pos, oppositeHero, Ballistic.MAGIC_BOLT);
 			WandOfBlastWave.throwChar(attacker,
 					trajectory,
 					Math.round(2 * powerMulti),

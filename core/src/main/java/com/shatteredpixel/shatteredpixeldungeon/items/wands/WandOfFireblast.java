@@ -37,7 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Blazin
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -55,7 +55,7 @@ public class WandOfFireblast extends DamageWand {
 		image = ItemSpriteSheet.WAND_FIREBOLT;
 
 		//only used for targeting, actual projectile logic is Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID
-		collisionProperties = Ballistica.WONT_STOP;
+		collisionProperties = Ballistic.WONT_STOP;
 	}
 
 	//1/2/3 base damage with 1/2/3 scaling based on charges used
@@ -78,7 +78,7 @@ public class WandOfFireblast extends DamageWand {
 	ConeAOE cone;
 
 	@Override
-	public void onZap(Ballistica bolt) {
+	public void onZap(Ballistic bolt) {
 
 		ArrayList<Char> affectedChars = new ArrayList<>();
 		ArrayList<Integer> adjacentCells = new ArrayList<>();
@@ -163,7 +163,7 @@ public class WandOfFireblast extends DamageWand {
 	}
 
 	@Override
-	public void fx(Ballistica bolt, Callback callback) {
+	public void fx(Ballistic bolt, Callback callback) {
 		//need to perform flame spread logic here so we can determine what cells to put flames in.
 
 		// 5/7/9 distance
@@ -172,11 +172,11 @@ public class WandOfFireblast extends DamageWand {
 		cone = new ConeAOE( bolt,
 				maxDist,
 				30 + 20*chargesPerCast(),
-				Ballistica.STOP_TARGET | Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID);
+				Ballistic.STOP_TARGET | Ballistic.STOP_SOLID | Ballistic.IGNORE_SOFT_SOLID);
 
 		//cast to cells at the tip, rather than all cells, better performance.
-		Ballistica longestRay = null;
-		for (Ballistica ray : cone.outerRays){
+		Ballistic longestRay = null;
+		for (Ballistic ray : cone.outerRays){
 			if (longestRay == null || ray.dist > longestRay.dist){
 				longestRay = ray;
 			}

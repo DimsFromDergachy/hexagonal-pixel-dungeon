@@ -38,7 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.NPC;
 import com.shatteredpixel.shatteredpixeldungeon.effects.FloatingText;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -70,7 +70,7 @@ public class WandOfLivingEarth extends DamageWand {
 	}
 	
 	@Override
-	public void onZap(Ballistica bolt) {
+	public void onZap(Ballistic bolt) {
 		Char ch = Actor.findChar(bolt.collisionPos);
 		int damage = damageRoll();
 		int armorToAdd = damage;
@@ -212,7 +212,7 @@ public class WandOfLivingEarth extends DamageWand {
 	}
 
 	@Override
-	public void fx(Ballistica bolt, Callback callback) {
+	public void fx(Ballistic bolt, Callback callback) {
 		MagicMissile.boltFromChar(curUser.sprite.parent,
 				MagicMissile.EARTH,
 				curUser.sprite,

@@ -38,7 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Speck;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.BloodParticle;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -55,7 +55,7 @@ public class WandOfTransfusion extends DamageWand {
 	{
 		image = ItemSpriteSheet.WAND_TRANSFUSION;
 
-		collisionProperties = Ballistica.PROJECTILE;
+		collisionProperties = Ballistic.PROJECTILE;
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class WandOfTransfusion extends DamageWand {
 	private boolean freeCharge = false;
 
 	@Override
-	public void onZap(Ballistica beam) {
+	public void onZap(Ballistic beam) {
 
 		for (int c : beam.subPath(0, beam.dist))
 			CellEmitter.center(c).burst( BloodParticle.BURST, 1 );
@@ -171,7 +171,7 @@ public class WandOfTransfusion extends DamageWand {
 	}
 
 	@Override
-	public void fx(Ballistica beam, Callback callback) {
+	public void fx(Ballistic beam, Callback callback) {
 		curUser.sprite.parent.add(
 				new Beam.HealthRay(curUser.sprite.center(), DungeonTileMap.raisedTileCenterToWorld(beam.collisionPos)));
 		callback.call();

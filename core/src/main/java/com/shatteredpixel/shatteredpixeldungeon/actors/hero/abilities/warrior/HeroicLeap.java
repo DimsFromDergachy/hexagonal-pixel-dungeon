@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbility;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -72,7 +72,7 @@ public class HeroicLeap extends ArmorAbility {
 				return;
 			}
 
-			Ballistica route = new Ballistica(hero.pos, target, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID);
+			Ballistic route = new Ballistic(hero.pos, target, Ballistic.STOP_TARGET | Ballistic.STOP_SOLID);
 			int cell = route.collisionPos;
 
 			//can't occupy the same cell as another char, so move back one.
@@ -105,7 +105,7 @@ public class HeroicLeap extends ArmorAbility {
 								mob.damage(damage, hero);
 							}
 							if (mob.pos == hero.pos + i && hero.hasTalent(Talent.IMPACT_WAVE)){
-								Ballistica trajectory = new Ballistica(mob.pos, mob.pos + i, Ballistica.MAGIC_BOLT);
+								Ballistic trajectory = new Ballistic(mob.pos, mob.pos + i, Ballistic.MAGIC_BOLT);
 								int strength = 1+hero.pointsInTalent(Talent.IMPACT_WAVE);
 								WandOfBlastWave.throwChar(mob, trajectory, strength, true, true, HeroicLeap.this);
 								if (Random.Int(4) < hero.pointsInTalent(Talent.IMPACT_WAVE)){

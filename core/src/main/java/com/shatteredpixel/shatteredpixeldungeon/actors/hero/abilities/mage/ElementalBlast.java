@@ -71,7 +71,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfWarding;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -129,7 +129,7 @@ public class ElementalBlast extends ArmorAbility {
 
 	@Override
 	protected void activate(ClassArmor armor, Hero hero, Integer target) {
-		Ballistica aim;
+		Ballistic aim;
 		//The direction of the aim only matters if it goes outside the map
 		//So we try to aim in the cardinal direction that has the most space
 		int x = hero.pos % Dungeon.level.width();
@@ -137,15 +137,15 @@ public class ElementalBlast extends ArmorAbility {
 
 		if (Math.max(x, Dungeon.level.width()-x) >= Math.max(y, Dungeon.level.height()-y)){
 			if (x > Dungeon.level.width()/2){
-				aim = new Ballistica(hero.pos, hero.pos - 1, Ballistica.WONT_STOP);
+				aim = new Ballistic(hero.pos, hero.pos - 1, Ballistic.WONT_STOP);
 			} else {
-				aim = new Ballistica(hero.pos, hero.pos + 1, Ballistica.WONT_STOP);
+				aim = new Ballistic(hero.pos, hero.pos + 1, Ballistic.WONT_STOP);
 			}
 		} else {
 			if (y > Dungeon.level.height()/2){
-				aim = new Ballistica(hero.pos, hero.pos - Dungeon.level.width(), Ballistica.WONT_STOP);
+				aim = new Ballistic(hero.pos, hero.pos - Dungeon.level.width(), Ballistic.WONT_STOP);
 			} else {
-				aim = new Ballistica(hero.pos, hero.pos + Dungeon.level.width(), Ballistica.WONT_STOP);
+				aim = new Ballistic(hero.pos, hero.pos + Dungeon.level.width(), Ballistic.WONT_STOP);
 			}
 		}
 
@@ -161,26 +161,26 @@ public class ElementalBlast extends ArmorAbility {
 
 		int aoeSize = 4 + hero.pointsInTalent(Talent.BLAST_RADIUS);
 
-		int projectileProps = Ballistica.STOP_SOLID | Ballistica.STOP_TARGET;
+		int projectileProps = Ballistic.STOP_SOLID | Ballistic.STOP_TARGET;
 
 		//### Special Projectile Properties ###
 		//*** Wand of Disintegration ***
 		if (wandCls == WandOfDisintegration.class){
-			projectileProps = Ballistica.STOP_TARGET;
+			projectileProps = Ballistic.STOP_TARGET;
 
 		//*** Wand of Fireblast ***
 		} else if (wandCls == WandOfFireblast.class){
-			projectileProps = projectileProps | Ballistica.IGNORE_SOFT_SOLID;
+			projectileProps = projectileProps | Ballistic.IGNORE_SOFT_SOLID;
 
 		//*** Wand of Warding ***
 		} else if (wandCls == WandOfWarding.class){
-			projectileProps = Ballistica.STOP_TARGET;
+			projectileProps = Ballistic.STOP_TARGET;
 
 		}
 
 		ConeAOE aoe = new ConeAOE(aim, aoeSize, 360, projectileProps);
 
-		for (Ballistica ray : aoe.outerRays){
+		for (Ballistic ray : aoe.outerRays){
 			((MagicMissile)hero.sprite.parent.recycle( MagicMissile.class )).reset(
 					effectTypes.get(wandCls),
 					hero.sprite,
@@ -301,11 +301,11 @@ public class ElementalBlast extends ArmorAbility {
 								//*** Wand of Blast Wave ***
 								} else if (finalWandCls == WandOfBlastWave.class){
 									if (mob.alignment != Char.Alignment.ALLY) {
-										Ballistica aim = new Ballistica(hero.pos, mob.pos, Ballistica.WONT_STOP);
+										Ballistic aim = new Ballistic(hero.pos, mob.pos, Ballistic.WONT_STOP);
 										int knockback = aoeSize + 1 - (int)Dungeon.level.trueDistance(hero.pos, mob.pos);
 										knockback *= effectMulti;
 										WandOfBlastWave.throwChar(mob,
-												new Ballistica(mob.pos, aim.collisionPos, Ballistica.MAGIC_BOLT),
+												new Ballistic(mob.pos, aim.collisionPos, Ballistic.MAGIC_BOLT),
 												knockback,
 												true,
 												true,

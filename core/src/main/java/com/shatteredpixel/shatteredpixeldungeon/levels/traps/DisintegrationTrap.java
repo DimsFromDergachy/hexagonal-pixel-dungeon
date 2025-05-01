@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Beam;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -61,7 +61,7 @@ public class DisintegrationTrap extends Trap {
 				float curDist = Dungeon.level.trueDistance(pos, ch.pos);
 				//invis targets are considered to be at max range
 				if (ch.invisible > 0) curDist = Math.max(curDist, range);
-				Ballistica bolt = new Ballistica(pos, ch.pos, Ballistica.PROJECTILE);
+				Ballistic bolt = new Ballistic(pos, ch.pos, Ballistic.PROJECTILE);
 				if (bolt.collisionPos == ch.pos
 						&& ( curDist < closestDist || (curDist == closestDist && target instanceof Hero))){
 					target = ch;

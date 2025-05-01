@@ -82,7 +82,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Vampir
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MeleeWeapon;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -153,7 +153,7 @@ public class ElementalStrike extends ArmorAbility {
 		armor.charge -= chargeUse(hero);
 		Item.updateQuickslot();
 
-		Ballistica aim = new Ballistica(hero.pos, target, Ballistica.WONT_STOP);
+		Ballistic aim = new Ballistic(hero.pos, target, Ballistic.WONT_STOP);
 
 		int maxDist = 4 + hero.pointsInTalent(Talent.ELEMENTAL_REACH);
 		int dist = Math.min(aim.dist, maxDist);
@@ -161,7 +161,7 @@ public class ElementalStrike extends ArmorAbility {
 		ConeAOE cone = new ConeAOE(aim,
 				dist,
 				65 + 10*hero.pointsInTalent(Talent.ELEMENTAL_REACH),
-				Ballistica.STOP_SOLID | Ballistica.STOP_TARGET);
+				Ballistic.STOP_SOLID | Ballistic.STOP_TARGET);
 
 		KindOfWeapon w = hero.belongings.weapon();
 		Weapon.Enchantment enchantment = null;
@@ -174,7 +174,7 @@ public class ElementalStrike extends ArmorAbility {
 		}
 
 		//cast to cells at the tip, rather than all cells, better performance.
-		for (Ballistica ray : cone.outerRays){
+		for (Ballistic ray : cone.outerRays){
 			((MagicMissile)hero.sprite.parent.recycle( MagicMissile.class )).reset(
 					effectTypes.get(enchCls),
 					hero.sprite,
@@ -408,10 +408,10 @@ public class ElementalStrike extends ArmorAbility {
 			for (Char ch : affected){
 				if (ch == primaryTarget && oldEnemyPos != primaryTarget.pos) continue;
 
-				Ballistica aim = new Ballistica(hero.pos, ch.pos, Ballistica.WONT_STOP);
+				Ballistic aim = new Ballistic(hero.pos, ch.pos, Ballistic.WONT_STOP);
 				int knockback = Math.round(5*powerMulti);
 				WandOfBlastWave.throwChar(ch,
-						new Ballistica(ch.pos, aim.collisionPos, Ballistica.MAGIC_BOLT),
+						new Ballistic(ch.pos, aim.collisionPos, Ballistic.MAGIC_BOLT),
 						knockback,
 						true,
 						true,

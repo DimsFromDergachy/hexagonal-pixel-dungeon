@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ElmoParticle;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
@@ -100,8 +100,8 @@ public class GooSprite extends MobSprite {
 			for (int i = 0; i < Dungeon.level.length(); i++){
 				if (ch.fieldOfView != null && ch.fieldOfView[i]
 						&& Dungeon.level.distance(i, ch.pos) <= warnDist
-						&& new Ballistica( ch.pos, i, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID).collisionPos == i
-						&& new Ballistica( i, ch.pos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID | Ballistica.IGNORE_SOFT_SOLID).collisionPos == ch.pos){
+						&& new Ballistic( ch.pos, i, Ballistic.STOP_TARGET | Ballistic.STOP_SOLID | Ballistic.IGNORE_SOFT_SOLID).collisionPos == i
+						&& new Ballistic( i, ch.pos, Ballistic.STOP_TARGET | Ballistic.STOP_SOLID | Ballistic.IGNORE_SOFT_SOLID).collisionPos == ch.pos){
 					Emitter e = CellEmitter.get(i);
 					e.pour(GooParticle.FACTORY, 0.04f);
 					pumpUpEmitters.add(e);

@@ -58,7 +58,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.LloydsBeacon;
 import com.shatteredpixel.shatteredpixeldungeon.items.bombs.Bomb;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.PrisonBossLevel;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Plant;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -234,7 +234,7 @@ public class Tengu extends Mob {
 	
 	@Override
 	protected boolean canAttack( Char enemy ) {
-		return new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE).collisionPos == enemy.pos;
+		return new Ballistic( pos, enemy.pos, Ballistic.PROJECTILE).collisionPos == enemy.pos;
 	}
 	
 	private void jump() {
@@ -744,7 +744,7 @@ public class Tengu extends Mob {
 	
 	public static boolean throwFire(final Char thrower, final Char target){
 		
-		Ballistica aim = new Ballistica(thrower.pos, target.pos, Ballistica.WONT_STOP);
+		Ballistic aim = new Ballistic(thrower.pos, target.pos, Ballistic.WONT_STOP);
 		
 		for (int i = 0; i < PathFinder.CIRCLE8.length; i++){
 			if (aim.sourcePos+PathFinder.CIRCLE8[i] == aim.path.get(1)){

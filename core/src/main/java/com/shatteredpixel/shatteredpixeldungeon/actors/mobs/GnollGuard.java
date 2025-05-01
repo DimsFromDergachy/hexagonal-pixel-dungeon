@@ -25,7 +25,7 @@ import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.Spear;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollGuardSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -111,8 +111,8 @@ public class GnollGuard extends Mob {
 	protected boolean canAttack( Char enemy ) {
 		//cannot 'curve' spear hits like the hero, requires fairly open space to hit at a distance
 		return Dungeon.level.distance(enemy.pos, pos) <= 2
-				&& new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE).collisionPos == enemy.pos
-				&& new Ballistica( enemy.pos, pos, Ballistica.PROJECTILE).collisionPos == pos;
+				&& new Ballistic( pos, enemy.pos, Ballistic.PROJECTILE).collisionPos == enemy.pos
+				&& new Ballistic( enemy.pos, pos, Ballistic.PROJECTILE).collisionPos == pos;
 	}
 
 	@Override

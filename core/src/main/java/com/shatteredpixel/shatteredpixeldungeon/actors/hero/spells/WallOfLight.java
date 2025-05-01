@@ -36,7 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
@@ -235,7 +235,7 @@ public class WallOfLight extends TargetedClericSpell {
 
 			Char ch = Actor.findChar(pos);
 			if (ch != null && ch.alignment == Char.Alignment.ENEMY){
-				WandOfBlastWave.throwChar(ch, new Ballistica(pos, pos+knockbackDIR, Ballistica.PROJECTILE), 1, false, false, WallOfLight.INSTANCE);
+				WandOfBlastWave.throwChar(ch, new Ballistic(pos, pos+knockbackDIR, Ballistic.PROJECTILE), 1, false, false, WallOfLight.INSTANCE);
 				Buff.affect(ch, Paralysis.class, ch.cooldown());
 			}
 		}

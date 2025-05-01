@@ -54,7 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.artifacts.HolyTome;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.elixirs.ElixirOfAquaticRejuvenation;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.exotic.ScrollOfChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.enchantments.Kinetic;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Sungrass;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
@@ -74,7 +74,7 @@ public class MnemonicPrayer extends TargetedClericSpell {
 
 	@Override
 	public int targetingFlags() {
-		return Ballistica.STOP_TARGET;
+		return Ballistic.STOP_TARGET;
 	}
 
 	@Override

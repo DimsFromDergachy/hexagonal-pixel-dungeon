@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mob;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
@@ -72,7 +72,7 @@ public class GravityChaosTracker extends Buff {
 		if (!blocked.isEmpty()){
 			boolean blockedremoved = false;
 			for (Char ch : blocked.toArray(new Char[0])){
-				Ballistica path = new Ballistica(ch.pos, ch.pos + PathFinder.NEIGHBOURS8[idx], Ballistica.MAGIC_BOLT);
+				Ballistic path = new Ballistic(ch.pos, ch.pos + PathFinder.NEIGHBOURS8[idx], Ballistic.MAGIC_BOLT);
 				if (!(path.dist == 1 && Actor.findChar(path.collisionPos) != null)){
 					if (ch instanceof Hero) ((Hero) ch).interrupt();
 					WandOfBlastWave.throwChar(ch, path, 3, false, false, this);
@@ -105,7 +105,7 @@ public class GravityChaosTracker extends Buff {
 				if (ch instanceof Mob && ((Mob) ch).state == ((Mob) ch).SLEEPING){
 					((Mob) ch).state = ((Mob) ch).WANDERING;
 				}
-				Ballistica path = new Ballistica(ch.pos, ch.pos + PathFinder.NEIGHBOURS8[idx], Ballistica.MAGIC_BOLT);
+				Ballistic path = new Ballistic(ch.pos, ch.pos + PathFinder.NEIGHBOURS8[idx], Ballistic.MAGIC_BOLT);
 				if (path.dist == 1 && Actor.findChar(path.collisionPos) != null){
 					blocked.add(ch);
 				} else {

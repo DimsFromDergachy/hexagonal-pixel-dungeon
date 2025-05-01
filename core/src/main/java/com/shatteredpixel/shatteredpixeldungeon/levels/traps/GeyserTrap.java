@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Fire;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Burning;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
@@ -89,9 +89,9 @@ public class GeyserTrap extends Trap {
 					}
 
 					//trace a ballistica to our target (which will also extend past them)
-					Ballistica trajectory = new Ballistica(pos, ch.pos, Ballistica.STOP_TARGET);
+					Ballistic trajectory = new Ballistic(pos, ch.pos, Ballistic.STOP_TARGET);
 					//trim it to just be the part that goes past them
-					trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
+					trajectory = new Ballistic(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistic.PROJECTILE);
 					//knock them back along that ballistica
 					WandOfBlastWave.throwChar(ch, trajectory, 2, true, true, source);
 				}
@@ -133,7 +133,7 @@ public class GeyserTrap extends Trap {
 					ch.buff(Burning.class).detach();
 				}
 				//trace a ballistica in the direction of our target
-				Ballistica trajectory = new Ballistica(pos, targetpos, Ballistica.MAGIC_BOLT);
+				Ballistic trajectory = new Ballistic(pos, targetpos, Ballistic.MAGIC_BOLT);
 				//knock them back along that ballistica
 				WandOfBlastWave.throwChar(ch, trajectory, 2, true, true, source);
 			}

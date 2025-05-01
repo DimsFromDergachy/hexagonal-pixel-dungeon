@@ -38,7 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfMagicMapping;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
@@ -54,7 +54,7 @@ public class WandOfPrismaticLight extends DamageWand {
 	{
 		image = ItemSpriteSheet.WAND_PRISMATIC_LIGHT;
 
-		collisionProperties = Ballistica.MAGIC_BOLT;
+		collisionProperties = Ballistic.MAGIC_BOLT;
 	}
 
 	public int min(int lvl){
@@ -66,7 +66,7 @@ public class WandOfPrismaticLight extends DamageWand {
 	}
 
 	@Override
-	public void onZap(Ballistica beam) {
+	public void onZap(Ballistic beam) {
 		affectMap(beam);
 		
 		if (Dungeon.level.viewDistance < 6 ){
@@ -106,7 +106,7 @@ public class WandOfPrismaticLight extends DamageWand {
 
 	}
 
-	private void affectMap(Ballistica beam){
+	private void affectMap(Ballistic beam){
 		boolean noticed = false;
 		for (int c : beam.subPath(0, beam.dist)){
 			if (!Dungeon.level.insideMap(c)){
@@ -153,7 +153,7 @@ public class WandOfPrismaticLight extends DamageWand {
 	}
 
 	@Override
-	public void fx(Ballistica beam, Callback callback) {
+	public void fx(Ballistic beam, Callback callback) {
 		curUser.sprite.parent.add(
 				new Beam.LightRay(curUser.sprite.center(), DungeonTileMap.raisedTileCenterToWorld(beam.collisionPos)));
 		callback.call();

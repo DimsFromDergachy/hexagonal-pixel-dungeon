@@ -43,7 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportat
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -366,7 +366,7 @@ public class GnollGeomancer extends Mob {
 		}
 
 		//if spawn pos is more than 12 tiles away, get as close as possible
-		Ballistica path = new Ballistica(pos, dashPos, Ballistica.STOP_TARGET);
+		Ballistic path = new Ballistic(pos, dashPos, Ballistic.STOP_TARGET);
 
 		if (path.dist > 12){
 			dashPos = path.path.get(12);
@@ -390,7 +390,7 @@ public class GnollGeomancer extends Mob {
 			}
 		}
 
-		path = new Ballistica(pos, dashPos, Ballistica.STOP_TARGET);
+		path = new Ballistic(pos, dashPos, Ballistic.STOP_TARGET);
 
 		ArrayList<Integer> cells = new ArrayList<>(path.subPath(0, path.dist));
 		cells.addAll(spreadDiamondAOE(cells));
@@ -585,7 +585,7 @@ public class GnollGeomancer extends Mob {
 					int curbracket = HP / hpBracket;
 					if (curbracket == 3) curbracket--; //full HP isn't its own bracket
 
-					Ballistica aim = GnollGeomancer.prepRockThrowAttack(enemy, GnollGeomancer.this);
+					Ballistic aim = GnollGeomancer.prepRockThrowAttack(enemy, GnollGeomancer.this);
 					if (aim != null && (targetNextToBarricade || lastAbilityWasRockfall || Random.Int(2) == 0)) {
 
 						lastAbilityWasRockfall = false;
@@ -598,7 +598,7 @@ public class GnollGeomancer extends Mob {
 
 							throwingRocksFromPos[i] = aim.sourcePos;
 
-							Ballistica warnPath = new Ballistica(aim.sourcePos, aim.collisionPos, Ballistica.STOP_SOLID);
+							Ballistic warnPath = new Ballistic(aim.sourcePos, aim.collisionPos, Ballistic.STOP_SOLID);
 							for (int j : warnPath.subPath(0, warnPath.dist)){
 								sprite.parent.add(new TargetedCell(j, 0xFF0000));
 							}
@@ -629,12 +629,12 @@ public class GnollGeomancer extends Mob {
 
 	//*** These methods are public static as their logic is also accessed by gnoll sappers ***
 
-	public static Ballistica prepRockThrowAttack( Char target, Char source ){
+	public static Ballistic prepRockThrowAttack( Char target, Char source ){
 		ArrayList<Integer> candidateRocks = new ArrayList<>();
 
 		for (int i = 0; i < Dungeon.level.length(); i++){
 			if (source.fieldOfView[i] && Dungeon.level.map[i] == Terrain.MINE_BOULDER){
-				if (new Ballistica(i, target.pos, Ballistica.PROJECTILE).collisionPos == target.pos){
+				if (new Ballistic(i, target.pos, Ballistic.PROJECTILE).collisionPos == target.pos){
 					candidateRocks.add(i);
 				}
 			}
@@ -664,7 +664,7 @@ public class GnollGeomancer extends Mob {
 			}
 			int throwingToPos = target.pos;
 
-			return new Ballistica(throwingFromPos, throwingToPos, Ballistica.PROJECTILE);
+			return new Ballistic(throwingFromPos, throwingToPos, Ballistic.PROJECTILE);
 
 		}
 	}
@@ -684,7 +684,7 @@ public class GnollGeomancer extends Mob {
 			}
 		});
 
-		Ballistica rockPath = new Ballistica(from, to, Ballistica.MAGIC_BOLT);
+		Ballistic rockPath = new Ballistic(from, to, Ballistic.MAGIC_BOLT);
 
 		Sample.INSTANCE.play(Assets.Sounds.MISS);
 		((MissileSprite)source.sprite.parent.recycle( MissileSprite.class )).
@@ -713,7 +713,7 @@ public class GnollGeomancer extends Mob {
 							}
 
 							if (!knockedChars.contains(ch) && rockPath.path.size() > rockPath.dist+1) {
-								Ballistica trajectory = new Ballistica(ch.pos, rockPath.path.get(rockPath.dist + 1), Ballistica.MAGIC_BOLT);
+								Ballistic trajectory = new Ballistic(ch.pos, rockPath.path.get(rockPath.dist + 1), Ballistic.MAGIC_BOLT);
 								WandOfBlastWave.throwChar(ch, trajectory, 1, false, false, source);
 								knockedChars.add(ch);
 							}

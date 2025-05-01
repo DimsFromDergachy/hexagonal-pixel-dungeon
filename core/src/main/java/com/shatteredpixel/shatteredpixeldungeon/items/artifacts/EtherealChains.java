@@ -38,7 +38,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.rings.RingOfEnergy;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.MiningLevel;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -133,7 +133,7 @@ public class EtherealChains extends Artifact {
 					return;
 				}
 				
-				final Ballistica chain = new Ballistica(curUser.pos, target, Ballistica.STOP_TARGET);
+				final Ballistic chain = new Ballistic(curUser.pos, target, Ballistic.STOP_TARGET);
 				
 				if (Actor.findChar( chain.collisionPos ) != null){
 					chainEnemy( chain, curUser, Actor.findChar( chain.collisionPos ));
@@ -152,7 +152,7 @@ public class EtherealChains extends Artifact {
 	};
 	
 	//pulls an enemy to a position along the chain's path, as close to the hero as possible
-	private void chainEnemy( Ballistica chain, final Hero hero, final Char enemy ){
+	private void chainEnemy( Ballistic chain, final Hero hero, final Char enemy ){
 		
 		if (enemy.properties().contains(Char.Property.IMMOVABLE)) {
 			GLog.w( Messages.get(this, "cant_pull") );
@@ -214,7 +214,7 @@ public class EtherealChains extends Artifact {
 	}
 	
 	//pulls the hero along the chain to the collisionPos, if possible.
-	private void chainLocation( Ballistica chain, final Hero hero ){
+	private void chainLocation( Ballistic chain, final Hero hero ){
 
 		//don't pull if rooted
 		if (hero.rooted){

@@ -28,30 +28,30 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ballistica {
+public class Ballistic {
 
-	//note that the path is the FULL path of the projectile, including tiles after collision.
-	//make sure to generate a subPath for the common case of going source to collision.
+	// note that the path is the FULL path of the projectile, including tiles after collision.
+	// make sure to generate a subPath for the common case of going source to collision.
 	public ArrayList<Integer> path = new ArrayList<>();
 	public Integer sourcePos = null;
 	public Integer collisionPos = null;
 	public Integer collisionProperties = null;
 	public Integer dist = 0;
 
-	//parameters to specify the colliding cell
-	public static final int STOP_TARGET = 1;    //ballistica will stop at the target cell
-	public static final int STOP_CHARS = 2;     //ballistica will stop on first char hit
-	public static final int STOP_SOLID = 4;     //ballistica will stop on solid terrain
-	public static final int IGNORE_SOFT_SOLID = 8; //ballistica will ignore soft solid terrain, such as doors and webs
+	// parameters to specify the colliding cell
+	public static final int STOP_TARGET = 1;       // ballistic will stop at the target cell
+	public static final int STOP_CHARS = 2;        // ballistic will stop on first char hit
+	public static final int STOP_SOLID = 4;        // ballistic will stop on solid terrain
+	public static final int IGNORE_SOFT_SOLID = 8; // ballistic will ignore soft solid terrain, such as doors and webs
 
-	public static final int PROJECTILE =  	STOP_TARGET	| STOP_CHARS	| STOP_SOLID;
+	public static final int PROJECTILE =    STOP_TARGET | STOP_CHARS | STOP_SOLID;
 
 	public static final int MAGIC_BOLT =    STOP_CHARS  | STOP_SOLID;
 
 	public static final int WONT_STOP =     0;
 
 
-	public Ballistica( int from, int to, int params ){
+	public Ballistic( int from, int to, int params ){
 		sourcePos = from;
 		collisionProperties = params;
 		build(from, to,

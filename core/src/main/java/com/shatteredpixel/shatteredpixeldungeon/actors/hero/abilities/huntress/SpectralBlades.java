@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.abilities.ArmorAbili
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.Shuriken;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MissileSprite;
@@ -64,7 +64,7 @@ public class SpectralBlades extends ArmorAbility {
 			return;
 		}
 
-		Ballistica b = new Ballistica(hero.pos, target, Ballistica.WONT_STOP);
+		Ballistic b = new Ballistic(hero.pos, target, Ballistic.WONT_STOP);
 		final HashSet<Char> targets = new HashSet<>();
 
 		Char enemy = findChar(b, hero, 2*hero.pointsInTalent(Talent.PROJECTING_BLADES), targets);
@@ -78,7 +78,7 @@ public class SpectralBlades extends ArmorAbility {
 
 		if (hero.hasTalent(Talent.FAN_OF_BLADES)){
 			ConeAOE cone = new ConeAOE(b, 30*hero.pointsInTalent(Talent.FAN_OF_BLADES));
-			for (Ballistica ray : cone.rays){
+			for (Ballistic ray : cone.rays){
 				Char toAdd = findChar(ray, hero, 2*hero.pointsInTalent(Talent.PROJECTING_BLADES), targets);
 				if (toAdd != null && hero.fieldOfView[toAdd.pos]){
 					targets.add(toAdd);
@@ -135,7 +135,7 @@ public class SpectralBlades extends ArmorAbility {
 		hero.busy();
 	}
 
-	private Char findChar(Ballistica path, Hero hero, int wallPenetration, HashSet<Char> existingTargets){
+	private Char findChar(Ballistic path, Hero hero, int wallPenetration, HashSet<Char> existingTargets){
 		for (int cell : path.path){
 			Char ch = Actor.findChar(cell);
 			if (ch != null){

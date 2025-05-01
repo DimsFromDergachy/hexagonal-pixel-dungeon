@@ -54,7 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfLightning;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CityBossLevel;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -384,7 +384,7 @@ public class DwarfKing extends Mob {
 			float bestDist;
 			int bestPos = pos;
 
-			Ballistica trajectory = new Ballistica(enemy.pos, pos, Ballistica.STOP_TARGET);
+			Ballistic trajectory = new Ballistic(enemy.pos, pos, Ballistic.STOP_TARGET);
 			int targetCell = trajectory.path.get(trajectory.dist+1);
 			//if the position opposite the direction of the hero is open, go there
 			if (Actor.findChar(targetCell) == null && !Dungeon.level.solid[targetCell]){

@@ -37,7 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.Mimic;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
@@ -60,7 +60,7 @@ public class Shockwave extends ArmorAbility {
 
 	@Override
 	public int targetedPos(Char user, int dst) {
-		return new Ballistica( user.pos, dst, Ballistica.STOP_SOLID | Ballistica.STOP_TARGET ).collisionPos;
+		return new Ballistic( user.pos, dst, Ballistic.STOP_SOLID | Ballistic.STOP_TARGET ).collisionPos;
 	}
 
 	@Override
@@ -77,7 +77,7 @@ public class Shockwave extends ArmorAbility {
 		armor.charge -= chargeUse(hero);
 		Item.updateQuickslot();
 
-		Ballistica aim = new Ballistica(hero.pos, target, Ballistica.WONT_STOP);
+		Ballistic aim = new Ballistic(hero.pos, target, Ballistic.WONT_STOP);
 
 		int maxDist = 5 + hero.pointsInTalent(Talent.EXPANDING_WAVE);
 		int dist = Math.min(aim.dist, maxDist);
@@ -85,10 +85,10 @@ public class Shockwave extends ArmorAbility {
 		ConeAOE cone = new ConeAOE(aim,
 				dist,
 				60 + 15*hero.pointsInTalent(Talent.EXPANDING_WAVE),
-				Ballistica.STOP_SOLID | Ballistica.STOP_TARGET);
+				Ballistic.STOP_SOLID | Ballistic.STOP_TARGET);
 
 		//cast to cells at the tip, rather than all cells, better performance.
-		for (Ballistica ray : cone.outerRays){
+		for (Ballistic ray : cone.outerRays){
 			((MagicMissile)hero.sprite.parent.recycle( MagicMissile.class )).reset(
 					MagicMissile.FORCE_CONE,
 					hero.sprite,

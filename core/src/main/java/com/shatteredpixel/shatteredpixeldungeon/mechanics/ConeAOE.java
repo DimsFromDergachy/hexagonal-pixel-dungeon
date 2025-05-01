@@ -33,17 +33,17 @@ import java.util.LinkedHashSet;
 //a cone made of up several ballisticas scanning in an arc
 public class ConeAOE {
 
-	public Ballistica coreRay;
+	public Ballistic coreRay;
 
-	public ArrayList<Ballistica> outerRays = new ArrayList<>();
-	public ArrayList<Ballistica> rays = new ArrayList<>();
+	public ArrayList<Ballistic> outerRays = new ArrayList<>();
+	public ArrayList<Ballistic> rays = new ArrayList<>();
 	public HashSet<Integer> cells = new HashSet<>();
 
-	public ConeAOE( Ballistica core, float degrees ){
+	public ConeAOE( Ballistic core, float degrees ){
 		this( core, Float.POSITIVE_INFINITY, degrees, core.collisionProperties );
 	}
 
-	public ConeAOE( Ballistica core, float maxDist, float degrees, int ballisticaParams ){
+	public ConeAOE( Ballistic core, float maxDist, float degrees, int ballisticaParams ){
 
 		coreRay = core;
 
@@ -103,7 +103,7 @@ public class ConeAOE {
 		//cast a ray to each found cell, these make up the cone
 		//we don't add the core ray as its collision properties may differ from the cone
 		for( int c : targetCells ){
-			Ballistica ray = new Ballistica(core.sourcePos, c, ballisticaParams);
+			Ballistic ray = new Ballistic(core.sourcePos, c, ballisticaParams);
 			cells.addAll(ray.subPath(1, ray.dist));
 			rays.add(ray);
 			if (outerCells.contains(c)){

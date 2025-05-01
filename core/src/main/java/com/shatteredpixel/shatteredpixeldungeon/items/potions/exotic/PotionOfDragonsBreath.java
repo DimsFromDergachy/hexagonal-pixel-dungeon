@@ -37,7 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
@@ -134,15 +134,15 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 						curUser.sprite.zap(cell);
 						Sample.INSTANCE.play( Assets.Sounds.BURNING );
 
-						final Ballistica bolt = new Ballistica(curUser.pos, cell, Ballistica.WONT_STOP);
+						final Ballistic bolt = new Ballistic(curUser.pos, cell, Ballistic.WONT_STOP);
 
 						int maxDist = 6;
 						int dist = Math.min(bolt.dist, maxDist);
 
-						final ConeAOE cone = new ConeAOE(bolt, 6, 60, Ballistica.STOP_SOLID | Ballistica.STOP_TARGET | Ballistica.IGNORE_SOFT_SOLID);
+						final ConeAOE cone = new ConeAOE(bolt, 6, 60, Ballistic.STOP_SOLID | Ballistic.STOP_TARGET | Ballistic.IGNORE_SOFT_SOLID);
 
 						//cast to cells at the tip, rather than all cells, better performance.
-						for (Ballistica ray : cone.outerRays){
+						for (Ballistic ray : cone.outerRays){
 							((MagicMissile)curUser.sprite.parent.recycle( MagicMissile.class )).reset(
 									MagicMissile.FIRE_CONE,
 									curUser.sprite,

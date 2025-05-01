@@ -35,7 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.armor.ClassArmor;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WondrousResin;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -133,7 +133,7 @@ public class WildMagic extends ArmorAbility {
 	private void zapWand( ArrayList<Wand> wands, Hero hero, int cell){
 		Wand cur = wands.remove(0);
 
-		Ballistica aim = new Ballistica(hero.pos, cell, cur.collisionProperties(cell));
+		Ballistic aim = new Ballistic(hero.pos, cell, cur.collisionProperties(cell));
 
 		hero.sprite.zap(cell);
 
@@ -153,7 +153,7 @@ public class WildMagic extends ArmorAbility {
 										WondrousResin.forcePositive = true;
 										CursedWand.cursedZap(cur,
 												hero,
-												new Ballistica(hero.pos, cell, Ballistica.MAGIC_BOLT),
+												new Ballistic(hero.pos, cell, Ballistic.MAGIC_BOLT),
 												new Callback() {
 													@Override
 													public void call() {
@@ -171,7 +171,7 @@ public class WildMagic extends ArmorAbility {
 								WondrousResin.forcePositive = true;
 								CursedWand.cursedZap(cur,
 										hero,
-										new Ballistica(hero.pos, cell, Ballistica.MAGIC_BOLT),
+										new Ballistic(hero.pos, cell, Ballistic.MAGIC_BOLT),
 										new Callback() {
 											@Override
 											public void call() {
@@ -189,7 +189,7 @@ public class WildMagic extends ArmorAbility {
 			} else {
 				CursedWand.cursedZap(cur,
 						hero,
-						new Ballistica(hero.pos, cell, Ballistica.MAGIC_BOLT),
+						new Ballistic(hero.pos, cell, Ballistic.MAGIC_BOLT),
 						new Callback() {
 							@Override
 							public void call() {

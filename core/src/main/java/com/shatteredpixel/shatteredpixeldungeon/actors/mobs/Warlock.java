@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.stones.StoneOfAggression;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.WarlockSprite;
@@ -79,13 +79,13 @@ public class Warlock extends Mob implements Callback {
 	@Override
 	protected boolean canAttack( Char enemy ) {
 		return super.canAttack(enemy)
-				|| new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
+				|| new Ballistic( pos, enemy.pos, Ballistic.MAGIC_BOLT).collisionPos == enemy.pos;
 	}
 	
 	protected boolean doAttack( Char enemy ) {
 
 		if (Dungeon.level.adjacent( pos, enemy.pos )
-				|| new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos != enemy.pos) {
+				|| new Ballistic( pos, enemy.pos, Ballistic.MAGIC_BOLT).collisionPos != enemy.pos) {
 			
 			return super.doAttack( enemy );
 			

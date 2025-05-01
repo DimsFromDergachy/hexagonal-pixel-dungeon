@@ -55,7 +55,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.ShardOfOblivion;
 import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WondrousResin;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.melee.MagesStaff;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -93,7 +93,7 @@ public abstract class Wand extends Item {
 	private float usesLeftToID = USES_TO_ID;
 	private float availableUsesToID = USES_TO_ID/2f;
 
-	protected int collisionProperties = Ballistica.MAGIC_BOLT;
+	protected int collisionProperties = Ballistic.MAGIC_BOLT;
 	
 	{
 		defaultAction = AC_ZAP;
@@ -128,13 +128,13 @@ public abstract class Wand extends Item {
 	@Override
 	public int targetingPos(Hero user, int dst) {
 		if (cursed && cursedKnown){
-			return new Ballistica(user.pos, dst, Ballistica.MAGIC_BOLT).collisionPos;
+			return new Ballistic(user.pos, dst, Ballistic.MAGIC_BOLT).collisionPos;
 		} else {
-			return new Ballistica(user.pos, dst, collisionProperties).collisionPos;
+			return new Ballistic(user.pos, dst, collisionProperties).collisionPos;
 		}
 	}
 
-	public abstract void onZap(Ballistica attack);
+	public abstract void onZap(Ballistic attack);
 
 	public abstract void onHit( MagesStaff staff, Char attacker, Char defender, int damage);
 
@@ -436,7 +436,7 @@ public abstract class Wand extends Item {
 		return 1;
 	}
 	
-	public void fx(Ballistica bolt, Callback callback) {
+	public void fx(Ballistic bolt, Callback callback) {
 		MagicMissile.boltFromChar( curUser.sprite.parent,
 				MagicMissile.MAGIC_MISSILE,
 				curUser.sprite,
@@ -632,7 +632,7 @@ public abstract class Wand extends Item {
 	}
 
 	public int collisionProperties(int target){
-		if (cursed)     return Ballistica.MAGIC_BOLT;
+		if (cursed)     return Ballistic.MAGIC_BOLT;
 		else            return collisionProperties;
 	}
 
@@ -648,7 +648,7 @@ public abstract class Wand extends Item {
 		}
 
 		@Override
-		public void onZap(Ballistica attack) {}
+		public void onZap(Ballistic attack) {}
 		public void onHit(MagesStaff staff, Char attacker, Char defender, int damage) {}
 
 		@Override
@@ -673,7 +673,7 @@ public abstract class Wand extends Item {
 					return;
 				}
 
-				final Ballistica shot = new Ballistica( curUser.pos, target, curWand.collisionProperties(target));
+				final Ballistic shot = new Ballistic( curUser.pos, target, curWand.collisionProperties(target));
 				int cell = shot.collisionPos;
 				
 				if (target == curUser.pos || cell == curUser.pos) {
@@ -753,7 +753,7 @@ public abstract class Wand extends Item {
 						}
 						CursedWand.cursedZap(curWand,
 								curUser,
-								new Ballistica(curUser.pos, target, Ballistica.MAGIC_BOLT),
+								new Ballistic(curUser.pos, target, Ballistic.MAGIC_BOLT),
 								new Callback() {
 									@Override
 									public void call() {
@@ -768,7 +768,7 @@ public abstract class Wand extends Item {
 									WondrousResin.forcePositive = true;
 									CursedWand.cursedZap(curWand,
 											curUser,
-											new Ballistica(curUser.pos, target, Ballistica.MAGIC_BOLT), new Callback() {
+											new Ballistic(curUser.pos, target, Ballistic.MAGIC_BOLT), new Callback() {
 												@Override
 												public void call() {
 													WondrousResin.forcePositive = false;

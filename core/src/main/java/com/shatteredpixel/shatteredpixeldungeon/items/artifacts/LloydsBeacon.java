@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -202,7 +202,7 @@ public class LloydsBeacon extends Artifact {
 				ScrollOfTeleportation.teleportChar(curUser);
 				curUser.spendAndNext(1f);
 			} else {
-				final Ballistica bolt = new Ballistica( curUser.pos, target, Ballistica.MAGIC_BOLT );
+				final Ballistic bolt = new Ballistic( curUser.pos, target, Ballistic.MAGIC_BOLT );
 				final Char ch = Actor.findChar(bolt.collisionPos);
 
 				if (ch == curUser){

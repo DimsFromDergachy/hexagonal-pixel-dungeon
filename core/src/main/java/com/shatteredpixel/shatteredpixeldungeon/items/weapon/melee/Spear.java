@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
@@ -111,9 +111,9 @@ public class Spear extends MeleeWeapon {
 				if (hero.attack(enemy, dmgMulti, dmgBoost, Char.INFINITE_ACCURACY)) {
 					if (enemy.isAlive() && enemy.pos == oldPos && !Pushing.pushingExistsForChar(enemy)){
 						//trace a ballistica to our target (which will also extend past them
-						Ballistica trajectory = new Ballistica(hero.pos, enemy.pos, Ballistica.STOP_TARGET);
+						Ballistic trajectory = new Ballistic(hero.pos, enemy.pos, Ballistic.STOP_TARGET);
 						//trim it to just be the part that goes past them
-						trajectory = new Ballistica(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistica.PROJECTILE);
+						trajectory = new Ballistic(trajectory.collisionPos, trajectory.path.get(trajectory.path.size() - 1), Ballistic.PROJECTILE);
 						//knock them back along that ballistica
 						WandOfBlastWave.throwChar(enemy, trajectory, 1, true, false, hero);
 					} else if (!enemy.isAlive()) {

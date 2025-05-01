@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.quest.MetalShard;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfRecharging;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
@@ -51,12 +51,12 @@ public class WildEnergy extends TargetedSpell {
 	
 	//we rely on cursedWand to do fx instead
 	@Override
-	protected void fx(Ballistica bolt, Callback callback) {
+	protected void fx(Ballistic bolt, Callback callback) {
 		CursedWand.cursedZap(this, curUser, bolt, callback);
 	}
 	
 	@Override
-	protected void affectTarget(Ballistica bolt, final Hero hero) {
+	protected void affectTarget(Ballistic bolt, final Hero hero) {
 		Sample.INSTANCE.play( Assets.Sounds.LIGHTNING );
 		Sample.INSTANCE.play( Assets.Sounds.CHARGEUP );
 		ScrollOfRecharging.charge(hero);

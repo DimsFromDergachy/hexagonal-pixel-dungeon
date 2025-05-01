@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.trinkets.WondrousResin;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.CursedWand;
 import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.MissileWeapon;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -122,7 +122,7 @@ public class MindForm extends ClericSpell {
 				Wand wand = wand();
 				if (wand.tryToZap(Dungeon.hero, target)) {
 
-					final Ballistica shot = new Ballistica( Dungeon.hero.pos, target, wand.collisionProperties(target));
+					final Ballistic shot = new Ballistic( Dungeon.hero.pos, target, wand.collisionProperties(target));
 					int cell = shot.collisionPos;
 
 					if (target == Dungeon.hero.pos || cell == Dungeon.hero.pos) {
@@ -145,7 +145,7 @@ public class MindForm extends ClericSpell {
 								WondrousResin.forcePositive = true;
 								CursedWand.cursedZap(wand,
 										Dungeon.hero,
-										new Ballistica(Dungeon.hero.pos, cell, Ballistica.MAGIC_BOLT), new Callback() {
+										new Ballistic(Dungeon.hero.pos, cell, Ballistic.MAGIC_BOLT), new Callback() {
 											@Override
 											public void call() {
 												WondrousResin.forcePositive = false;

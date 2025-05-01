@@ -39,7 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.Dart
 import com.shatteredpixel.shatteredpixeldungeon.items.weapon.missiles.darts.TippedDart;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -622,7 +622,7 @@ public class Item implements Bundlable {
 	}
 
 	public int throwPos( Hero user, int dst){
-		return new Ballistica( user.pos, dst, Ballistica.PROJECTILE ).collisionPos;
+		return new Ballistic( user.pos, dst, Ballistic.PROJECTILE ).collisionPos;
 	}
 
 	public void throwSound(){

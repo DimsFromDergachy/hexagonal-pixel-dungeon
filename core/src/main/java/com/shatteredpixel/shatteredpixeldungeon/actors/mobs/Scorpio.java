@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.Potion;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfStrength;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ScorpioSprite;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
@@ -72,7 +72,7 @@ public class Scorpio extends Mob {
 	@Override
 	protected boolean canAttack( Char enemy ) {
 		return !Dungeon.level.adjacent( pos, enemy.pos )
-				&& (super.canAttack(enemy) || new Ballistica( pos, enemy.pos, Ballistica.PROJECTILE).collisionPos == enemy.pos);
+				&& (super.canAttack(enemy) || new Ballistic( pos, enemy.pos, Ballistic.PROJECTILE).collisionPos == enemy.pos);
 	}
 	
 	@Override

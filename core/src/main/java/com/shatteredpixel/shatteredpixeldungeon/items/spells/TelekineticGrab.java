@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.items.Heap;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.LiquidMetal;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
@@ -48,7 +48,7 @@ public class TelekineticGrab extends TargetedSpell {
 	}
 
 	@Override
-	protected void fx(Ballistica bolt, Callback callback) {
+	protected void fx(Ballistic bolt, Callback callback) {
 		MagicMissile.boltFromChar( curUser.sprite.parent,
 				MagicMissile.BEACON,
 				curUser.sprite,
@@ -58,7 +58,7 @@ public class TelekineticGrab extends TargetedSpell {
 	}
 
 	@Override
-	protected void affectTarget(Ballistica bolt, Hero hero) {
+	protected void affectTarget(Ballistic bolt, Hero hero) {
 		Char ch = Actor.findChar(bolt.collisionPos);
 
 		//special logic for DK when he is on his throne

@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Invisibility;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SparkParticle;
 import com.shatteredpixel.shatteredpixeldungeon.items.Generator;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
@@ -75,7 +75,7 @@ public class DM100 extends Mob implements Callback {
 	@Override
 	protected boolean canAttack( Char enemy ) {
 		return super.canAttack(enemy)
-				|| new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos == enemy.pos;
+				|| new Ballistic( pos, enemy.pos, Ballistic.MAGIC_BOLT).collisionPos == enemy.pos;
 	}
 	
 	//used so resistances can differentiate between melee and magical attacks
@@ -85,7 +85,7 @@ public class DM100 extends Mob implements Callback {
 	protected boolean doAttack( Char enemy ) {
 
 		if (Dungeon.level.adjacent( pos, enemy.pos )
-				|| new Ballistica( pos, enemy.pos, Ballistica.MAGIC_BOLT).collisionPos != enemy.pos) {
+				|| new Ballistic( pos, enemy.pos, Ballistic.MAGIC_BOLT).collisionPos != enemy.pos) {
 			
 			return super.doAttack( enemy );
 			

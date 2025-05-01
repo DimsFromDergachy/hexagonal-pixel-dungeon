@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Dread;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Poison;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Terror;
 import com.shatteredpixel.shatteredpixeldungeon.items.food.MysteryMeat;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SpinnerSprite;
 import com.watabou.utils.Bundle;
@@ -143,12 +143,12 @@ public class Spinner extends Mob {
 			return -1;
 		}
 		
-		Ballistica b;
+		Ballistic b;
 		//aims web in direction enemy is moving, or between self and enemy if they aren't moving
 		if (lastEnemyPos == enemy.pos){
-			b = new Ballistica( enemy.pos, pos, Ballistica.WONT_STOP );
+			b = new Ballistic( enemy.pos, pos, Ballistic.WONT_STOP );
 		} else {
-			b = new Ballistica( lastEnemyPos, enemy.pos, Ballistica.WONT_STOP );
+			b = new Ballistic( lastEnemyPos, enemy.pos, Ballistic.WONT_STOP );
 		}
 		
 		int collisionIndex = 0;
@@ -167,7 +167,7 @@ public class Spinner extends Mob {
 		int webPos = b.path.get( collisionIndex+1 );
 
 		//ensure we aren't shooting the web through walls
-		int projectilePos = new Ballistica( pos, webPos, Ballistica.STOP_TARGET | Ballistica.STOP_SOLID).collisionPos;
+		int projectilePos = new Ballistic( pos, webPos, Ballistic.STOP_TARGET | Ballistic.STOP_SOLID).collisionPos;
 		
 		if (webPos != enemy.pos && projectilePos == webPos && Dungeon.level.passable[webPos]){
 			return webPos;

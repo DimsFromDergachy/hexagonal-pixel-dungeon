@@ -54,7 +54,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.WandOfBlastWave;
 import com.shatteredpixel.shatteredpixeldungeon.levels.CavesBossLevel;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.mechanics.ConeAOE;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -205,7 +205,7 @@ public class DM300 extends Mob {
 					//try to fire gas at an enemy we can't reach
 					if (turnsSinceLastAbility >= MIN_COOLDOWN){
 						//use a coneAOE to try and account for trickshotting angles
-						ConeAOE aim = new ConeAOE(new Ballistica(pos, enemy.pos, Ballistica.WONT_STOP), Float.POSITIVE_INFINITY, 30, Ballistica.STOP_SOLID);
+						ConeAOE aim = new ConeAOE(new Ballistic(pos, enemy.pos, Ballistic.WONT_STOP), Float.POSITIVE_INFINITY, 30, Ballistic.STOP_SOLID);
 						if (aim.cells.contains(enemy.pos) && !Char.hasProp(enemy, Property.INORGANIC)) {
 							lastAbility = GAS;
 							turnsSinceLastAbility = 0;
@@ -375,7 +375,7 @@ public class DM300 extends Mob {
 
 		int gasVented = 0;
 
-		Ballistica trajectory = new Ballistica(pos, target.pos, Ballistica.STOP_TARGET);
+		Ballistic trajectory = new Ballistic(pos, target.pos, Ballistic.STOP_TARGET);
 
 		int gasMulti = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 2 : 1;
 
@@ -409,7 +409,7 @@ public class DM300 extends Mob {
 		//knock back 2 tiles if adjacent
 		if (Dungeon.level.adjacent(pos, target.pos)){
 			int oppositeAdjacent = target.pos + (target.pos - pos);
-			Ballistica trajectory = new Ballistica(target.pos, oppositeAdjacent, Ballistica.MAGIC_BOLT);
+			Ballistic trajectory = new Ballistic(target.pos, oppositeAdjacent, Ballistic.MAGIC_BOLT);
 			WandOfBlastWave.throwChar(target, trajectory, 2, false, false, this);
 			if (target == Dungeon.hero){
 				Dungeon.hero.interrupt();
@@ -419,7 +419,7 @@ public class DM300 extends Mob {
 		//knock back 1 tile if there's 1 tile of space
 		} else if (fieldOfView[target.pos] && Dungeon.level.distance(pos, target.pos) == 2) {
 			int oppositeAdjacent = target.pos + (target.pos - pos);
-			Ballistica trajectory = new Ballistica(target.pos, oppositeAdjacent, Ballistica.MAGIC_BOLT);
+			Ballistic trajectory = new Ballistic(target.pos, oppositeAdjacent, Ballistic.MAGIC_BOLT);
 			WandOfBlastWave.throwChar(target, trajectory, 1, false, false, this);
 			if (target == Dungeon.hero){
 				Dungeon.hero.interrupt();

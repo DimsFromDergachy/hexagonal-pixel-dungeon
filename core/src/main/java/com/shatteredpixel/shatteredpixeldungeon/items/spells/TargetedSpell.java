@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Talent;
 import com.shatteredpixel.shatteredpixeldungeon.effects.MagicMissile;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -39,16 +39,16 @@ import com.watabou.utils.Random;
 
 public abstract class TargetedSpell extends Spell {
 	
-	protected int collisionProperties = Ballistica.PROJECTILE;
+	protected int collisionProperties = Ballistic.PROJECTILE;
 	
 	@Override
 	protected void onCast(Hero hero) {
 		GameScene.selectCell(targeter);
 	}
 	
-	protected abstract void affectTarget( Ballistica bolt, Hero hero );
+	protected abstract void affectTarget( Ballistic bolt, Hero hero );
 	
-	protected void fx( Ballistica bolt, Callback callback ) {
+	protected void fx( Ballistic bolt, Callback callback ) {
 		MagicMissile.boltFromChar( curUser.sprite.parent,
 				MagicMissile.MAGIC_MISSILE,
 				curUser.sprite,
@@ -73,7 +73,7 @@ public abstract class TargetedSpell extends Spell {
 					return;
 				}
 				
-				final Ballistica shot = new Ballistica( curUser.pos, target, curSpell.collisionProperties);
+				final Ballistic shot = new Ballistic( curUser.pos, target, curSpell.collisionProperties);
 				int cell = shot.collisionPos;
 				
 				curUser.sprite.zap(cell);
