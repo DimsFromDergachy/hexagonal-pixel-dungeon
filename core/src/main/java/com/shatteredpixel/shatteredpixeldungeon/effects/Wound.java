@@ -43,18 +43,13 @@ public class Wound extends Image {
 	
 	public void reset( int p ) {
 		revive();
-
-		x = (p % Dungeon.level.width()) * DungeonTileMap.SIZE + (DungeonTileMap.SIZE - width) / 2;
-		y = (p / Dungeon.level.width()) * DungeonTileMap.SIZE + (DungeonTileMap.SIZE - height) / 2;
-		
+		point( DungeonTileMap.tileToWorld( p ) );
 		time = TIME_TO_FADE;
 	}
 
 	public void reset(Visual v) {
 		revive();
-
-		point(v.center(this));
-
+		point( v.center(this) );
 		time = TIME_TO_FADE;
 	}
 	
