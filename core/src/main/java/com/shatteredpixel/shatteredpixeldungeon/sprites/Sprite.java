@@ -56,22 +56,21 @@ public class Sprite extends MovieClip {
 	}
 
 	public PointF worldToCamera( int cell ) {
-		final int size = DungeonTileMap.SIZE;
 
 		int posX = cell % Dungeon.level.width();
 		int posY = cell / Dungeon.level.width();
 
 		if (HexMath.HEX_MODE)
-			return new PointF(
-				PixelScene.align(Camera.main, HexMath.RATIO * ((posX + 0.5f) * 18 - width() * 0.5f)),
-				PixelScene.align(Camera.main, (1f + posY + (posX & 1) * 0.5f) * size - height() - size * perspectiveRaise)
-			);
-		else
+			return DungeonTileMap.tileCenterToWorld( cell )
+				.offset( - width() / 2f , - height() / 2f - height() * perspectiveRaise);
+		else {
+			final int size = DungeonTileMap.SIZE;
 			return new PointF(
 				PixelScene.align(Camera.main, (posX + 0.5f) * size - width() * 0.5f),
 				PixelScene.align(Camera.main, (posY + 1.0f) * size - height() - size * perspectiveRaise)
 			);
 		}
+	}
 
 	public void place( int cell ) {
 		point( worldToCamera( cell ) );
