@@ -28,6 +28,7 @@ import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.NoosaScriptNoLighting;
+import com.watabou.utils.HexMath;
 import com.watabou.utils.Rect;
 
 import java.util.ArrayList;
@@ -106,7 +107,7 @@ public class FogOfWar extends Image {
 			height2 <<= 1;
 		}
 
-		width  = width2  * DungeonTileMap.WIDTH / PIX_PER_TILE;
+		width  = width2  * HexMath.RATIO * DungeonTileMap.WIDTH / PIX_PER_TILE;
 		height = height2 * DungeonTileMap.HEIGHT / PIX_PER_TILE;
 
 		String key = "FogOfWar" + width2 + "x" + height2;
@@ -118,7 +119,7 @@ public class FogOfWar extends Image {
 
 		texture.bind();
 
-		scale.set( DungeonTileMap.WIDTH / PIX_PER_TILE, DungeonTileMap.HEIGHT / PIX_PER_TILE );
+		scale.set( HexMath.RATIO * DungeonTileMap.WIDTH / PIX_PER_TILE, DungeonTileMap.HEIGHT / PIX_PER_TILE );
 
 		toUpdate = new ArrayList<>();
 		toUpdate.add(new Rect(0, 0, mapWidth, mapHeight));
