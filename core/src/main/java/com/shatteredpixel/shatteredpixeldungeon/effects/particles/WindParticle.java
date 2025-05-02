@@ -83,7 +83,7 @@ public class WindParticle extends PixelParticle {
 
 			this.pos = pos;
 			PointF p = DungeonTileMap.tileToWorld( pos );
-			pos(p.x, p.y, DungeonTileMap.SIZE, DungeonTileMap.SIZE);
+			pos(p.x, p.y, DungeonTileMap.WIDTH, DungeonTileMap.HEIGHT);
 			
 			pour(FACTORY, 2.5f);
 		}

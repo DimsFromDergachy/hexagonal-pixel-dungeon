@@ -39,7 +39,7 @@ import java.util.ArrayList;
 public class FloatingText extends RenderedTextBlock {
 
 	private static final float LIFESPAN	= 1f;
-	private static final float DISTANCE	= DungeonTileMap.SIZE;
+	private static final float DISTANCE	= DungeonTileMap.HEIGHT;
 
 	public static final int ICON_SIZE = 7;
 	public static TextureFilm iconFilm = new TextureFilm( Assets.Effects.TEXT_ICONS, ICON_SIZE, ICON_SIZE );

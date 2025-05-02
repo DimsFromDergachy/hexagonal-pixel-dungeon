@@ -244,9 +244,9 @@ public class SewerLevel extends RegularLevel {
 				super.update();
 				
 				if (!isFrozen() && (rippleDelay -= Game.elapsed) <= 0) {
-					Ripple ripple = GameScene.ripple( pos + Dungeon.level.width() );
+					Ripple ripple = GameScene.ripple( pos + Dungeon.level.width() ); // TODO: DT - Check coordinates!
 					if (ripple != null) {
-						ripple.y -= DungeonTileMap.SIZE / 2;
+						ripple.y -= DungeonTileMap.HEIGHT / 2;
 						rippleDelay = Random.Float(0.4f, 0.6f);
 					}
 				}

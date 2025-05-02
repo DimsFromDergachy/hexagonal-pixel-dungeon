@@ -284,14 +284,14 @@ public class CavesLevel extends RegularLevel {
 					if (includeOverhang && !DungeonTileSheet.wallStitcheable(Dungeon.level.map[pos-Dungeon.level.width()])){
 						//also sparkles in the bottom 1/2 of the upper tile. Increases particle frequency by 50% accordingly.
 						delay *= 0.67f;
-						p.y -= DungeonTileMap.SIZE/2f;
+						p.y -= DungeonTileMap.HEIGHT/2f;
 						((Sparkle)recycle( Sparkle.class )).reset(
-								p.x + Random.Float( DungeonTileMap.SIZE ),
-								p.y + Random.Float( DungeonTileMap.SIZE*1.5f ) );
+								p.x + Random.Float( DungeonTileMap.WIDTH ),
+								p.y + Random.Float( DungeonTileMap.HEIGHT*1.5f ) );
 					} else {
 						((Sparkle)recycle( Sparkle.class )).reset(
-								p.x + Random.Float( DungeonTileMap.SIZE ),
-								p.y + Random.Float( DungeonTileMap.SIZE ) );
+								p.x + Random.Float( DungeonTileMap.WIDTH ),
+								p.y + Random.Float( DungeonTileMap.HEIGHT ) );
 					}
 				}
 			}

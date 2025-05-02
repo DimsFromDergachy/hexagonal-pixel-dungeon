@@ -38,8 +38,8 @@ public class CheckedCell extends Image {
 		origin.set( 0.5f );
 		
 		point( DungeonTileMap.tileToWorld( pos ).offset(
-			DungeonTileMap.SIZE / 2,
-			DungeonTileMap.SIZE / 2 ) );
+			DungeonTileMap.WIDTH / 2,
+			DungeonTileMap.HEIGHT / 2 ) );
 		
 		alpha = 0.8f;
 	}
@@ -60,7 +60,7 @@ public class CheckedCell extends Image {
 			alpha( 0 );
 		} else if ((alpha -= Game.elapsed) > 0) {
 			alpha( alpha );
-			scale.set( DungeonTileMap.SIZE * alpha );
+			scale.set( DungeonTileMap.WIDTH * alpha, DungeonTileMap.HEIGHT * alpha );
 		} else {
 			killAndErase();
 		}

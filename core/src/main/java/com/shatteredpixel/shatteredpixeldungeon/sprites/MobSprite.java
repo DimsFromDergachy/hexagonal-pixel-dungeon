@@ -57,7 +57,7 @@ public class MobSprite extends CharSprite {
 	
 	public void fall() {
 		
-		origin.set( width / 2, height - DungeonTileMap.SIZE / 2 );
+		origin.set( width / 2, height - DungeonTileMap.HEIGHT / 2 );
 		angularSpeed = Random.Int( 2 ) == 0 ? -720 : 720;
 		am = 1;
 

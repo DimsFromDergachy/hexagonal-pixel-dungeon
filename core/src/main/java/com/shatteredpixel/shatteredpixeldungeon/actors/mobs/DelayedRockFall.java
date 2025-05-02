@@ -85,7 +85,7 @@ public class DelayedRockFall extends FlavourBuff {
 		if (on && rockPositions != null){
 			for (int i : this.rockPositions){
 				Emitter e = CellEmitter.get(i);
-				e.y -= DungeonTileMap.SIZE*0.2f;
+				e.y -= DungeonTileMap.HEIGHT * 0.2f;
 				e.height *= 0.4f;
 				e.pour(EarthParticle.FALLING, 0.1f);
 				rockEmitters.add(e);

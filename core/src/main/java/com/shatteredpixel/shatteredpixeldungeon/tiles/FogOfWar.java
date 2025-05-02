@@ -106,9 +106,8 @@ public class FogOfWar extends Image {
 			height2 <<= 1;
 		}
 
-		float size = DungeonTileMap.SIZE / PIX_PER_TILE;
-		width = width2 * size;
-		height = height2 * size;
+		width  = width2  * DungeonTileMap.WIDTH / PIX_PER_TILE;
+		height = height2 * DungeonTileMap.HEIGHT / PIX_PER_TILE;
 
 		String key = "FogOfWar" + width2 + "x" + height2;
 		texture(TextureCache.create(key, width2, height2));
@@ -119,7 +118,7 @@ public class FogOfWar extends Image {
 
 		texture.bind();
 
-		scale.set( size, size );
+		scale.set( DungeonTileMap.WIDTH / PIX_PER_TILE, DungeonTileMap.HEIGHT / PIX_PER_TILE );
 
 		toUpdate = new ArrayList<>();
 		toUpdate.add(new Rect(0, 0, mapWidth, mapHeight));

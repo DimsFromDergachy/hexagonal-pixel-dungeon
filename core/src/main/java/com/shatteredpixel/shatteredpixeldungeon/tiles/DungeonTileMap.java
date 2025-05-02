@@ -146,11 +146,11 @@ public abstract class DungeonTileMap extends HexTileMap {
 	}
 
 	public static PointF tileCenterToWorld( int pos ) {
-		return tileToWorld(pos, 0.5f * SIZE, 0.5f * SIZE);
+		return tileToWorld(pos, 0.5f * WIDTH, 0.5f * HEIGHT);
 	}
 
 	public static PointF raisedTileCenterToWorld( int pos ) {
-		return tileToWorld(pos, 0.5f * SIZE, 0.1f * SIZE);
+		return tileToWorld(pos, 0.5f * WIDTH, 0.1f * HEIGHT);
 	}
 	
 	@Override

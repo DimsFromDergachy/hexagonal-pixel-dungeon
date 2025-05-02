@@ -237,8 +237,8 @@ public class GameScene extends PixelScene {
 		add( terrain );
 
 		water = new SkinnedBlock(
-			Dungeon.level.width() * DungeonTileMap.SIZE,
-			Dungeon.level.height() * DungeonTileMap.SIZE,
+			Dungeon.level.width() * DungeonTileMap.WIDTH,
+			Dungeon.level.height() * DungeonTileMap.HEIGHT,
 			Dungeon.level.waterTex() ){
 
 			@Override
@@ -458,10 +458,10 @@ public class GameScene extends PixelScene {
 
 		switch (InterlevelScene.mode){
 			case FALL: case DESCEND: case CONTINUE:
-				Camera.main.snapTo(hero.center().x, hero.center().y - DungeonTileMap.SIZE * (defaultZoom/Camera.main.zoom));
+				Camera.main.snapTo(hero.center().x, hero.center().y - DungeonTileMap.HEIGHT * (defaultZoom/Camera.main.zoom));
 				break;
 			case ASCEND:
-				Camera.main.snapTo(hero.center().x, hero.center().y + DungeonTileMap.SIZE * (defaultZoom/Camera.main.zoom));
+				Camera.main.snapTo(hero.center().x, hero.center().y + DungeonTileMap.HEIGHT * (defaultZoom/Camera.main.zoom));
 				break;
 			default:
 				Camera.main.snapTo(hero.center().x, hero.center().y);
@@ -1024,7 +1024,7 @@ public class GameScene extends PixelScene {
 	
 	public static void add( Heap heap ) {
 		if (scene != null) {
-			//heaps that aren't added as part of levelgen don't count for exploration bonus
+			// heaps that aren't added as part of level gen don't count for exploration bonus
 			heap.autoExplored = true;
 			scene.addHeapSprite( heap );
 		}

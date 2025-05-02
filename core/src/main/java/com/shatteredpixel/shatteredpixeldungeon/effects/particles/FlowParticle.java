@@ -69,25 +69,25 @@ public class FlowParticle extends PixelParticle {
 	}
 
 	public static class Flow extends Emitter {
-		
+
 		private int pos;
 		
 		public Flow( int pos ) {
 			super();
-			
+
 			this.pos = pos;
 
 			PointF p = DungeonTileMap.tileToWorld( pos );
-			pos( p.x, p.y + DungeonTileMap.SIZE - 1, DungeonTileMap.SIZE, 0);
+			pos( p.x, p.y + DungeonTileMap.HEIGHT - 1, DungeonTileMap.WIDTH, 0);
 
 			pour(FACTORY, 0.05f);
 		}
 		
 		@Override
 		public void update() {
-			
+
 			if (visible = (pos < Dungeon.level.heroFOV.length && Dungeon.level.heroFOV[pos])) {
-				
+
 				super.update();
 
 			}

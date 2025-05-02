@@ -32,7 +32,7 @@ public class DiscardedItemSprite extends ItemSprite {
 		am = 1;
 		if (emitter != null) emitter.killAndErase();
 
-		origin.set( width/2, height - DungeonTileMap.SIZE/2);
+		origin.set( width/2, height - DungeonTileMap.HEIGHT/2 );
 		angularSpeed = 720;
 	}
 	
