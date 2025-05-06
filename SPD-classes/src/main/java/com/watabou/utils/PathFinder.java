@@ -25,7 +25,27 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 public class PathFinder {
-	
+
+	//       1         
+	//     ______      
+	// 2  /      \  3  
+	//   /   0    \    
+	//   \        /    
+	// 4  \______/  5  
+	//        6        
+	public enum Neighbor {
+		NEIGHBORS_3,		// [1, 4, 5]
+
+		NEIGHBORS_6,		// [1 .. 6]
+		NEIGHBORS_7,		// [0 .. 6]
+
+		// CIRCLE3,			// [1, 5, 4]
+		// CIRCLE6,			// [1, 3, 5, 6, 4, 2]
+
+		// DIRECTION,			// [1, 5, 4, 3, 6, 2]
+		// DIRECTION_LR,		// [2, 4, 1, 6, 3, 5]
+	}
+
 	public static int[] distance;
 	private static int[] maxVal;
 	
@@ -36,19 +56,28 @@ public class PathFinder {
 	private static int size = 0;
 	private static int width = 0;
 
-	private static int[] dir;
-	private static int[] dirLR;
+	private static int[][] dir;
+	private static int[][] dirLR;
 
 	//performance-light shortcuts for some common pathfinder cases
 	//they are in array-access order for increased memory performance
-	public static int[] NEIGHBOURS4;
+	public static int[] NEIGHBOURS3;
+	@Deprecated
 	public static int[] NEIGHBOURS8;
+	@Deprecated
 	public static int[] NEIGHBOURS9;
 
 	//similar to their equivalent neighbour arrays, but the order is clockwise.
 	//Useful for some logic functions, but is slower due to lack of array-access order.
+	@Deprecated
 	public static int[] CIRCLE4;
+	@Deprecated
 	public static int[] CIRCLE8;
+
+	// the hexagonal grid is "odd-q" vertical layout
+	// first index is for odd/even column
+	public static int[][] NEIGHBOURS6;
+	public static int[][] NEIGHBOURS7;
 	
 	public static void setMapSize( int width, int height ) {
 		
@@ -63,15 +92,45 @@ public class PathFinder {
 		maxVal = new int[size];
 		Arrays.fill(maxVal, Integer.MAX_VALUE);
 
-		dir = new int[]{-1, +1, -width, +width, -width-1, -width+1, +width-1, +width+1};
-		dirLR = new int[]{-1-width, -1, -1+width, -width, +width, +1-width, +1, +1+width};
+		// dir = new int[]{-1, +1, -width, +width, -width-1, -width+1, +width-1, +width+1};
+		// dirLR = new int[]{-1-width, -1, -1+width, -width, +width, +1-width, +1, +1+width};
 
-		NEIGHBOURS4 = new int[]{-width, -1, +1, +width};
+		// analog of neighbour4 for hexagonal grid (this is adding asymmetric, but it's OK)
+		NEIGHBOURS3 = new int[]{-width, -1, +1 };
 		NEIGHBOURS8 = new int[]{-width-1, -width, -width+1, -1, +1, +width-1, +width, +width+1};
 		NEIGHBOURS9 = new int[]{-width-1, -width, -width+1, -1, 0, +1, +width-1, +width, +width+1};
 
 		CIRCLE4 = new int[]{-width, +1, +width, -1};
 		CIRCLE8 = new int[]{-width-1, -width, -width+1, +1, +width+1, +width, +width-1, -1};
+
+		// "odd-q" vertical layout
+		NEIGHBOURS6 = new int[][] {
+			{ -width-1, -width, -width+1, -1, +1, +width }, // even
+			{ -width, -1, +1, +width-1, +width, +width+1 }}; // odd
+		NEIGHBOURS7 = new int[][] {
+			{ -width-1, -width, -width+1, -1, 0, +1, +width }, // even
+			{ -width, -1, 0, +1, +width-1, +width, +width+1 }}; // odd
+
+		//       1         
+		//     ______      
+		// 6  /      \  4  
+		//   /        \    
+		//   \        /    
+		// 3  \______/  2  
+		//        5        
+		dir = new int[][] {
+			{ -width, +1, -1, -width+1, +width, -width-1 }, // even
+			{ -width, +width+1, +width-1, +1, +width, -1 }}; // odd
+		//       3        
+		//     ______      
+		// 1  /      \  5  
+		//   /        \    
+		//   \        /    
+		// 2  \______/  6  
+		//        4        
+		dirLR = new int[][] {
+			{ -width-1,       -1, -width, +width, -width+1, +1 }, // even
+			{       -1, +width-1, -width, +width, +1, +width+1 }}; // odd
 	}
 
 	public static Path find( int from, int to, boolean[] passable ) {
@@ -89,9 +148,9 @@ public class PathFinder {
 			int minD = distance[s];
 			int mins = s;
 			
-			for (int i=0; i < dir.length; i++) {
+			for (int i=0; i < dir[0].length; i++) {
 				
-				int n = s + dir[i];
+				int n = s + dir[(s % width) & 1][i];
 				
 				int thisD = distance[n];
 				if (thisD < minD) {
@@ -118,9 +177,9 @@ public class PathFinder {
 		
 		int step, stepD;
 		
-		for (int i=0; i < dir.length; i++) {
+		for (int i=0; i < dir[0].length; i++) {
 
-			if ((stepD = distance[step = from + dir[i]]) < minD) {
+			if ((stepD = distance[step = from + dir[(from % width) & 1][i]]) < minD) {
 				minD = stepD;
 				best = step;
 			}
@@ -153,11 +212,11 @@ public class PathFinder {
 					newD = distance[step];
 				}
 
-				int start = (step % width == 0 ? 3 : 0);
-				int end = ((step + 1) % width == 0 ? 3 : 0);
-				for (int i = start; i < dirLR.length - end; i++) {
+				int start = (step % width == 0 ? 2 : 0);
+				int end = ((step + 1) % width == 0 ? 2 : 0);
+				for (int i = start; i < dirLR[0].length - end; i++) {
 
-					int n = step + dirLR[i];
+					int n = step + dirLR[(step % width) & 1][i];
 					if (n >= 0 && n < size && passable[n]) {
 						if (distance[n] < distance[cur]) {
 							passable[n] = false;
@@ -187,9 +246,9 @@ public class PathFinder {
 		int minD = distance[s];
 		int mins = s;
 		
-		for (int i=0; i < dir.length; i++) {
+		for (int i=0; i < dir[0].length; i++) {
 
-			int n = s + dir[i];
+			int n = s + dir[(s % width) & 1][i];
 			int thisD = distance[n];
 			
 			if (thisD < minD) {
@@ -228,11 +287,11 @@ public class PathFinder {
 			}
 			int nextDistance = distance[step] + 1;
 			
-			int start = (step % width == 0 ? 3 : 0);
-			int end   = ((step+1) % width == 0 ? 3 : 0);
-			for (int i = start; i < dirLR.length - end; i++) {
+			int start = (step % width == 0 ? 2 : 0);
+			int end   = ((step+1) % width == 0 ? 2 : 0);
+			for (int i = start; i < dirLR[0].length - end; i++) {
 
-				int n = step + dirLR[i];
+				int n = step + dirLR[(step % width) & 1][i];
 				if (n == from || (n >= 0 && n < size && passable[n] && (distance[n] > nextDistance))) {
 					// Add to queue
 					queue[tail++] = n;
@@ -266,11 +325,11 @@ public class PathFinder {
 				return;
 			}
 			
-			int start = (step % width == 0 ? 3 : 0);
-			int end   = ((step+1) % width == 0 ? 3 : 0);
-			for (int i = start; i < dirLR.length - end; i++) {
+			int start = (step % width == 0 ? 2 : 0);
+			int end   = ((step+1) % width == 0 ? 2 : 0);
+			for (int i = start; i < dirLR[0].length - end; i++) {
 
-				int n = step + dirLR[i];
+				int n = step + dirLR[(step % width) & 1][i];
 				if (n >= 0 && n < size && passable[n] && (distance[n] > nextDistance)) {
 					// Add to queue
 					queue[tail++] = n;
@@ -312,11 +371,11 @@ public class PathFinder {
 			}
 			int nextDistance = distance[step] + 1;
 			
-			int start = (step % width == 0 ? 3 : 0);
-			int end   = ((step+1) % width == 0 ? 3 : 0);
-			for (int i = start; i < dirLR.length - end; i++) {
+			int start = (step % width == 0 ? 2 : 0);
+			int end   = ((step+1) % width == 0 ? 2 : 0);
+			for (int i = start; i < dirLR[0].length - end; i++) {
 
-				int n = step + dirLR[i];
+				int n = step + dirLR[(step % width) & 1][i];
 				if (n == from || (n >= 0 && n < size && passable[n] && (distance[n] > nextDistance))) {
 					// Add to queue
 					queue[tail++] = n;
@@ -362,11 +421,11 @@ public class PathFinder {
 			
 			int nextDistance = dist + 1;
 			
-			int start = (step % width == 0 ? 3 : 0);
-			int end   = ((step+1) % width == 0 ? 3 : 0);
-			for (int i = start; i < dirLR.length - end; i++) {
+			int start = (step % width == 0 ? 2 : 0);
+			int end   = ((step+1) % width == 0 ? 2 : 0);
+			for (int i = start; i < dirLR[0].length - end; i++) {
 
-				int n = step + dirLR[i];
+				int n = step + dirLR[(step % width) & 1][i];
 				if (n >= 0 && n < size && passable[n] && distance[n] > nextDistance) {
 					// Add to queue
 					queue[tail++] = n;
@@ -396,11 +455,11 @@ public class PathFinder {
 			int step = queue[head++];
 			int nextDistance = distance[step] + 1;
 			
-			int start = (step % width == 0 ? 3 : 0);
-			int end   = ((step+1) % width == 0 ? 3 : 0);
-			for (int i = start; i < dirLR.length - end; i++) {
+			int start = (step % width == 0 ? 2 : 0);
+			int end   = ((step+1) % width == 0 ? 2 : 0);
+			for (int i = start; i < dirLR[0].length - end; i++) {
 
-				int n = step + dirLR[i];
+				int n = step + dirLR[(step % width) & 1][i];
 				if (n >= 0 && n < size && passable[n] && (distance[n] > nextDistance)) {
 					// Add to queue
 					queue[tail++] = n;
