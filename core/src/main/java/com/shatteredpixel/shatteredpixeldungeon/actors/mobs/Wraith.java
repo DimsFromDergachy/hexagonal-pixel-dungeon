@@ -32,6 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.WraithSprite;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
@@ -104,7 +105,7 @@ public class Wraith extends Mob {
 	}
 	
 	public static void spawnAround( int pos, Class<? extends Wraith> wraithClass ) {
-		for (int n : PathFinder.NEIGHBOURS4) {
+		for (int n : PathFinder.NEIGHBOURS3) {
 			spawnAt( pos + n, wraithClass, false );
 		}
 	}
@@ -123,7 +124,7 @@ public class Wraith extends Mob {
 		if (Dungeon.level.solid[pos] || Actor.findChar( pos ) != null){
 			ArrayList<Integer> candidates = new ArrayList<>();
 
-			for (int i : PathFinder.NEIGHBOURS8){
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )){
 				if (!Dungeon.level.solid[pos+i] && Actor.findChar( pos+i ) == null){
 					candidates.add(pos+i);
 				}

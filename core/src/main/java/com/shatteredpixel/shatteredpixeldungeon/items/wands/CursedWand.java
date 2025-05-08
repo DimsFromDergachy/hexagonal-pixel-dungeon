@@ -111,6 +111,7 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -337,7 +338,7 @@ public class CursedWand {
 				Dungeon.level.pressCell(bolt.collisionPos);
 			}
 			tryForWandProc(Actor.findChar(bolt.collisionPos), origin);
-			for (int i : PathFinder.NEIGHBOURS9){
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, bolt.collisionPos )){
 				if (!Dungeon.level.solid[bolt.collisionPos+i]){
 					CellEmitter.get(bolt.collisionPos+i).start(Speck.factory(Speck.BUBBLE), 0.25f, 40);
 				}
@@ -543,22 +544,26 @@ public class CursedWand {
 
 			ArrayList<Char> affected = new ArrayList<>();
 
-			user.sprite.parent.add(new Lightning(user.pos - 1, user.pos + 1, null));
-			user.sprite.parent.add(new Lightning(user.pos - Dungeon.level.width(), user.pos + Dungeon.level.width(), null));
-			user.sprite.parent.add(new Lightning(user.pos - 1 - Dungeon.level.width(), user.pos + 1 + Dungeon.level.width(), null));
-			user.sprite.parent.add(new Lightning(user.pos - 1 + Dungeon.level.width(), user.pos + 1 - Dungeon.level.width(), null));
-			for (int i : PathFinder.NEIGHBOURS9){
+			int[] circle = Dungeon.level.neighbors( Neighbor.CIRCLE6, user.pos );
+
+			user.sprite.parent.add(new Lightning(circle[0], circle[3], null));
+			user.sprite.parent.add(new Lightning(circle[1], circle[4], null));
+			user.sprite.parent.add(new Lightning(circle[2], circle[5], null));
+
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, user.pos )){
 				if (Actor.findChar(user.pos+i) != null){
 					affected.add(Actor.findChar(user.pos+i));
 				}
 			}
 
 			int pos = bolt.collisionPos;
-			user.sprite.parent.add(new Lightning(pos - 1, user.pos + 1, null));
-			user.sprite.parent.add(new Lightning(pos - Dungeon.level.width(), pos + Dungeon.level.width(), null));
-			user.sprite.parent.add(new Lightning(pos - 1 - Dungeon.level.width(), pos + 1 + Dungeon.level.width(), null));
-			user.sprite.parent.add(new Lightning(pos - 1 + Dungeon.level.width(), pos + 1 - Dungeon.level.width(), null));
-			for (int i : PathFinder.NEIGHBOURS9){
+			circle = Dungeon.level.neighbors( Neighbor.CIRCLE6, pos );
+
+			user.sprite.parent.add(new Lightning(circle[0], circle[3], null));
+			user.sprite.parent.add(new Lightning(circle[1], circle[4], null));
+			user.sprite.parent.add(new Lightning(circle[2], circle[5], null));
+
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, pos )){
 				if (Actor.findChar(pos+i) != null && !affected.contains(Actor.findChar(pos+i))){
 					affected.add(Actor.findChar(pos+i));
 				}
@@ -1050,7 +1055,7 @@ public class CursedWand {
 			int spawnCell = bolt.collisionPos;
 			if (ch != null){
 				ArrayList<Integer> candidates = new ArrayList<Integer>();
-				for (int n : PathFinder.NEIGHBOURS8) {
+				for (int n : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, bolt.collisionPos )) {
 					int cell = bolt.collisionPos + n;
 					if (Dungeon.level.passable[cell] && Actor.findChar( cell ) == null) {
 						candidates.add( cell );

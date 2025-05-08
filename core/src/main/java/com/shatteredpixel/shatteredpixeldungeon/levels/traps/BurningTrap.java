@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.CellEmitter;
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.FlameParticle;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class BurningTrap extends Trap {
 
@@ -41,7 +41,7 @@ public class BurningTrap extends Trap {
 	@Override
 	public void activate() {
 		
-		for( int i : PathFinder.NEIGHBOURS9) {
+		for( int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, pos )) {
 			if (!Dungeon.level.solid[pos + i]) {
 				GameScene.add( Blob.seed( pos+i, 2, Fire.class ) );
 				CellEmitter.get( pos+i ).burst( FlameParticle.FACTORY, 5 );

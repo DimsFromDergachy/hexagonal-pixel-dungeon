@@ -42,7 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -150,15 +150,15 @@ public class Stasis extends ClericSpell {
 		@Override
 		public boolean act() {
 			ArrayList<Integer> spawnPoints = new ArrayList<>();
-			for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-				int p = target.pos + PathFinder.NEIGHBOURS8[i];
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, target.pos )) {
+				int p = target.pos + i;
 				if (Actor.findChar(p) == null
 						&& (Dungeon.level.passable[p] || (stasisAlly.flying && Dungeon.level.avoid[p])) ){
 					spawnPoints.add(p);
 				}
 			}
 			if (spawnPoints.isEmpty()){
-				spawnPoints.add(target.pos + PathFinder.NEIGHBOURS8[Random.Int(8)]);
+				spawnPoints.add(target.pos + Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, target.pos )[Random.Int(6)]);
 			}
 			stasisAlly.pos = Random.element(spawnPoints);
 			GameScene.add(stasisAlly);

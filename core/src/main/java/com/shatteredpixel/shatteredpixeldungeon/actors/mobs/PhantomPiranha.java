@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.wands.Wand;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.PhantomPiranhaSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class PhantomPiranha extends Piranha {
 			if (dmgSource != null) {
 				if (!Dungeon.level.adjacent(pos, dmgSource.pos)) {
 					ArrayList<Integer> candidates = new ArrayList<>();
-					for (int i : PathFinder.NEIGHBOURS8) {
+					for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, dmgSource.pos )) {
 						if (Dungeon.level.water[dmgSource.pos + i] && Actor.findChar(dmgSource.pos + i) == null) {
 							candidates.add(dmgSource.pos + i);
 						}

@@ -37,10 +37,12 @@ public class PathFinder {
 		NEIGHBORS_3,		// [1, 4, 5]
 
 		NEIGHBORS_6,		// [1 .. 6]
-		NEIGHBORS_7,		// [0 .. 6]
+		NEIGHBORS_7,		// [1, 2, 3, 0, 4, 5, 6]
 
-		// CIRCLE3,			// [1, 5, 4]
-		// CIRCLE6,			// [1, 3, 5, 6, 4, 2]
+		NEIGHBORS_6_x2,
+
+		CIRCLE3,			// [1, 5, 4]
+		CIRCLE6,			// [1, 3, 5, 6, 4, 2]
 
 		// DIRECTION,			// [1, 5, 4, 3, 6, 2]
 		// DIRECTION_LR,		// [2, 4, 1, 6, 3, 5]
@@ -62,12 +64,8 @@ public class PathFinder {
 	//performance-light shortcuts for some common pathfinder cases
 	//they are in array-access order for increased memory performance
 	public static int[] NEIGHBOURS3;
-	@Deprecated
-	public static int[] NEIGHBOURS8;
-	@Deprecated
-	public static int[] NEIGHBOURS9;
 
-	//similar to their equivalent neighbour arrays, but the order is clockwise.
+	//similar to their equivalent neighbor arrays, but the order is clockwise.
 	//Useful for some logic functions, but is slower due to lack of array-access order.
 	@Deprecated
 	public static int[] CIRCLE4;
@@ -78,7 +76,15 @@ public class PathFinder {
 	// first index is for odd/even column
 	public static int[][] NEIGHBOURS6;
 	public static int[][] NEIGHBOURS7;
-	
+
+	// the hexagonal grid is "odd-q" vertical layout
+	// first index is for odd/even column
+	public static int[][] CIRCLE3;
+	public static int[][] CIRCLE6;
+
+	public static int[] NEIGHBOURS6_X2;
+
+
 	public static void setMapSize( int width, int height ) {
 		
 		PathFinder.width = width;
@@ -92,24 +98,31 @@ public class PathFinder {
 		maxVal = new int[size];
 		Arrays.fill(maxVal, Integer.MAX_VALUE);
 
-		// dir = new int[]{-1, +1, -width, +width, -width-1, -width+1, +width-1, +width+1};
-		// dirLR = new int[]{-1-width, -1, -1+width, -width, +width, +1-width, +1, +1+width};
-
 		// analog of neighbour4 for hexagonal grid (this is adding asymmetric, but it's OK)
 		NEIGHBOURS3 = new int[]{-width, -1, +1 };
-		NEIGHBOURS8 = new int[]{-width-1, -width, -width+1, -1, +1, +width-1, +width, +width+1};
-		NEIGHBOURS9 = new int[]{-width-1, -width, -width+1, -1, 0, +1, +width-1, +width, +width+1};
 
 		CIRCLE4 = new int[]{-width, +1, +width, -1};
 		CIRCLE8 = new int[]{-width-1, -width, -width+1, +1, +width+1, +width, +width-1, -1};
 
 		// "odd-q" vertical layout
 		NEIGHBOURS6 = new int[][] {
-			{ -width-1, -width, -width+1, -1, +1, +width }, // even
-			{ -width, -1, +1, +width-1, +width, +width+1 }}; // odd
+			{ -width, -width-1, -width+1, -1, +1, +width }, // even
+			{ -width, -1, +1, +width-1, +width+1, +width }}; // odd
+
 		NEIGHBOURS7 = new int[][] {
-			{ -width-1, -width, -width+1, -1, 0, +1, +width }, // even
-			{ -width, -1, 0, +1, +width-1, +width, +width+1 }}; // odd
+			{ -width, -width-1, -width+1, 0, -1, +1, +width }, // even
+			{ -width, -1, +1, 0, +width-1, +width+1, +width }}; // odd
+
+		NEIGHBOURS6_X2 = new int[] { -2*width, -2-width, +2-width, -2+width, +2+width, +2*width};
+
+		// "odd-q" vertical layout
+		CIRCLE3 = new int[][] {
+			{ -width, +1, -1 }, // even
+			{ -width, +width+1, +width-1 }}; // odd
+		CIRCLE6 = new int[][] {
+			{ -width-1, -width, -width+1, +1, +width, -1 }, // even
+			{ -1, -width, +1, +width+1, +width, +width-1 }}; // odd
+
 
 		//       1         
 		//     ______      

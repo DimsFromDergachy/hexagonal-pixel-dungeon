@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.Freezing;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class ChillingTrap extends Trap{
 
@@ -44,7 +44,7 @@ public class ChillingTrap extends Trap{
 			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 		}
 		
-		for( int i : PathFinder.NEIGHBOURS9) {
+		for( int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, pos )) {
 			if (!Dungeon.level.solid[pos + i]) {
 				GameScene.add(Blob.seed(pos + i, 10, Freezing.class));
 			}

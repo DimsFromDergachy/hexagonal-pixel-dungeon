@@ -65,6 +65,7 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 
@@ -397,7 +398,7 @@ public class PrisonBossLevel extends Level {
 				//if something is occupying Tengu's space, try to put him in an adjacent cell
 				if (Actor.findChar(tenguPos) != null){
 					ArrayList<Integer> candidates = new ArrayList<>();
-					for (int i : PathFinder.NEIGHBOURS8){
+					for (int i : neighbors( Neighbor.NEIGHBORS_6, tenguPos )){
 						if (Actor.findChar(tenguPos + i) == null){
 							candidates.add(tenguPos + i);
 						}
@@ -701,7 +702,7 @@ public class PrisonBossLevel extends Level {
 	@Override
 	public int randomRespawnCell( Char ch ) {
 		ArrayList<Integer> candidates = new ArrayList<>();
-		for (int i : PathFinder.NEIGHBOURS8){
+		for (int i : neighbors( Neighbor.NEIGHBORS_6, ENTRANCE_POS )){
 			int cell = ENTRANCE_POS + i;
 			if (passable[cell]
 					&& Actor.findChar(cell) == null

@@ -59,7 +59,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -310,7 +310,7 @@ public abstract class Elemental extends Mob {
 
 				//set up an attack for next turn
 				ArrayList<Integer> candidates = new ArrayList<>();
-				for (int i : PathFinder.NEIGHBOURS8){
+				for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, enemy.pos )){
 					int target = enemy.pos + i;
 					if (target != pos && new Ballistic(pos, target, Ballistic.STOP_SOLID | Ballistic.STOP_TARGET).collisionPos == target){
 						candidates.add(target);
@@ -320,7 +320,7 @@ public abstract class Elemental extends Mob {
 				if (!candidates.isEmpty()){
 					targetingPos = Random.element(candidates);
 
-					for (int i : PathFinder.NEIGHBOURS9){
+					for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, targetingPos )){
 						if (!Dungeon.level.solid[targetingPos + i]) {
 							sprite.parent.addToBack(new TargetedCell(targetingPos + i, 0xFF0000));
 						}
@@ -356,7 +356,7 @@ public abstract class Elemental extends Mob {
 
 				Invisibility.dispel(this);
 
-				for (int i : PathFinder.NEIGHBOURS9) {
+				for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, targetingPos )) {
 					if (!Dungeon.level.solid[targetingPos + i]) {
 						CellEmitter.get(targetingPos + i).burst(ElmoParticle.FACTORY, 5);
 						if (Dungeon.level.water[targetingPos + i]) {

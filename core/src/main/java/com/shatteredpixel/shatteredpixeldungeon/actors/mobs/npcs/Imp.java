@@ -44,8 +44,8 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndQuest;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class Imp extends NPC {
 
@@ -225,8 +225,9 @@ public class Imp extends NPC {
 						level.traps.get( npc.pos) != null ||
 						level.findMob( npc.pos ) != null ||
 						//don't place the imp against solid terrain
-						!level.passable[npc.pos + PathFinder.CIRCLE4[0]] || !level.passable[npc.pos + PathFinder.CIRCLE4[1]] ||
-						!level.passable[npc.pos + PathFinder.CIRCLE4[2]] || !level.passable[npc.pos + PathFinder.CIRCLE4[3]]);
+						!level.passable[npc.pos + level.neighbors( Neighbor.NEIGHBORS_3, npc.pos )[0]] ||
+						!level.passable[npc.pos + level.neighbors( Neighbor.NEIGHBORS_3, npc.pos )[1]] ||
+						!level.passable[npc.pos + level.neighbors( Neighbor.NEIGHBORS_3, npc.pos )[2]]);
 				level.mobs.add( npc );
 				
 				spawned = true;

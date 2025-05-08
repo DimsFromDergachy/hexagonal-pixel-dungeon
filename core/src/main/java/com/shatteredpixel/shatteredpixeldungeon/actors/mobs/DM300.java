@@ -69,7 +69,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
@@ -387,8 +387,8 @@ public class DM300 extends Mob {
 		GameScene.add(Blob.seed(trajectory.collisionPos, 100*gasMulti, ToxicGas.class));
 
 		if (gasVented < 250*gasMulti){
-			int toVentAround = (int)Math.ceil(((250*gasMulti) - gasVented)/8f);
-			for (int i : PathFinder.NEIGHBOURS8){
+			int toVentAround = (int)Math.ceil(((250*gasMulti) - gasVented)/6f);
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )){
 				GameScene.add(Blob.seed(pos+i, toVentAround, ToxicGas.class));
 			}
 
@@ -433,7 +433,7 @@ public class DM300 extends Mob {
 
 		int safeCell;
 		do {
-			safeCell = rockCenter + PathFinder.NEIGHBOURS8[Random.Int(8)];
+			safeCell = rockCenter + Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, rockCenter )[Random.Int(6)];
 		} while (safeCell == pos
 				|| (Dungeon.level.solid[safeCell] && Random.Int(2) == 0)
 				|| (Blob.volumeAt(safeCell, CavesBossLevel.PylonEnergy.class) > 0 && Random.Int(2) == 0));
@@ -449,7 +449,7 @@ public class DM300 extends Mob {
 					pos++;
 					continue;
 				}
-				//add rock cell to pos, if it is not solid, and isn't the safecell
+				//add rock cell to pos, if it is not solid, and isn't the safe cell
 				if (!Dungeon.level.solid[pos] && pos != safeCell && Random.Int(Dungeon.level.distance(rockCenter, pos)) == 0) {
 					rockCells.add(pos);
 				}
@@ -576,7 +576,7 @@ public class DM300 extends Mob {
 		for (int i = 0; i < shards; i++){
 			int ofs;
 			do {
-				ofs = PathFinder.NEIGHBOURS8[Random.Int(8)];
+				ofs = Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )[Random.Int(6)];
 			} while (!Dungeon.level.passable[pos + ofs]);
 			Dungeon.level.drop( new MetalShard(), pos + ofs ).sprite.drop( pos );
 		}
@@ -605,18 +605,18 @@ public class DM300 extends Mob {
 				return false;
 			}
 
-			int bestpos = pos;
-			for (int i : PathFinder.NEIGHBOURS8){
+			int bestPos = pos;
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )){
 				if (Actor.findChar(pos+i) == null &&
-						Dungeon.level.trueDistance(bestpos, target) > Dungeon.level.trueDistance(pos+i, target)){
-					bestpos = pos+i;
+						Dungeon.level.trueDistance(bestPos, target) > Dungeon.level.trueDistance(pos+i, target)){
+					bestPos = pos+i;
 				}
 			}
-			if (bestpos != pos){
+			if (bestPos != pos){
 				Sample.INSTANCE.play( Assets.Sounds.ROCKS );
 
 				Rect gate = CavesBossLevel.gate;
-				for (int i : PathFinder.NEIGHBOURS9){
+				for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, pos )){
 					if (Dungeon.level.map[pos+i] == Terrain.WALL || Dungeon.level.map[pos+i] == Terrain.WALL_DECO){
 						Point p = Dungeon.level.cellToPoint(pos+i);
 						if (p.y < gate.bottom && p.x >= gate.left-2 && p.x < gate.right+2){
@@ -636,16 +636,16 @@ public class DM300 extends Mob {
 				Dungeon.observe();
 				spend(Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 2f : 3f);
 
-				bestpos = pos;
-				for (int i : PathFinder.NEIGHBOURS8){
+				bestPos = pos;
+				for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )){
 					if (Actor.findChar(pos+i) == null && Dungeon.level.openSpace[pos+i] &&
-							Dungeon.level.trueDistance(bestpos, target) > Dungeon.level.trueDistance(pos+i, target)){
-						bestpos = pos+i;
+							Dungeon.level.trueDistance(bestPos, target) > Dungeon.level.trueDistance(pos+i, target)){
+						bestPos = pos+i;
 					}
 				}
 
-				if (bestpos != pos) {
-					move(bestpos);
+				if (bestPos != pos) {
+					move(bestPos);
 				}
 				PixelScene.shake( 5, 1f );
 

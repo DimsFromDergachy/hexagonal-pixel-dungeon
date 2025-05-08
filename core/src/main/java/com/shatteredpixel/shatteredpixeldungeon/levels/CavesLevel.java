@@ -250,10 +250,6 @@ public class CavesLevel extends RegularLevel {
 		
 		private float delay;
 
-		public Vein( int pos ) {
-			this(pos, false);
-		}
-
 		public Vein( int pos, boolean includeOverhang ) {
 			super();
 			

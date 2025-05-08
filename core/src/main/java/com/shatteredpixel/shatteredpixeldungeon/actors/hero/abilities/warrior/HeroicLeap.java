@@ -39,7 +39,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.watabou.utils.Callback;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 public class HeroicLeap extends ArmorAbility {
@@ -83,7 +83,7 @@ public class HeroicLeap extends ArmorAbility {
 			}
 
 			armor.charge -= chargeUse( hero );
-			armor.updateQuickslot();
+			ClassArmor.updateQuickslot();
 
 			final int dest = cell;
 			hero.busy();
@@ -95,7 +95,7 @@ public class HeroicLeap extends ArmorAbility {
 					Dungeon.observe();
 					GameScene.updateFog();
 
-					for (int i : PathFinder.NEIGHBOURS8) {
+					for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, hero.pos )) {
 						Char mob = Actor.findChar(hero.pos + i);
 						if (mob != null && mob != hero && mob.alignment != Char.Alignment.ALLY) {
 							if (hero.hasTalent(Talent.BODY_SLAM)){

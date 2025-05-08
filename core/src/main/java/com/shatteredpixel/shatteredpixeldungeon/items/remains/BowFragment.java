@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class BowFragment extends RemainsItem {
 	@Override
 	protected void doEffect(Hero hero) {
 		ArrayList<Integer> grassCells = new ArrayList<>();
-		for (int i : PathFinder.NEIGHBOURS9){
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, hero.pos )){
 			grassCells.add(hero.pos+i);
 		}
 		Random.shuffle(grassCells);

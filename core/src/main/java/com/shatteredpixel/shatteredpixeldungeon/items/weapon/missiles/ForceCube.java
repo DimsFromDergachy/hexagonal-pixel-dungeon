@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 
@@ -65,7 +65,7 @@ public class ForceCube extends MissileWeapon {
 		ArrayList<Char> targets = new ArrayList<>();
 		if (Actor.findChar(cell) != null) targets.add(Actor.findChar(cell));
 		
-		for (int i : PathFinder.NEIGHBOURS8){
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, cell )){
 			if (!(Dungeon.level.traps.get(cell+i) instanceof TenguDartTrap)) Dungeon.level.pressCell(cell+i);
 			if (Actor.findChar(cell + i) != null) targets.add(Actor.findChar(cell + i));
 		}

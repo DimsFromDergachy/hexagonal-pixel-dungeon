@@ -35,7 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GhoulSprite;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -268,7 +268,7 @@ public class Ghoul extends Mob {
 			if (turnsToRevive <= 0){
 				if (Actor.findChar( ghoul.pos ) != null) {
 					ArrayList<Integer> candidates = new ArrayList<>();
-					for (int n : PathFinder.NEIGHBOURS8) {
+					for (int n : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, ghoul.pos )) {
 						int cell = ghoul.pos + n;
 						if (Dungeon.level.passable[cell]
 								&& Actor.findChar( cell ) == null

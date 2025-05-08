@@ -43,7 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.EyeSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 public class Eye extends Mob {
@@ -238,7 +238,7 @@ public class Eye extends Mob {
 				loot = new Dewdrop();
 				int ofs;
 				do {
-					ofs = PathFinder.NEIGHBOURS8[Random.Int(8)];
+					ofs = Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )[Random.Int(6)];
 				} while (Dungeon.level.solid[pos + ofs] && !Dungeon.level.passable[pos + ofs]);
 				if (Dungeon.level.heaps.get(pos+ofs) == null) {
 					Dungeon.level.drop(new Dewdrop(), pos + ofs).sprite.drop(pos);

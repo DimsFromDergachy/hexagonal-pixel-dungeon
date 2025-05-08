@@ -81,9 +81,9 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.HashMap;
 
@@ -234,7 +234,7 @@ public class ElementalBlast extends ArmorAbility {
 
 							//*** Wand of Prismatic Light ***
 							} else if (finalWandCls == WandOfPrismaticLight.class){
-								for (int n : PathFinder.NEIGHBOURS9) {
+								for (int n : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, cell )) {
 									int c = cell+n;
 
 									if (Dungeon.level.discoverable[c]) {
@@ -434,7 +434,7 @@ public class ElementalBlast extends ArmorAbility {
 		hero.busy();
 
 		armor.charge -= chargeUse(hero);
-		armor.updateQuickslot();
+		ClassArmor.updateQuickslot();
 
 		Sample.INSTANCE.play( Assets.Sounds.CHARGEUP );
 

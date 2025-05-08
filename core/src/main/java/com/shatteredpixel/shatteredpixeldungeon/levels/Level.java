@@ -110,6 +110,7 @@ import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 import com.watabou.utils.SparseArray;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -853,22 +854,12 @@ public abstract class Level implements Bundlable {
 			losBlocking[i + width()-1] = solid[i + width()-1] = true;
 		}
 
-		//an open space is large enough to fit large mobs. A space is open when it is not solid
+		// an open space is large enough to fit large mobs. A space is open when it is not solid
 		// and there is an open corner with both adjacent cells opens
+
+		
 		for (int i=0; i < length(); i++) {
-			if (solid[i]){
-				openSpace[i] = false;
-			} else {
-				for (int j = 1; j < PathFinder.CIRCLE8.length; j += 2){
-					if (solid[i+PathFinder.CIRCLE8[j]]) {
-						openSpace[i] = false;
-					} else if (!solid[i+PathFinder.CIRCLE8[(j+1)%8]]
-							&& !solid[i+PathFinder.CIRCLE8[(j+2)%8]]){
-						openSpace[i] = true;
-						break;
-					}
-				}
-			}
+			setOpenSpace( this, i );
 		}
 
 	}
@@ -895,8 +886,9 @@ public abstract class Level implements Bundlable {
 			
 			boolean d = false;
 			
-			for (int j=0; j < PathFinder.NEIGHBOURS9.length; j++) {
-				int n = i + PathFinder.NEIGHBOURS9[j];
+			for (int j : neighbors( Neighbor.NEIGHBORS_7, i ))
+			{
+				int n = i + j;
 				if (n >= 0 && n < length() && map[n] != Terrain.WALL && map[n] != Terrain.WALL_DECO) {
 					d = true;
 					break;
@@ -920,31 +912,35 @@ public abstract class Level implements Bundlable {
 
 		int flags = Terrain.flags[terrain];
 		level.passable[cell]		= (flags & Terrain.PASSABLE) != 0;
-		level.losBlocking[cell]	    = (flags & Terrain.LOS_BLOCKING) != 0;
+		level.losBlocking[cell]		= (flags & Terrain.LOS_BLOCKING) != 0;
 		level.flammable[cell]		= (flags & Terrain.FLAMMABLE) != 0;
-		level.secret[cell]		    = (flags & Terrain.SECRET) != 0;
+		level.secret[cell]			= (flags & Terrain.SECRET) != 0;
 		level.solid[cell]			= (flags & Terrain.SOLID) != 0;
 		level.avoid[cell]			= (flags & Terrain.AVOID) != 0;
-		level.pit[cell]			    = (flags & Terrain.PIT) != 0;
+		level.pit[cell]				= (flags & Terrain.PIT) != 0;
 		level.water[cell]			= terrain == Terrain.WATER;
+		
+		setOpenSpace( level, cell );
+	}
 
-		for (int i : PathFinder.NEIGHBOURS9){
-			i = cell + i;
-			if (level.solid[i]){
-				level.openSpace[i] = false;
-			} else {
-				for (int j = 1; j < PathFinder.CIRCLE8.length; j += 2){
-					if (level.solid[i+PathFinder.CIRCLE8[j]]) {
-						level.openSpace[i] = false;
-					} else if (!level.solid[i+PathFinder.CIRCLE8[(j+1)%8]]
-							&& !level.solid[i+PathFinder.CIRCLE8[(j+2)%8]]){
-						level.openSpace[i] = true;
-						break;
-					}
+	private static void setOpenSpace( Level level, int cell )
+	{
+		// openSpace is false for the solid terrain
+		// openSpace is true for three closest tiles
+		if (level.solid[cell])
+			level.openSpace[cell] = false;
+		else {
+			int[] neighbors = level.neighbors( Neighbor.NEIGHBORS_6, cell );
+			for (int i = 0; i < neighbors.length; i++ ){
+				if (!level.solid[cell + neighbors[i]] &&
+					!level.solid[cell + neighbors[(i + 1) % 6]]) {
+					level.openSpace[cell] = true;
+					break;
 				}
 			}
 		}
 	}
+
 	
 	public Heap drop( Item item, int cell ) {
 
@@ -978,7 +974,7 @@ public abstract class Level implements Bundlable {
 			
 			int n;
 			do {
-				n = cell + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
+				n = cell + neighbors( Neighbor.NEIGHBORS_6, cell )[Random.Int( 6 )];
 			} while (!passable[n] && !avoid[n]);
 			return drop( item, n );
 			
@@ -1009,7 +1005,7 @@ public abstract class Level implements Bundlable {
 			GameScene.updateMap(pos);
 		}
 
-		//we have to get this far as grass placement has RNG implications in levelgen
+		// we have to get this far as grass placement has RNG implications in level gen
 		if (Dungeon.isChallenged(Challenges.NO_HERBALISM)){
 			return null;
 		}
@@ -1063,14 +1059,14 @@ public abstract class Level implements Bundlable {
 	public boolean setCellToWater( boolean includeTraps, int cell ){
 		Point p = cellToPoint(cell);
 
-		//if a custom tilemap is over that cell, don't put water there
-		for (CustomTileMap cust : customTiles){
-			Point custPoint = new Point(p);
-			custPoint.x -= cust.tileX;
-			custPoint.y -= cust.tileY;
-			if (custPoint.x >= 0 && custPoint.y >= 0
-					&& custPoint.x < cust.tileW && custPoint.y < cust.tileH){
-				if (cust.image(custPoint.x, custPoint.y) != null){
+		//if a custom tile map is over that cell, don't put water there
+		for (CustomTileMap custom : customTiles){
+			Point customPoint = new Point(p);
+			customPoint.x -= custom.tileX;
+			customPoint.y -= custom.tileY;
+			if (customPoint.x >= 0 && customPoint.y >= 0
+					&& customPoint.x < custom.tileW && customPoint.y < custom.tileH){
+				if (custom.image(customPoint.x, customPoint.y) != null){
 					return false;
 				}
 			}
@@ -1252,6 +1248,7 @@ public abstract class Level implements Bundlable {
 
 	public void updateFieldOfView( Char c, boolean[] fieldOfView ) {
 
+		// TODO: Hexagonal way
 		int cx = c.pos % width();
 		int cy = c.pos / width();
 		
@@ -1351,7 +1348,7 @@ public abstract class Level implements Bundlable {
 			for (Mob mob : mobs) {
 				int p = mob.pos;
 				if (!fieldOfView[p] && distance(c.pos, p) <= range) {
-					for (int i : PathFinder.NEIGHBOURS9) {
+					for (int i : neighbors( Neighbor.NEIGHBORS_7, mob.pos )) {
 						fieldOfView[mob.pos + i] = true;
 					}
 				}
@@ -1373,7 +1370,7 @@ public abstract class Level implements Bundlable {
 					if (mob instanceof Mimic && mob.alignment == Char.Alignment.NEUTRAL&& ((Mimic) mob).stealthy()){
 						continue;
 					}
-					for (int i : PathFinder.NEIGHBOURS9) {
+					for (int i : neighbors( Neighbor.NEIGHBORS_7, mob.pos )) {
 						heroMindFov[mob.pos + i] = true;
 					}
 				}
@@ -1405,7 +1402,7 @@ public abstract class Level implements Bundlable {
 						}
 						int p = mob.pos;
 						if (!fieldOfView[p] && (distance(c.pos, p) <= mindVisRange || (ally != null && distance(ally.pos, p) <= mindVisRange))) {
-							for (int i : PathFinder.NEIGHBOURS9) {
+							for (int i : neighbors( Neighbor.NEIGHBORS_7, mob.pos )) {
 								heroMindFov[mob.pos + i] = true;
 							}
 						}
@@ -1416,7 +1413,8 @@ public abstract class Level implements Bundlable {
 			if (c.buff( Awareness.class ) != null) {
 				for (Heap heap : heaps.valueList()) {
 					int p = heap.pos;
-					for (int i : PathFinder.NEIGHBOURS9) heroMindFov[p+i] = true;
+					for (int i : neighbors( Neighbor.NEIGHBORS_7, p ))
+						heroMindFov[p+i] = true;
 				}
 			}
 
@@ -1426,12 +1424,14 @@ public abstract class Level implements Bundlable {
 					continue;
 				}
 				int p = ch.pos;
-				for (int i : PathFinder.NEIGHBOURS9) heroMindFov[p+i] = true;
+				for (int i : neighbors( Neighbor.NEIGHBORS_7, p ))
+					heroMindFov[p+i] = true;
 			}
 
 			for (TalismanOfForesight.HeapAwareness h : c.buffs(TalismanOfForesight.HeapAwareness.class)){
 				if (Dungeon.depth != h.depth || Dungeon.branch != h.branch) continue;
-				for (int i : PathFinder.NEIGHBOURS9) heroMindFov[h.pos+i] = true;
+				for (int i : neighbors( Neighbor.NEIGHBORS_7, h.pos ))
+					heroMindFov[h.pos+i] = true;
 			}
 
 			for (Mob m : mobs){
@@ -1449,7 +1449,8 @@ public abstract class Level implements Bundlable {
 
 			for (RevealedArea a : c.buffs(RevealedArea.class)){
 				if (Dungeon.depth != a.depth || Dungeon.branch != a.branch) continue;
-				for (int i : PathFinder.NEIGHBOURS9) heroMindFov[a.pos+i] = true;
+				for (int i : neighbors( Neighbor.NEIGHBORS_7, a.pos ))
+					heroMindFov[a.pos+i] = true;
 			}
 
 			//set mind vision chars
@@ -1487,7 +1488,8 @@ public abstract class Level implements Bundlable {
 		return distance( a, b ) == 1;
 	}
 	
-	//uses pythagorean theorum for true distance, as if there was no movement grid
+	// TODO: Fix it for the hexagonal grid
+	// uses pythagorean theorem for true distance, as if there was no movement grid
 	public float trueDistance(int a, int b){
 		int ax = a % width();
 		int ay = a / width();
@@ -1619,5 +1621,26 @@ public abstract class Level implements Bundlable {
 			default:
 				return "";
 		}
+	}
+
+	public int[] neighbors(PathFinder.Neighbor neighbor, int cell) {
+		switch (neighbor) {
+			case NEIGHBORS_3:
+				return PathFinder.NEIGHBOURS3;
+			case NEIGHBORS_6:
+				return PathFinder.NEIGHBOURS6[(cell % width) & 1];
+			case NEIGHBORS_7:
+				return PathFinder.NEIGHBOURS7[(cell % width) & 1];
+			case NEIGHBORS_6_x2:
+				return PathFinder.NEIGHBOURS6_X2;
+			case CIRCLE3:
+				return PathFinder.CIRCLE3[(cell % width) & 1];
+			case CIRCLE6:
+				return PathFinder.CIRCLE6[(cell % width) & 1];
+			case CIRCLE12:
+				return PathFinder.CIRCLE12[(cell % width) & 1];
+		}
+
+		throw new IllegalArgumentException("Neighbor: " + neighbor);
 	}
 }

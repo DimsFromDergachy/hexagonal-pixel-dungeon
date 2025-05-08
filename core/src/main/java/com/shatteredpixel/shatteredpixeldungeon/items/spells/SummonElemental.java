@@ -53,9 +53,9 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndBag;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 
@@ -92,8 +92,8 @@ public class SummonElemental extends Spell {
 
 		ArrayList<Integer> spawnPoints = new ArrayList<>();
 
-		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-			int p = hero.pos + PathFinder.NEIGHBOURS8[i];
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, hero.pos )) {
+			int p = hero.pos + i;
 			if (Actor.findChar( p ) == null && Dungeon.level.passable[p]) {
 				spawnPoints.add( p );
 			}

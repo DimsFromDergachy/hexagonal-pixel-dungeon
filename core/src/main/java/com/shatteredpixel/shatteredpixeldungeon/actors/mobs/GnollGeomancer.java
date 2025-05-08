@@ -57,6 +57,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -374,7 +375,7 @@ public class GnollGeomancer extends Mob {
 
 		if (Actor.findChar(dashPos) != null || Dungeon.level.traps.get(dashPos) != null){
 			ArrayList<Integer> candidates = new ArrayList<>();
-			for (int i : PathFinder.NEIGHBOURS8){
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, dashPos )){
 				if (Actor.findChar(dashPos+i) == null && Dungeon.level.traps.get(dashPos+i) == null){
 					candidates.add(dashPos+i);
 				}
@@ -457,7 +458,7 @@ public class GnollGeomancer extends Mob {
 				//moves sapper and its guard toward geomancer if it is too far away
 				if (Dungeon.level.distance(closest.pos, dashPos) > 3){
 					ArrayList<Integer> candidates = new ArrayList<>();
-					for (int i : PathFinder.NEIGHBOURS8){
+					for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, dashPos )){
 						if (!Dungeon.level.solid[dashPos+i]
 								&& Dungeon.level.traps.get(dashPos+i) == null
 								&& Dungeon.level.plants.get(dashPos+i) == null
@@ -485,7 +486,7 @@ public class GnollGeomancer extends Mob {
 	private ArrayList<Integer> spreadDiamondAOE(ArrayList<Integer> currentCells){
 		ArrayList<Integer> spreadCells = new ArrayList<>();
 		for (int i : currentCells){
-			for (int j : PathFinder.NEIGHBOURS4){
+			for (int j : PathFinder.NEIGHBOURS3){
 				if (Dungeon.level.insideMap(i+j) && !spreadCells.contains(i+j) && !currentCells.contains(i+j)){
 					spreadCells.add(i+j);
 				}
@@ -569,7 +570,7 @@ public class GnollGeomancer extends Mob {
 				if (abilityCooldown-- <= 0){
 
 					boolean targetNextToBarricade = false;
-					for (int i : PathFinder.NEIGHBOURS8){
+					for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, enemy.pos )){
 						if (Dungeon.level.map[enemy.pos+i] == Terrain.BARRICADE
 								|| Dungeon.level.map[enemy.pos+i] == Terrain.ENTRANCE){
 							targetNextToBarricade = true;
@@ -744,7 +745,7 @@ public class GnollGeomancer extends Mob {
 
 		int safeCell;
 		do {
-			safeCell = rockCenter + PathFinder.NEIGHBOURS8[Random.Int(8)];
+			safeCell = rockCenter + Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, rockCenter )[Random.Int(6)];
 		} while (safeCell == source.pos
 				|| (Dungeon.level.solid[safeCell] && Random.Int(5) != 0)
 				|| (Dungeon.level.traps.containsKey(safeCell) && Random.Int(5) != 0));
@@ -762,7 +763,7 @@ public class GnollGeomancer extends Mob {
 				}
 				if (avoidBarricades){
 					boolean barricade = false;
-					for (int j : PathFinder.NEIGHBOURS9){
+					for (int j : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, pos )){
 						if (Dungeon.level.map[pos+j] == Terrain.BARRICADE
 								|| Dungeon.level.map[pos+j] == Terrain.ENTRANCE){
 							barricade = true;
@@ -773,7 +774,7 @@ public class GnollGeomancer extends Mob {
 						continue;
 					}
 				}
-				//add rock cell to pos, if it is not solid, isn't the safecell, and isn't where geomancer is standing
+				//add rock cell to pos, if it is not solid, isn't the safe cell, and isn't where geomancer is standing
 				if (!Dungeon.level.solid[pos]
 						&& pos != safeCell
 						&& !(Actor.findChar(pos) instanceof GnollGeomancer)

@@ -42,6 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -59,7 +60,7 @@ public class GnollRockfallTrap extends RockfallTrap {
 			if (PathFinder.distance[i] < Integer.MAX_VALUE) {
 				if (Dungeon.level instanceof MiningLevel){
 					boolean barricade = false;
-					for (int j : PathFinder.NEIGHBOURS9){
+					for (int j : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, i )){
 						if (Dungeon.level.map[i+j] == Terrain.BARRICADE){
 							barricade = true;
 						}

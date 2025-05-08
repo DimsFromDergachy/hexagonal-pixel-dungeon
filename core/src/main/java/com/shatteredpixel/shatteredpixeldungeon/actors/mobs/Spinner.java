@@ -35,8 +35,8 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SpinnerSprite;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class Spinner extends Mob {
 
@@ -181,15 +181,16 @@ public class Spinner extends Mob {
 		int webPos = webPos();
 		if (webPos != -1){
 			int i;
-			for ( i = 0; i < PathFinder.CIRCLE8.length; i++){
-				if ((enemy.pos + PathFinder.CIRCLE8[i]) == webPos){
+			int[] neighbors = Dungeon.level.neighbors( Neighbor.CIRCLE6, enemy.pos );
+			for ( i = 0; i < neighbors.length; i++){
+				if ((enemy.pos + neighbors[i]) == webPos){
 					break;
 				}
 			}
 			
 			//spread to the tile hero was moving towards and the two adjacent ones
-			int leftPos = enemy.pos + PathFinder.CIRCLE8[left(i)];
-			int rightPos = enemy.pos + PathFinder.CIRCLE8[right(i)];
+			int leftPos  = enemy.pos + neighbors[(i + 6 - 1) % 6];
+			int rightPos = enemy.pos + neighbors[(i + 6 + 1) % 6];
 			
 			if (Dungeon.level.passable[leftPos]) applyWebToCell(leftPos);
 			if (Dungeon.level.passable[webPos])  applyWebToCell(webPos);
@@ -208,14 +209,6 @@ public class Spinner extends Mob {
 		GameScene.add(Blob.seed(cell, 20, Web.class));
 	}
 	
-	private int left(int direction){
-		return direction == 0 ? 7 : direction-1;
-	}
-	
-	private int right(int direction){
-		return direction == 7 ? 0 : direction+1;
-	}
-
 	{
 		resistances.add(Poison.class);
 	}

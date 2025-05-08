@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.ChasmRoom;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class ChasmExitRoom extends ChasmRoom {
 
@@ -75,7 +75,7 @@ public class ChasmExitRoom extends ChasmRoom {
 		} while (!valid);
 		Painter.set( level, exit, Terrain.EXIT );
 
-		for (int i : PathFinder.NEIGHBOURS8){
+		for (int i : level.neighbors( Neighbor.NEIGHBORS_6, exit )){
 			Painter.set( level, exit+i, Terrain.EMPTY );
 		}
 

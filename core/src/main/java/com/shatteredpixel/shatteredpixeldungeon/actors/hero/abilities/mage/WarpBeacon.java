@@ -50,6 +50,7 @@ import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.BArray;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -112,7 +113,7 @@ public class WarpBeacon extends ArmorAbility {
 						}
 
 						armor.charge -= chargeNeeded;
-						armor.updateQuickslot();
+						ClassArmor.updateQuickslot();
 
 						if (tracker.depth == Dungeon.depth && tracker.branch == Dungeon.branch){
 							Char existing = Actor.findChar(tracker.pos);
@@ -136,7 +137,7 @@ public class WarpBeacon extends ArmorAbility {
 									Char toPush = Char.hasProp(existing, Char.Property.IMMOVABLE) ? hero : existing;
 
 									ArrayList<Integer> candidates = new ArrayList<>();
-									for (int n : PathFinder.NEIGHBOURS8) {
+									for (int n : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, tracker.pos )) {
 										int cell = tracker.pos + n;
 										if (!Dungeon.level.solid[cell] && Actor.findChar( cell ) == null
 												&& (!Char.hasProp(toPush, Char.Property.LARGE) || Dungeon.level.openSpace[cell])) {

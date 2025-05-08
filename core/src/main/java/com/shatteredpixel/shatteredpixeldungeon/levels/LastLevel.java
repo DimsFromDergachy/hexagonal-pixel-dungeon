@@ -37,8 +37,8 @@ import com.watabou.noosa.Group;
 import com.watabou.noosa.TileMap;
 import com.watabou.noosa.audio.Music;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -172,7 +172,7 @@ public class LastLevel extends Level {
 	@Override
 	public int randomRespawnCell( Char ch ) {
 		ArrayList<Integer> candidates = new ArrayList<>();
-		for (int i : PathFinder.NEIGHBOURS8){
+		for (int i : neighbors( Neighbor.NEIGHBORS_6, entrance() )){
 			int cell = entrance() + i;
 			if (passable[cell]
 					&& Actor.findChar(cell) == null

@@ -36,9 +36,9 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTileMap;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.TileMap;
 import com.watabou.utils.GameMath;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 
@@ -73,7 +73,7 @@ public class MineEntrance extends CaveRoom {
 		do {
 			valid = false;
 			entrance = level.pointToCell(random(3));
-			for (int i : PathFinder.NEIGHBOURS9){
+			for (int i : level.neighbors( Neighbor.NEIGHBORS_7, entrance )){
 				if (level.map[entrance+i] != Terrain.WALL){
 					valid = true;
 				}
@@ -84,7 +84,7 @@ public class MineEntrance extends CaveRoom {
 		} while (level.findMob(entrance) != null || !valid);
 		Painter.set( level, entrance, Terrain.ENTRANCE );
 
-		for (int i : PathFinder.NEIGHBOURS8){
+		for (int i : level.neighbors( Neighbor.NEIGHBORS_6, entrance )){
 			Painter.set( level, entrance+i, Terrain.EMPTY );
 		}
 

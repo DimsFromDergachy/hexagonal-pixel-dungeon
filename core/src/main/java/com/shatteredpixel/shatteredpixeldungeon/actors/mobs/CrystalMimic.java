@@ -42,7 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.MimicSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -130,7 +130,7 @@ public class CrystalMimic extends Mimic {
 
 		} else {
 			ArrayList<Integer> candidates = new ArrayList<>();
-			for (int i : PathFinder.NEIGHBOURS8){
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )){
 				if (Dungeon.level.passable[pos+i] && Actor.findChar(pos+i) == null){
 					candidates.add(pos + i);
 				}
@@ -159,7 +159,7 @@ public class CrystalMimic extends Mimic {
 			if (!item.stackable) {
 				Dungeon.quickslot.convertToPlaceholder(item);
 			}
-			item.updateQuickslot();
+			Item.updateQuickslot();
 
 			if (item instanceof Honeypot){
 				items.add(((Honeypot)item).shatter(this, this.pos));

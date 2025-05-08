@@ -43,8 +43,8 @@ import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 
@@ -123,7 +123,7 @@ public class BeaconOfReturning extends Spell {
 				Char toPush = !Char.hasProp(existing, Char.Property.IMMOVABLE) ? hero : existing;
 
 				ArrayList<Integer> candidates = new ArrayList<>();
-				for (int n : PathFinder.NEIGHBOURS8) {
+				for (int n : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, returnPos )) {
 					int cell = returnPos + n;
 					if (!Dungeon.level.solid[cell] && Actor.findChar( cell ) == null
 							&& (!Char.hasProp(toPush, Char.Property.LARGE) || Dungeon.level.openSpace[cell])) {

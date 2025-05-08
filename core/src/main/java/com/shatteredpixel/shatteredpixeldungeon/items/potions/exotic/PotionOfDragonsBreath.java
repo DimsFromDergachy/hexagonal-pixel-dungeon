@@ -47,8 +47,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.windows.WndOptions;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 
@@ -189,7 +189,7 @@ public class PotionOfDragonsBreath extends ExoticPotion {
 										//ignite cells that share a side with an adjacent cell, are flammable, and are further from the source pos
 										//This prevents short-range casts not igniting barricades or bookshelves
 										for (int cell : adjacentCells){
-											for (int i : PathFinder.NEIGHBOURS4){
+											for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, cell )){
 												if (Dungeon.level.trueDistance(cell+i, bolt.sourcePos) > Dungeon.level.trueDistance(cell, bolt.sourcePos)
 														&& Dungeon.level.flammable[cell+i]
 														&& Fire.volumeAt(cell+i, Fire.class) == 0){

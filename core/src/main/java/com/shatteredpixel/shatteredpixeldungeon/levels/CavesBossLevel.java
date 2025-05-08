@@ -65,6 +65,7 @@ import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 
@@ -229,7 +230,7 @@ public class CavesBossLevel extends Level {
 	@Override
 	public int randomRespawnCell( Char ch ) {
 		ArrayList<Integer> candidates = new ArrayList<>();
-		for (int i : PathFinder.NEIGHBOURS8){
+		for (int i : neighbors( Neighbor.NEIGHBORS_6, entrance() )){
 			int cell = entrance() + i;
 			if (passable[cell]
 					&& Actor.findChar(cell) == null
@@ -298,7 +299,7 @@ public class CavesBossLevel extends Level {
 		while (heap != null && !heap.isEmpty()) {
 			int n;
 			do {
-				n = entrance + PathFinder.NEIGHBOURS8[Random.Int(8)];
+				n = entrance + neighbors( Neighbor.NEIGHBORS_6, entrance )[Random.Int( 6 )];
 			} while (!Dungeon.level.passable[n]);
 			Heap dropped = Dungeon.level.drop(heap.pickUp(), n);
 			dropped.seen = heap.seen;
@@ -308,7 +309,7 @@ public class CavesBossLevel extends Level {
 		if (ch != null) {
 			int n;
 			do {
-				n = entrance + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
+				n = entrance + neighbors( Neighbor.NEIGHBORS_6, entrance )[Random.Int( 6 )];
 			} while (!Dungeon.level.passable[n]);
 			ch.pos = n;
 			ch.sprite.place(n);

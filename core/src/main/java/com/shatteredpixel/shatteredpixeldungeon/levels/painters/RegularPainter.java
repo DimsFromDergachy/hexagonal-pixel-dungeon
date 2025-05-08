@@ -36,11 +36,11 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRo
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.Trap;
 import com.watabou.noosa.Game;
 import com.watabou.utils.Graph;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
 import com.watabou.utils.Reflection;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -411,7 +411,7 @@ public abstract class RegularPainter extends Painter {
 			}
 			
 			int count = 1;
-			for (int n : PathFinder.NEIGHBOURS8) {
+			for (int n : l.neighbors( Neighbor.NEIGHBORS_6, i )) {
 				if (grass[i + n]) {
 					count++;
 				}
@@ -452,8 +452,10 @@ public abstract class RegularPainter extends Painter {
 		}
 
 		for (int i : validCells){
-			if ((l.passable[i+PathFinder.CIRCLE4[0]] || l.passable[i+PathFinder.CIRCLE4[2]])
-					&& (l.passable[i+PathFinder.CIRCLE4[1]] || l.passable[i+PathFinder.CIRCLE4[3]])){
+			int[] circle = l.neighbors( Neighbor.CIRCLE6, i );
+			if ((l.passable[i + circle[0]] || l.passable[i + circle[3]]) &&
+				(l.passable[i + circle[1]] || l.passable[i + circle[4]]) &&
+				(l.passable[i + circle[2]] || l.passable[i + circle[5]])) {
 				validNonHallways.add(i);
 			}
 		}

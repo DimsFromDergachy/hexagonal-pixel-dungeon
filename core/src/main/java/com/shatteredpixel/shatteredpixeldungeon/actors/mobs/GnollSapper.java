@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.GnollSapperSprite;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 public class GnollSapper extends Mob {
@@ -178,7 +178,7 @@ public class GnollSapper extends Mob {
 
 				if (abilityCooldown-- <= 0){
 					boolean targetNextToBarricade = false;
-					for (int i : PathFinder.NEIGHBOURS8){
+					for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, enemy.pos )){
 						if (Dungeon.level.map[enemy.pos+i] == Terrain.BARRICADE
 							|| Dungeon.level.map[enemy.pos+i] == Terrain.ENTRANCE){
 							targetNextToBarricade = true;

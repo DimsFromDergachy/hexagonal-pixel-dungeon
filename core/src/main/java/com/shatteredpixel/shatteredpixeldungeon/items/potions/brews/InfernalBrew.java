@@ -29,7 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfLiquidFlam
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class InfernalBrew extends Brew {
 	
@@ -46,12 +46,12 @@ public class InfernalBrew extends Brew {
 			Sample.INSTANCE.play( Assets.Sounds.GAS );
 		}
 
-		int centerVolume = 120;
-		for (int i : PathFinder.NEIGHBOURS8){
+		int centerVolume = 155;
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, cell )){
 			if (!Dungeon.level.solid[cell+i]){
-				GameScene.add( Blob.seed( cell+i, 120, Inferno.class ) );
+				GameScene.add( Blob.seed( cell+i, 155, Inferno.class ) );
 			} else {
-				centerVolume += 120;
+				centerVolume += 155;
 			}
 		}
 		

@@ -27,7 +27,7 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.HexMath;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Point;
 import com.watabou.utils.PointF;
 
@@ -63,7 +63,7 @@ public abstract class DungeonTileMap extends HexTileMap {
 	public synchronized void updateMapCell(int cell) {
 		//update in a 3x3 grid to account for neighbors which might also be affected
 		if (Dungeon.level.insideMap(cell)) {
-			for (int i : PathFinder.NEIGHBOURS9) {
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, cell )) {
 				data[cell + i] = getTileVisual(cell + i, map[cell + i], false);
 			}
 			super.updateMapCell(cell - mapWidth - 1);

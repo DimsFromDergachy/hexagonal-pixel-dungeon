@@ -44,6 +44,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.EmptyRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -188,7 +189,7 @@ public class MagicalFireRoom extends SpecialRoom {
 						}
 
 						//clears itself if there is frost/blizzard on or next to it
-						for (int k : PathFinder.NEIGHBOURS9) {
+						for (int k : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, cell )) {
 							if (freeze != null && freeze.volume > 0 && freeze.cur[cell+k] > 0) {
 								freeze.clear(cell);
 								cur[cell] = 0;

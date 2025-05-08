@@ -43,7 +43,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.ColorMath;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 public class WandOfCorrosion extends Wand {
@@ -62,7 +62,7 @@ public class WandOfCorrosion extends Wand {
 		GameScene.add(gas);
 		Sample.INSTANCE.play(Assets.Sounds.GAS);
 
-		for (int i : PathFinder.NEIGHBOURS9) {
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, bolt.collisionPos )) {
 			Char ch = Actor.findChar(bolt.collisionPos + i);
 			if (ch != null) {
 				wandProc(ch, chargesPerCast());

@@ -31,8 +31,8 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 
@@ -67,7 +67,7 @@ public class Blooming extends Weapon.Enchantment {
 			}
 			
 			ArrayList<Integer> positions = new ArrayList<>();
-			for (int i : PathFinder.NEIGHBOURS8){
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, defender.pos )){
 				if (defender.pos + i != attacker.pos) {
 					positions.add(defender.pos + i);
 				}

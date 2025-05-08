@@ -45,7 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.BossHealthBar;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 public class Goo extends Mob {
@@ -294,7 +294,7 @@ public class Goo extends Mob {
 		for (int i = 0; i < blobs; i++){
 			int ofs;
 			do {
-				ofs = PathFinder.NEIGHBOURS8[Random.Int(8)];
+				ofs = Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )[Random.Int(6)];
 			} while (!Dungeon.level.passable[pos + ofs]);
 			Dungeon.level.drop( new GooBlob(), pos + ofs ).sprite.drop( pos );
 		}

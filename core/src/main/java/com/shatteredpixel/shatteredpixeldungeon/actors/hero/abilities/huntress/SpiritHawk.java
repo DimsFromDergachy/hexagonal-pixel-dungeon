@@ -47,7 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.TextureFilm;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -93,8 +93,8 @@ public class SpiritHawk extends ArmorAbility {
 			}
 		} else {
 			ArrayList<Integer> spawnPoints = new ArrayList<>();
-			for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-				int p = hero.pos + PathFinder.NEIGHBOURS8[i];
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, hero.pos )) {
+				int p = hero.pos + i;
 				if (Actor.findChar(p) == null && (Dungeon.level.passable[p] || Dungeon.level.avoid[p])) {
 					spawnPoints.add(p);
 				}
@@ -102,7 +102,7 @@ public class SpiritHawk extends ArmorAbility {
 
 			if (!spawnPoints.isEmpty()){
 				armor.charge -= chargeUse(hero);
-				armor.updateQuickslot();
+				ClassArmor.updateQuickslot();
 
 				ally = new HawkAlly();
 				ally.pos = Random.element(spawnPoints);
@@ -300,8 +300,6 @@ public class SpiritHawk extends ArmorAbility {
 			texture( Assets.Sprites.SPIRIT_HAWK );
 
 			TextureFilm frames = new TextureFilm( texture, 15, 15 );
-
-			int c = 0;
 
 			idle = new Animation( 6, true );
 			idle.frames( frames, 0, 1 );

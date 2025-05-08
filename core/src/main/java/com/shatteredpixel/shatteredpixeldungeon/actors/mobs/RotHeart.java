@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.plants.Rotberry;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.RotHeartSprite;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 public class RotHeart extends Mob {
@@ -72,7 +72,7 @@ public class RotHeart extends Mob {
 	public int defenseProc(Char enemy, int damage) {
 		//rot heart spreads less gas in enclosed spaces
 		int openNearby = 0;
-		for (int i : PathFinder.NEIGHBOURS8){
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )){
 			if (!Dungeon.level.solid[pos+i]){
 				openNearby++;
 			}

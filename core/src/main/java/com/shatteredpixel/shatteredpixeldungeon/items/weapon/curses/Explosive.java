@@ -33,8 +33,8 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class Explosive extends Weapon.Enchantment {
 
@@ -65,7 +65,7 @@ public class Explosive extends Weapon.Enchantment {
 			//explosion position is the closest adjacent cell to the defender
 			// this will be the attacker's position if they are adjacent
 			int explosionPos = -1;
-			for (int i : PathFinder.NEIGHBOURS8){
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, defender.pos )){
 				if (!Dungeon.level.solid[defender.pos+i] &&
 						(explosionPos == -1 ||
 						Dungeon.level.trueDistance(attacker.pos, defender.pos+i) < Dungeon.level.trueDistance(attacker.pos, explosionPos))){

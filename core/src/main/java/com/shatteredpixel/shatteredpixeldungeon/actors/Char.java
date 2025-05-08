@@ -152,6 +152,7 @@ import com.watabou.utils.BArray;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -210,7 +211,7 @@ public abstract class Char extends Actor {
 				&& !(heap.peek() instanceof Tengu.BombAbility.BombItem)
 				&& !(heap.peek() instanceof Tengu.ShockerAbility.ShockerItem)) {
 			ArrayList<Integer> candidates = new ArrayList<>();
-			for (int n : PathFinder.NEIGHBOURS8){
+			for (int n : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )){
 				if (Dungeon.level.passable[pos+n]){
 					candidates.add(pos+n);
 				}
@@ -1213,7 +1214,7 @@ public abstract class Char extends Actor {
 
 		if (traveling && Dungeon.level.adjacent( step, pos ) && buff( Vertigo.class ) != null) {
 			sprite.interruptMotion();
-			int newPos = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
+			int newPos = pos + Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )[Random.Int( 6 )];
 			if (!(Dungeon.level.passable[newPos] || Dungeon.level.avoid[newPos])
 					|| (properties().contains(Property.LARGE) && !Dungeon.level.openSpace[newPos])
 					|| Actor.findChar( newPos ) != null)

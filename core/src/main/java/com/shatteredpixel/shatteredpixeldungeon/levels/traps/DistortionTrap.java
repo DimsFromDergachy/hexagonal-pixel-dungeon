@@ -43,9 +43,9 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.mobs.npcs.RatKing;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Bestiary;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,8 +79,8 @@ public class DistortionTrap extends Trap{
 
 		ArrayList<Integer> candidates = new ArrayList<>();
 
-		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-			int p = pos + PathFinder.NEIGHBOURS8[i];
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )) {
+			int p = pos + i;
 			if (Actor.findChar( p ) == null && (Dungeon.level.passable[p] || Dungeon.level.avoid[p])) {
 				candidates.add( p );
 			}

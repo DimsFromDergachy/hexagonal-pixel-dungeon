@@ -39,7 +39,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 public class RipperDemon extends Mob {
@@ -156,29 +156,29 @@ public class RipperDemon extends Mob {
 
 				//ensure there is somewhere to land after leaping
 				if (leapVictim != null){
-					int bouncepos = -1;
+					int bouncePos = -1;
 					//attempt to bounce in free passable space
-					for (int i : PathFinder.NEIGHBOURS8){
-						if ((bouncepos == -1 || Dungeon.level.trueDistance(pos, leapPos+i) < Dungeon.level.trueDistance(pos, bouncepos))
+					for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, leapPos )){
+						if ((bouncePos == -1 || Dungeon.level.trueDistance(pos, leapPos+i) < Dungeon.level.trueDistance(pos, bouncePos))
 								&& Actor.findChar(leapPos+i) == null && Dungeon.level.passable[leapPos+i]){
-							bouncepos = leapPos+i;
+							bouncePos = leapPos+i;
 						}
 					}
 					//try again, allowing a bounce into any non-solid terrain
-					if (bouncepos == -1){
-						for (int i : PathFinder.NEIGHBOURS8){
-							if ((bouncepos == -1 || Dungeon.level.trueDistance(pos, leapPos+i) < Dungeon.level.trueDistance(pos, bouncepos))
+					if (bouncePos == -1){
+						for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, leapPos )){
+							if ((bouncePos == -1 || Dungeon.level.trueDistance(pos, leapPos+i) < Dungeon.level.trueDistance(pos, bouncePos))
 									&& Actor.findChar(leapPos+i) == null && !Dungeon.level.solid[leapPos+i]){
-								bouncepos = leapPos+i;
+								bouncePos = leapPos+i;
 							}
 						}
 					}
 					//if no valid position, cancel the leap
-					if (bouncepos == -1) {
+					if (bouncePos == -1) {
 						leapPos = -1;
 						return true;
 					} else {
-						endPos = bouncepos;
+						endPos = bouncePos;
 					}
 				} else {
 					endPos = leapPos;
@@ -237,14 +237,15 @@ public class RipperDemon extends Mob {
 
 					int targetPos = enemy.pos;
 					if (lastEnemyPos != enemy.pos){
+						int[] neighbors = Dungeon.level.neighbors( Neighbor.CIRCLE6, enemy.pos );
 						int closestIdx = 0;
-						for (int i = 1; i < PathFinder.CIRCLE8.length; i++){
-							if (Dungeon.level.trueDistance(lastEnemyPos, enemy.pos+PathFinder.CIRCLE8[i])
-									< Dungeon.level.trueDistance(lastEnemyPos, enemy.pos+PathFinder.CIRCLE8[closestIdx])){
+						for (int i = 1; i < neighbors.length; i++){
+							if (Dungeon.level.trueDistance(lastEnemyPos, enemy.pos+neighbors[i])
+									< Dungeon.level.trueDistance(lastEnemyPos, enemy.pos+neighbors[closestIdx])){
 								closestIdx = i;
 							}
 						}
-						targetPos = enemy.pos + PathFinder.CIRCLE8[(closestIdx+4)%8];
+						targetPos = enemy.pos + neighbors[(closestIdx+3) % 6];
 					}
 
 					Ballistic b = new Ballistic(pos, targetPos, Ballistic.STOP_TARGET | Ballistic.STOP_SOLID);

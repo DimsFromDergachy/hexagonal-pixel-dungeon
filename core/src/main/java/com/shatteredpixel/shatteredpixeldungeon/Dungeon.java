@@ -86,6 +86,7 @@ import com.watabou.utils.FileUtils;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.SparseArray;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -116,7 +117,7 @@ public class Dungeon {
 		NECRO_HP,
 		BAT_HP,
 		WARLOCK_HP,
-		//Demon spawners are already limited in their spawnrate, no need to limit their health drops
+		//Demon spawners are already limited in their spawn rate, no need to limit their health drops
 		//alchemy
 		COOKING_HP,
 		BLANDFRUIT_SEED,
@@ -486,7 +487,7 @@ public class Dungeon {
 		for(Mob m : level.mobs){
 			if (m.pos == hero.pos && !Char.hasProp(m, Char.Property.IMMOVABLE)){
 				//displace mob
-				for(int i : PathFinder.NEIGHBOURS8){
+				for ( int i : level.neighbors( Neighbor.NEIGHBORS_6, m.pos ) ) {
 					if (Actor.findChar(m.pos+i) == null && level.passable[m.pos + i]){
 						m.pos += i;
 						break;
@@ -607,7 +608,7 @@ public class Dungeon {
 	private static final String GOLD		= "gold";
 	private static final String ENERGY		= "energy";
 	private static final String DROPPED     = "dropped%d";
-	private static final String PORTED      = "ported%d";
+	// private static final String PORTED      = "ported%d";
 	private static final String LEVEL		= "level";
 	private static final String LIMDROPS    = "limited_drops";
 	private static final String CHAPTERS	= "chapters";
@@ -926,8 +927,8 @@ public class Dungeon {
 		}
 
 		//always visit adjacent tiles, even if they aren't seen
-		for (int i : PathFinder.NEIGHBOURS9){
-			level.visited[hero.pos+i] = true;
+		for (int i : level.neighbors( Neighbor.NEIGHBORS_7, hero.pos ) ) {
+			level.visited[hero.pos + i] = true;
 		}
 	
 		GameScene.updateFog(l, t, width, height);

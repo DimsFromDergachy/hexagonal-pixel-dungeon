@@ -35,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.GolemSprite;
 import com.watabou.utils.BArray;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 public class Golem extends Mob {
@@ -148,7 +149,7 @@ public class Golem extends Mob {
 		spend(TICK);
 
 		int bestPos = enemy.pos;
-		for (int i : PathFinder.NEIGHBOURS8){
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )){
 			if (Dungeon.level.passable[pos + i]
 				&& Actor.findChar(pos+i) == null
 				&& Dungeon.level.trueDistance(pos+i, enemy.pos) > Dungeon.level.trueDistance(bestPos, enemy.pos)){

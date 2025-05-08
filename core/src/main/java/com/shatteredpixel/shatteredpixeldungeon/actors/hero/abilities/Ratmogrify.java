@@ -47,7 +47,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.TargetHealthIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -91,8 +91,8 @@ public class Ratmogrify extends ArmorAbility {
 			} else {
 				ArrayList<Integer> spawnPoints = new ArrayList<>();
 
-				for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-					int p = hero.pos + PathFinder.NEIGHBOURS8[i];
+				for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, hero.pos )) {
+					int p = hero.pos + i;
 					if (Actor.findChar( p ) == null && Dungeon.level.passable[p]) {
 						spawnPoints.add( p );
 					}
@@ -169,7 +169,7 @@ public class Ratmogrify extends ArmorAbility {
 		}
 
 		armor.charge -= chargeUse(hero);
-		armor.updateQuickslot();
+		ClassArmor.updateQuickslot();
 		Invisibility.dispel();
 		hero.spendAndNext(Actor.TICK);
 

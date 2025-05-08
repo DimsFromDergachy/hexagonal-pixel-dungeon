@@ -39,15 +39,14 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
 
-
 public class CeremonialCandle extends Item {
 
-	//generated with the wandmaker quest
+	//generated with the wand maker quest
 	public static int ritualPos;
 
 	{
@@ -171,7 +170,7 @@ public class CeremonialCandle extends Item {
 			Char ch = Actor.findChar( ritualPos );
 			if (ch != null) {
 				ArrayList<Integer> candidates = new ArrayList<>();
-				for (int n : PathFinder.NEIGHBOURS8) {
+				for (int n : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, ritualPos )) {
 					int cell = ritualPos + n;
 					if ((Dungeon.level.passable[cell] || Dungeon.level.avoid[cell]) && Actor.findChar( cell ) == null) {
 						candidates.add( cell );
@@ -192,7 +191,7 @@ public class CeremonialCandle extends Item {
 				((PrisonLevel) Dungeon.level).updateWandmakerQuestMusic();
 			}
 
-			for (int i : PathFinder.NEIGHBOURS9){
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, ritualPos )){
 				CellEmitter.get(ritualPos+i).burst(ElmoParticle.FACTORY, 10);
 			}
 			Sample.INSTANCE.play(Assets.Sounds.BURNING);

@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.items.armor.curses;
 
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
@@ -28,8 +29,8 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
 import com.shatteredpixel.shatteredpixeldungeon.items.armor.Armor;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class Corrosion extends Armor.Glyph {
 
@@ -41,7 +42,7 @@ public class Corrosion extends Armor.Glyph {
 		float procChance = 1/10f * procChanceMultiplier(defender);
 		if ( Random.Float() < procChance ) {
 			int pos = defender.pos;
-			for (int i : PathFinder.NEIGHBOURS9){
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, pos )){
 				Splash.at(pos+i, 0x000000, 5);
 				if (Actor.findChar(pos+i) != null)
 					Buff.affect(Actor.findChar(pos+i), Ooze.class).set( Ooze.DURATION/2 );

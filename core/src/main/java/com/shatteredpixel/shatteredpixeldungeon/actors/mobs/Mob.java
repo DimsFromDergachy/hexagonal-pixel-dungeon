@@ -92,6 +92,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
@@ -399,7 +400,7 @@ public abstract class Mob extends Char {
 				for (Char curr : enemies){
 					int currDist = Integer.MAX_VALUE;
 					//we aren't trying to move into the target, just toward them
-					for (int i : PathFinder.NEIGHBOURS8){
+					for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, curr.pos )){
 						if (PathFinder.distance[curr.pos+i] < currDist){
 							currDist = PathFinder.distance[curr.pos+i];
 						}
@@ -572,7 +573,7 @@ public abstract class Mob extends Char {
 					newPath = true;
 					//If the next cell on the path can't be moved into, see if there is another cell that could replace it
 					if (!path.isEmpty()) {
-						for (int i : PathFinder.NEIGHBOURS8) {
+						for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, nextCell )) {
 							if (Dungeon.level.adjacent(pos, nextCell + i) && Dungeon.level.adjacent(nextCell + i, path.getFirst())) {
 								if (cellIsPathable(nextCell+i)){
 									path.addFirst(nextCell+i);
@@ -1387,7 +1388,7 @@ public abstract class Mob extends Char {
 		if (!heldAllies.isEmpty()){
 			
 			ArrayList<Integer> candidatePositions = new ArrayList<>();
-			for (int i : PathFinder.NEIGHBOURS8) {
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )) {
 				if (!Dungeon.level.solid[i+pos] && !Dungeon.level.avoid[i+pos] && level.findMob(i+pos) == null){
 					candidatePositions.add(i+pos);
 				}

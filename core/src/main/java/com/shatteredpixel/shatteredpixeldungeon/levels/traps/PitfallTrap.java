@@ -36,7 +36,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 
@@ -60,7 +60,7 @@ public class PitfallTrap extends Trap {
 		p.branch = Dungeon.branch;
 
 		ArrayList<Integer> positions = new ArrayList<>();
-		for (int i : PathFinder.NEIGHBOURS9){
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, pos )){
 			if (!Dungeon.level.solid[pos+i] || Dungeon.level.passable[pos+i]){
 				CellEmitter.floor(pos+i).burst(PitfallParticle.FACTORY4, 8);
 				positions.add(pos+i);

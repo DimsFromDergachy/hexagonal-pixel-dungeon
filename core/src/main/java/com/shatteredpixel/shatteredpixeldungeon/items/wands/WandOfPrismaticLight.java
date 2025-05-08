@@ -45,7 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -112,7 +112,7 @@ public class WandOfPrismaticLight extends DamageWand {
 			if (!Dungeon.level.insideMap(c)){
 				continue;
 			}
-			for (int n : PathFinder.NEIGHBOURS9){
+			for (int n : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, c )){
 				int cell = c+n;
 
 				if (Dungeon.level.discoverable[cell])

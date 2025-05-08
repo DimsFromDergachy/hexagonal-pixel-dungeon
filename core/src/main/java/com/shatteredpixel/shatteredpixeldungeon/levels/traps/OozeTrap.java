@@ -27,7 +27,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Ooze;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Splash;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class OozeTrap extends Trap {
 
@@ -39,7 +39,7 @@ public class OozeTrap extends Trap {
 	@Override
 	public void activate() {
 
-		for( int i : PathFinder.NEIGHBOURS9) {
+		for( int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, pos )) {
 			if (!Dungeon.level.solid[pos + i]) {
 				Splash.at( pos + i, 0x000000, 5);
 				Char ch = Actor.findChar( pos + i );

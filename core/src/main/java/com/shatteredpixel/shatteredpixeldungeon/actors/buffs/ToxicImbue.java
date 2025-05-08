@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class ToxicImbue extends Buff {
 	
@@ -70,12 +70,12 @@ public class ToxicImbue extends Buff {
 	public boolean act() {
 		if (left > 0) {
 			//spreads 54 units of gas total
-			int centerVolume = 6;
-			for (int i : PathFinder.NEIGHBOURS8) {
+			int centerVolume = 8;
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, target.pos )) {
 				if (!Dungeon.level.solid[target.pos + i]) {
-					GameScene.add(Blob.seed(target.pos + i, 6, ToxicGas.class));
+					GameScene.add(Blob.seed(target.pos + i, 8, ToxicGas.class));
 				} else {
-					centerVolume += 6;
+					centerVolume += 8;
 				}
 			}
 			GameScene.add(Blob.seed(target.pos, centerVolume, ToxicGas.class));

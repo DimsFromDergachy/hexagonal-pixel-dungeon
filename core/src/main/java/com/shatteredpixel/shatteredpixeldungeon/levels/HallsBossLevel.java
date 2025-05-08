@@ -56,6 +56,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 
@@ -215,7 +216,7 @@ public class HallsBossLevel extends Level {
 	@Override
 	public int randomRespawnCell( Char ch ) {
 		ArrayList<Integer> candidates = new ArrayList<>();
-		for (int i : PathFinder.NEIGHBOURS8){
+		for (int i : neighbors( Neighbor.NEIGHBORS_6, entrance() )){
 			int cell = entrance() + i;
 			if (passable[cell]
 					&& Actor.findChar(cell) == null
@@ -258,7 +259,7 @@ public class HallsBossLevel extends Level {
 		//push any char that is already here away
 		if (Actor.findChar(boss.pos) != null){
 			ArrayList<Integer> candidates = new ArrayList<>();
-			for (int i : PathFinder.NEIGHBOURS8){
+			for (int i : neighbors( Neighbor.NEIGHBORS_6, boss.pos )){
 				if (Actor.findChar(boss.pos + i) == null){
 					candidates.add(boss.pos + i);
 				}

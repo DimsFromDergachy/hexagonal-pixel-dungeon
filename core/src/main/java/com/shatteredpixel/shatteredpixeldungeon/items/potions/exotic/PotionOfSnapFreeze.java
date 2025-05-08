@@ -30,7 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Buff;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.Roots;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class PotionOfSnapFreeze extends ExoticPotion {
 	
@@ -48,7 +48,7 @@ public class PotionOfSnapFreeze extends ExoticPotion {
 			Sample.INSTANCE.play( Assets.Sounds.SHATTER );
 		}
 		
-		for (int offset : PathFinder.NEIGHBOURS9){
+		for (int offset : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, cell )){
 			if (!Dungeon.level.solid[cell+offset]) {
 				
 				Freezing.affect( cell + offset );

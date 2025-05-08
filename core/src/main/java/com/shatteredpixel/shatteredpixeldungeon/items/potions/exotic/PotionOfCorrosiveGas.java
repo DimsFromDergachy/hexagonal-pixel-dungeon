@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class PotionOfCorrosiveGas extends ExoticPotion {
 	
@@ -47,12 +48,12 @@ public class PotionOfCorrosiveGas extends ExoticPotion {
 			Sample.INSTANCE.play( Assets.Sounds.GAS );
 		}
 
-		int centerVolume = 25;
-		for (int i : PathFinder.NEIGHBOURS8){
+		int centerVolume = 32;
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, cell )){
 			if (!Dungeon.level.solid[cell+i]){
-				GameScene.add( Blob.seed( cell+i, 25, CorrosiveGas.class ).setStrength( 2 + Dungeon.scalingDepth()/5));
+				GameScene.add( Blob.seed( cell+i, 32, CorrosiveGas.class ).setStrength( 2 + Dungeon.scalingDepth()/5));
 			} else {
-				centerVolume += 25;
+				centerVolume += 32;
 			}
 		}
 

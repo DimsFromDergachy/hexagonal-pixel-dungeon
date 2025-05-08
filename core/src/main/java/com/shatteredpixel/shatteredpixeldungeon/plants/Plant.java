@@ -44,9 +44,9 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 
@@ -158,7 +158,7 @@ public abstract class Plant implements Bundlable {
 				Catalog.countUse(getClass());
 				Dungeon.level.plant( this, cell );
 				if (Dungeon.hero.subClass == HeroSubClass.WARDEN) {
-					for (int i : PathFinder.NEIGHBOURS8) {
+					for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, cell )) {
 						int c = Dungeon.level.map[cell + i];
 						if ( c == Terrain.EMPTY || c == Terrain.EMPTY_DECO
 								|| c == Terrain.EMBERS || c == Terrain.GRASS){

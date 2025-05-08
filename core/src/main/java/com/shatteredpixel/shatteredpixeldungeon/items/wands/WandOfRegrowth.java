@@ -52,8 +52,8 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.ColorMath;
 import com.watabou.utils.GameMath;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -349,7 +349,7 @@ public class WandOfRegrowth extends Wand {
 			int nDrops = Random.NormalIntRange(3, 6);
 
 			ArrayList<Integer> candidates = new ArrayList<>();
-			for (int i : PathFinder.NEIGHBOURS8){
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )){
 				if (Dungeon.level.passable[pos+i]
 						&& pos+i != Dungeon.level.entrance()
 						&& pos+i != Dungeon.level.exit()){
@@ -389,7 +389,7 @@ public class WandOfRegrowth extends Wand {
 			int nSeeds = Random.NormalIntRange(2, 4);
 
 			ArrayList<Integer> candidates = new ArrayList<>();
-			for (int i : PathFinder.NEIGHBOURS8){
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )){
 				if (Dungeon.level.passable[pos+i]
 						&& pos+i != Dungeon.level.entrance()
 						&& pos+i != Dungeon.level.exit()){

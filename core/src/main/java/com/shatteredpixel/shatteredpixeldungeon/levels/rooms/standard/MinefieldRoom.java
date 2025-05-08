@@ -27,9 +27,9 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.traps.ExplosiveTrap;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class MinefieldRoom extends StandardRoom {
 
@@ -75,8 +75,8 @@ public class MinefieldRoom extends StandardRoom {
 			} while (level.traps.get(pos) != null);
 
 			//randomly places some embers around the mines
-			for (int j = 0; j < 8; j ++){
-				int c = PathFinder.NEIGHBOURS8[Random.Int(8)];
+			for (int j = 0; j < 8; j++){
+				int c = level.neighbors( Neighbor.NEIGHBORS_6, pos )[Random.Int(6)];
 				if (level.traps.get(pos+c) == null && level.map[pos+c] == Terrain.EMPTY){
 					Painter.set(level, pos+c, Terrain.EMBERS);
 				}

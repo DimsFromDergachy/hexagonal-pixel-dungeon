@@ -31,7 +31,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -68,8 +68,8 @@ public class ScrollOfMirrorImage extends Scroll {
 		
 		ArrayList<Integer> respawnPoints = new ArrayList<>();
 		
-		for (int i = 0; i < PathFinder.NEIGHBOURS9.length; i++) {
-			int p = pos + PathFinder.NEIGHBOURS9[i];
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, pos )) {
+			int p = pos + i;
 			if (Actor.findChar( p ) == null && Dungeon.level.passable[p]) {
 				respawnPoints.add( p );
 			}

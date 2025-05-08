@@ -34,7 +34,7 @@ import com.shatteredpixel.shatteredpixeldungeon.plants.Earthroot;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SkeletonSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 public class Skeleton extends Mob {
@@ -68,8 +68,8 @@ public class Skeleton extends Mob {
 		if (cause == Chasm.class) return;
 		
 		boolean heroKilled = false;
-		for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-			Char ch = findChar( pos + PathFinder.NEIGHBOURS8[i] );
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )) {
+			Char ch = findChar( pos + i );
 			if (ch != null && ch.isAlive()) {
 				int damage = Math.round(Random.NormalIntRange(6, 12));
 				damage = Math.round( damage * AscensionChallenge.statModifier(this));

@@ -24,7 +24,6 @@ package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.Statistics;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
-import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.buffs.AscensionChallenge;
 import com.shatteredpixel.shatteredpixeldungeon.effects.Pushing;
 import com.shatteredpixel.shatteredpixeldungeon.items.potions.PotionOfHealing;
@@ -34,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SpawnerSprite;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -76,7 +75,7 @@ public class DemonSpawner extends Mob {
 		return true;
 	}
 
-	private float spawnCooldown = 0;
+	private float spawnCoolDown = 0;
 
 	public boolean spawnRecorded = false;
 
@@ -87,20 +86,20 @@ public class DemonSpawner extends Mob {
 			spawnRecorded = true;
 		}
 
-		if (Dungeon.hero.buff(AscensionChallenge.class) != null && spawnCooldown > 20){
-			spawnCooldown = 20;
+		if (Dungeon.hero.buff(AscensionChallenge.class) != null && spawnCoolDown > 20){
+			spawnCoolDown = 20;
 		}
 
-		spawnCooldown--;
-		if (spawnCooldown <= 0){
+		spawnCoolDown--;
+		if (spawnCoolDown <= 0){
 
 			//we don't want spawners to store multiple ripper demons
-			if (spawnCooldown < -20){
-				spawnCooldown = -20;
+			if (spawnCoolDown < -20){
+				spawnCoolDown = -20;
 			}
 
 			ArrayList<Integer> candidates = new ArrayList<>();
-			for (int n : PathFinder.NEIGHBOURS8) {
+			for (int n : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )) {
 				if (Dungeon.level.passable[pos+n] && Actor.findChar( pos+n ) == null) {
 					candidates.add( pos+n );
 				}
@@ -119,10 +118,10 @@ public class DemonSpawner extends Mob {
 					Actor.add(new Pushing(spawn, pos, spawn.pos));
 				}
 
-				spawnCooldown += 60;
+				spawnCoolDown += 60;
 				if (Dungeon.depth > 21){
 					//60/53.33/46.67/40 turns to spawn on floor 21/22/23/24
-					spawnCooldown -= Math.min(20, (Dungeon.depth-21)*6.67);
+					spawnCoolDown -= Math.min(20, (Dungeon.depth-21)*6.67);
 				}
 			}
 		}
@@ -137,7 +136,7 @@ public class DemonSpawner extends Mob {
 			// at   20/22/25/29/34/40/47/55/64/74/85 incoming dmg
 			dmg = 19 + (int)(Math.sqrt(8*(dmg - 19) + 1) - 1)/2;
 		}
-		spawnCooldown -= dmg;
+		spawnCoolDown -= dmg;
 		super.damage(dmg, src);
 	}
 
@@ -162,14 +161,14 @@ public class DemonSpawner extends Mob {
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
-		bundle.put(SPAWN_COOLDOWN, spawnCooldown);
+		bundle.put(SPAWN_COOLDOWN, spawnCoolDown);
 		bundle.put(SPAWN_RECORDED, spawnRecorded);
 	}
 
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		super.restoreFromBundle(bundle);
-		spawnCooldown = bundle.getFloat(SPAWN_COOLDOWN);
+		spawnCoolDown = bundle.getFloat(SPAWN_COOLDOWN);
 		spawnRecorded = bundle.getBoolean(SPAWN_RECORDED);
 	}
 

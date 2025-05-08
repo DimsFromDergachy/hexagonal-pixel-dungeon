@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Honeypot;
 import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class TeleportationTrap extends Trap {
 
@@ -45,7 +45,7 @@ public class TeleportationTrap extends Trap {
 	@Override
 	public void activate() {
 
-		for (int i : PathFinder.NEIGHBOURS9){
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, pos )){
 			Char ch = Actor.findChar(pos + i);
 			if (ch != null){
 				if (ScrollOfTeleportation.teleportChar(ch)) {

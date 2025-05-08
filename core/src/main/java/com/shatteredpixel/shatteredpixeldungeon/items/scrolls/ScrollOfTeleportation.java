@@ -45,6 +45,7 @@ import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 
@@ -180,7 +181,7 @@ public class ScrollOfTeleportation extends Scroll {
 				SpecialRoom room = (SpecialRoom) level.room(pos);
 				if (room.entrance() != null){
 					doorPos = level.pointToCell(room.entrance());
-					for (int i : PathFinder.NEIGHBOURS8){
+					for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, doorPos )) {
 						if (!room.inside(level.cellToPoint(doorPos + i))
 								&& level.passable[doorPos + i]
 								&& Actor.findChar(doorPos + i) == null){

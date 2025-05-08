@@ -57,8 +57,8 @@ public class Multiplicity extends Armor.Glyph {
 		if ( Random.Float() < procChance ) {
 			ArrayList<Integer> spawnPoints = new ArrayList<>();
 
-			for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-				int p = defender.pos + PathFinder.NEIGHBOURS8[i];
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, defender.pos )) {
+				int p = defender.pos + i;
 				if (Actor.findChar( p ) == null && (Dungeon.level.passable[p] || Dungeon.level.avoid[p])) {
 					spawnPoints.add( p );
 				}

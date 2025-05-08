@@ -47,9 +47,9 @@ import com.watabou.noosa.Group;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class WandOfBlastWave extends DamageWand {
 
@@ -73,21 +73,21 @@ public class WandOfBlastWave extends DamageWand {
 		BlastWave.blast(bolt.collisionPos);
 
 		//presses all tiles in the AOE first, with the exception of tengu dart traps
-		for (int i : PathFinder.NEIGHBOURS9){
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, bolt.collisionPos )){
 			if (!(Dungeon.level.traps.get(bolt.collisionPos+i) instanceof TenguDartTrap)) {
 				Dungeon.level.pressCell(bolt.collisionPos + i);
 			}
 		}
 
 		//throws other chars around the center.
-		for (int i  : PathFinder.NEIGHBOURS8){
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, bolt.collisionPos )){
 			Char ch = Actor.findChar(bolt.collisionPos + i);
 
 			if (ch != null){
 				wandProc(ch, chargesPerCast());
 				if (ch.alignment != Char.Alignment.ALLY) ch.damage(damageRoll(), this);
 
-				//do not push chars that are dieing over a pit, or that move due to the damage
+				//do not push chars that are dying over a pit, or that move due to the damage
 				if ((ch.isAlive() || ch.flying || !Dungeon.level.pit[ch.pos])
 						&& ch.pos == bolt.collisionPos + i) {
 					Ballistic trajectory = new Ballistic(ch.pos, ch.pos + i, Ballistic.MAGIC_BOLT);

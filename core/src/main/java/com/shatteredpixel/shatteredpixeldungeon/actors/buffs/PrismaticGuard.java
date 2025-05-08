@@ -33,7 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.BuffIndicator;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class PrismaticGuard extends Buff {
 	
@@ -64,8 +64,8 @@ public class PrismaticGuard extends Buff {
 		if (closest != null && Dungeon.level.distance(hero.pos, closest.pos) < 5){
 			//spawn guardian
 			int bestPos = -1;
-			for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-				int p = hero.pos + PathFinder.NEIGHBOURS8[i];
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, hero.pos )) {
+				int p = hero.pos + i;
 				if (Actor.findChar( p ) == null && Dungeon.level.passable[p]) {
 					if (bestPos == -1 || Dungeon.level.trueDistance(p, closest.pos) < Dungeon.level.trueDistance(bestPos, closest.pos)){
 						bestPos = p;

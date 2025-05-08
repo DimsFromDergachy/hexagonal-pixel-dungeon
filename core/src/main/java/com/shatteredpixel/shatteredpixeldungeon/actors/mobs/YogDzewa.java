@@ -55,7 +55,7 @@ import com.watabou.noosa.audio.Music;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
@@ -250,7 +250,7 @@ public class YogDzewa extends Mob {
 					int targetPos = Dungeon.hero.pos;
 					if (i != 0){
 						do {
-							targetPos = Dungeon.hero.pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
+							targetPos = Dungeon.hero.pos + Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, Dungeon.hero.pos )[Random.Int(6)];
 						} while (Dungeon.level.trueDistance(pos, Dungeon.hero.pos)
 								> Dungeon.level.trueDistance(pos, targetPos));
 					}
@@ -261,7 +261,7 @@ public class YogDzewa extends Mob {
 
 				//remove one beam if multiple shots would cause every cell next to the hero to be targeted
 				boolean allAdjTargeted = true;
-				for (int i : PathFinder.NEIGHBOURS9){
+				for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, Dungeon.hero.pos )){
 					if (!affectedCells.contains(Dungeon.hero.pos + i) && Dungeon.level.passable[Dungeon.hero.pos + i]){
 						allAdjTargeted = false;
 						break;
@@ -296,7 +296,7 @@ public class YogDzewa extends Mob {
 				regularSummons.add(cls);
 
 				int spawnPos = -1;
-				for (int i : PathFinder.NEIGHBOURS8){
+				for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )){
 					if (Actor.findChar(pos+i) == null){
 						if (spawnPos == -1 || Dungeon.level.trueDistance(Dungeon.hero.pos, spawnPos) > Dungeon.level.trueDistance(Dungeon.hero.pos, pos+i)){
 							spawnPos = pos + i;
@@ -306,7 +306,7 @@ public class YogDzewa extends Mob {
 
 				//if no other valid spawn spots exist, try to kill an adjacent sheep to spawn anyway
 				if (spawnPos == -1){
-					for (int i : PathFinder.NEIGHBOURS8){
+					for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )){
 						if (Actor.findChar(pos+i) instanceof Sheep){
 							if (spawnPos == -1 || Dungeon.level.trueDistance(Dungeon.hero.pos, spawnPos) > Dungeon.level.trueDistance(Dungeon.hero.pos, pos+i)){
 								spawnPos = pos + i;

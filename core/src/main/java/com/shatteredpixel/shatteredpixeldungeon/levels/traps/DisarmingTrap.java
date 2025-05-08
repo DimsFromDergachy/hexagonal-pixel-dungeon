@@ -37,6 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class DisarmingTrap extends Trap{
 
@@ -64,7 +65,8 @@ public class DisarmingTrap extends Trap{
 				if (item instanceof Honeypot.ShatteredPot){
 					((Honeypot.ShatteredPot)item).movePot(pos, cell);
 				}
-				for (int i : PathFinder.NEIGHBOURS9) Dungeon.level.visited[cell+i] = true;
+				for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, cell ))
+					Dungeon.level.visited[cell+i] = true;
 				GameScene.updateFog();
 				Sample.INSTANCE.play(Assets.Sounds.TELEPORT);
 				CellEmitter.get(pos).burst(Speck.factory(Speck.LIGHT), 4);
@@ -98,10 +100,10 @@ public class DisarmingTrap extends Trap{
 
 				hero.belongings.weapon = null;
 				Dungeon.quickslot.clearItem(weapon);
-				weapon.updateQuickslot();
+				KindOfWeapon.updateQuickslot();
 
 				Dungeon.level.drop(weapon, cell).seen = true;
-				for (int i : PathFinder.NEIGHBOURS9) {
+				for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, cell )) {
 					Dungeon.level.mapped[cell + i] = true;
 				}
 				GameScene.updateFog(cell, 1);

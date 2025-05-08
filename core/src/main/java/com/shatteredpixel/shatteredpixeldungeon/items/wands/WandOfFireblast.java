@@ -45,7 +45,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 
@@ -121,7 +121,7 @@ public class WandOfFireblast extends DamageWand {
 		//ignite cells that share a side with an adjacent cell, are flammable, and are closer to the collision pos
 		//This prevents short-range casts not igniting barricades or bookshelves
 		for (int cell : adjacentCells){
-			for (int i : PathFinder.NEIGHBOURS8){
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, cell )){
 				if (Dungeon.level.trueDistance(cell+i, bolt.collisionPos) < Dungeon.level.trueDistance(cell, bolt.collisionPos)
 						&& Dungeon.level.flammable[cell+i]
 						&& Fire.volumeAt(cell+i, Fire.class) == 0){

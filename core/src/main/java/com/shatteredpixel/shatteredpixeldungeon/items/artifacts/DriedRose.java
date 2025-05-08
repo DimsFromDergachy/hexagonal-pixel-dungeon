@@ -158,8 +158,8 @@ public class DriedRose extends Artifact {
 			else if (cursed)                GLog.i( Messages.get(this, "cursed") );
 			else {
 				ArrayList<Integer> spawnPoints = new ArrayList<>();
-				for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-					int p = hero.pos + PathFinder.NEIGHBOURS8[i];
+				for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, hero.pos )) {
+					int p = hero.pos + i;
 					if (Actor.findChar(p) == null && (Dungeon.level.passable[p] || Dungeon.level.avoid[p])) {
 						spawnPoints.add(p);
 					}
@@ -444,8 +444,8 @@ public class DriedRose extends Artifact {
 
 				ArrayList<Integer> spawnPoints = new ArrayList<>();
 
-				for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-					int p = target.pos + PathFinder.NEIGHBOURS8[i];
+				for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, target.pos )) {
+					int p = target.pos + i;
 					if (Actor.findChar(p) == null && (Dungeon.level.passable[p] || Dungeon.level.avoid[p])) {
 						spawnPoints.add(p);
 					}

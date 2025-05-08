@@ -33,6 +33,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -124,9 +125,10 @@ public class RotGardenRoom extends SpecialRoom {
 
 		//look for open diagonals near the hard and create open cardinals near them.
 		//This is important so that the heart can spread gas
-		for (int i = 0; i < PathFinder.CIRCLE8.length; i+=2){
-			if (level.map[heartPos + PathFinder.CIRCLE8[i]] != Terrain.WALL){
-				Painter.set(level, heartPos + PathFinder.CIRCLE8[i+1], Terrain.HIGH_GRASS);
+		int[] circle = level.neighbors( Neighbor.CIRCLE6, heartPos );
+		for (int i = 0; i < circle.length; i+=2){
+			if (level.map[heartPos + circle[i]] != Terrain.WALL){
+				Painter.set(level, heartPos + circle[i+1], Terrain.HIGH_GRASS);
 			}
 		}
 
@@ -137,7 +139,7 @@ public class RotGardenRoom extends SpecialRoom {
 			return false;
 		}
 
-		for (int i : PathFinder.NEIGHBOURS9){
+		for (int i : level.neighbors( Neighbor.NEIGHBORS_7, pos )){
 			if (level.findMob(pos+i) != null){
 				return false;
 			}
@@ -147,13 +149,13 @@ public class RotGardenRoom extends SpecialRoom {
 
 		//if lasher isn't near heart, we can just use cardinal directions
 		if (level.distance(pos, heartPos) > 2){
-			for (int i : PathFinder.NEIGHBOURS4){
+			for (int i : level.neighbors( Neighbor.NEIGHBORS_3, pos )){
 				newPassable[pos+i] = false;
 			}
 		//if it is near, has to count as blocking all adjacent
 		// so that we can guarantee a safe tile to stay still in next to the heart
 		} else {
-			for (int i : PathFinder.NEIGHBOURS8){
+			for (int i : level.neighbors( Neighbor.NEIGHBORS_6, pos )){
 				newPassable[pos+i] = false;
 			}
 		}

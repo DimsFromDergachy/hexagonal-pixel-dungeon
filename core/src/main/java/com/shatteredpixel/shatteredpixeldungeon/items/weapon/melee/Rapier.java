@@ -37,7 +37,7 @@ import com.shatteredpixel.shatteredpixeldungeon.ui.AttackIndicator;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class Rapier extends MeleeWeapon {
 
@@ -111,7 +111,7 @@ public class Rapier extends MeleeWeapon {
 		}
 
 		int lungeCell = -1;
-		for (int i : PathFinder.NEIGHBOURS8){
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, hero.pos )){
 			if (Dungeon.level.distance(hero.pos+i, target) <= wep.reachFactor(hero)
 					&& Actor.findChar(hero.pos+i) == null
 					&& (Dungeon.level.passable[hero.pos+i] || (Dungeon.level.avoid[hero.pos+i] && hero.flying))){
@@ -151,7 +151,7 @@ public class Rapier extends MeleeWeapon {
 							if (hero.attack(enemy, dmgMulti, dmgBoost, Char.INFINITE_ACCURACY)) {
 								Sample.INSTANCE.play(Assets.Sounds.HIT_STRONG);
 								if (!enemy.isAlive()) {
-									wep.onAbilityKill(hero, enemy);
+									MeleeWeapon.onAbilityKill(hero, enemy);
 								}
 							}
 							Invisibility.dispel();

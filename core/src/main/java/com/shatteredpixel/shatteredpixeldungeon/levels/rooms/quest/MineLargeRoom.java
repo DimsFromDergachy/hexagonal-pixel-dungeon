@@ -37,6 +37,7 @@ import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 
@@ -78,13 +79,13 @@ public class MineLargeRoom extends CaveRoom {
 			Painter.fillEllipse(level, this, 4, Terrain.EMPTY);
 
 			Point p = random(5);
-			ArrayList<Integer> internalcells = new ArrayList<>();
-			findInternalCells(level, level.pointToCell(p), internalcells);
+			ArrayList<Integer> internalCells = new ArrayList<>();
+			findInternalCells(level, level.pointToCell(p), internalCells);
 
 			//we want to ensure that every internal cell has no way out, even diagonally
-			for (int i : internalcells){
-				for (int j : PathFinder.CIRCLE8){
-					if (!internalcells.contains(i+j) && level.map[i+j] != Terrain.MINE_CRYSTAL){
+			for (int i : internalCells){
+				for (int j : level.neighbors( Neighbor.NEIGHBORS_6, i )){
+					if (!internalCells.contains(i+j) && level.map[i+j] != Terrain.MINE_CRYSTAL){
 						level.map[i] = Terrain.MINE_CRYSTAL;
 						break;
 					}
@@ -133,7 +134,7 @@ public class MineLargeRoom extends CaveRoom {
 
 			int guardPos;
 			do {
-				guardPos = sapperPos+PathFinder.NEIGHBOURS8[Random.Int(8)];
+				guardPos = sapperPos+level.neighbors( Neighbor.NEIGHBORS_6, sapperPos )[Random.Int(6)];
 			} while (level.map[guardPos] != Terrain.EMPTY);
 			GnollGuard g = new GnollGuard();
 			g.pos = guardPos;
@@ -142,7 +143,7 @@ public class MineLargeRoom extends CaveRoom {
 
 			int barricades = Random.Int(2) == 0 ? 2 : 1;
 			for (int i = 0; i < barricades; i ++){
-				int barricadePos = sapperPos+PathFinder.NEIGHBOURS8[Random.Int(8)];
+				int barricadePos = sapperPos+level.neighbors( Neighbor.NEIGHBORS_6, sapperPos )[Random.Int(6)];
 				if (level.map[barricadePos] == Terrain.EMPTY && barricadePos != guardPos){
 					Painter.set(level, barricadePos, Terrain.BARRICADE);
 				} else {

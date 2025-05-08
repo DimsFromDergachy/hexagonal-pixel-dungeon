@@ -41,8 +41,8 @@ import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 
@@ -66,7 +66,7 @@ public class Pylon extends Mob {
 		alignment = Alignment.NEUTRAL;
 	}
 
-	private int targetNeighbor = Random.Int(8);
+	private int targetNeighbor = Random.Int( 6 );
 
 	@Override
 	protected boolean act() {
@@ -94,13 +94,15 @@ public class Pylon extends Mob {
 
 		ArrayList<Integer> shockCells = new ArrayList<>();
 
-		shockCells.add(pos + PathFinder.CIRCLE8[targetNeighbor]);
+		int[] neighbors = Dungeon.level.neighbors( Neighbor.CIRCLE6, pos );
+
+		shockCells.add(pos + neighbors[targetNeighbor]);
 
 		if (Dungeon.isChallenged(Challenges.STRONGER_BOSSES)){
-			shockCells.add(pos + PathFinder.CIRCLE8[(targetNeighbor+3)%8]);
-			shockCells.add(pos + PathFinder.CIRCLE8[(targetNeighbor+5)%8]);
+			shockCells.add(pos + neighbors[(targetNeighbor+2) % 6]);
+			shockCells.add(pos + neighbors[(targetNeighbor+4) % 6]);
 		} else {
-			shockCells.add(pos + PathFinder.CIRCLE8[(targetNeighbor+4)%8]);
+			shockCells.add(pos + neighbors[(targetNeighbor+3) % 6]);
 		}
 
 		sprite.flash();

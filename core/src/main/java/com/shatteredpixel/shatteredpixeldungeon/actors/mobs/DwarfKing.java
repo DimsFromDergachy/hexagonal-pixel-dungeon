@@ -21,7 +21,6 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.actors.mobs;
 
-
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
 import com.shatteredpixel.shatteredpixeldungeon.Badges;
 import com.shatteredpixel.shatteredpixeldungeon.Challenges;
@@ -68,7 +67,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
@@ -106,10 +105,10 @@ public class DwarfKing extends Mob {
 	private int phase = 1;
 	private int summonsMade = 0;
 
-	private float summonCooldown = 0;
-	private float abilityCooldown = 0;
-	private final int MIN_COOLDOWN = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 8 : 10;
-	private final int MAX_COOLDOWN = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 10 : 14;
+	private float summonCoolDown = 0;
+	private float abilityCoolDown = 0;
+	private final int MIN_COOL_DOWN = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 8 : 10;
+	private final int MAX_COOL_DOWN = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 10 : 14;
 
 	private int lastAbility = 0;
 	private static final int NONE = 0;
@@ -128,8 +127,8 @@ public class DwarfKing extends Mob {
 		super.storeInBundle(bundle);
 		bundle.put( PHASE, phase );
 		bundle.put( SUMMONS_MADE, summonsMade );
-		bundle.put( SUMMON_CD, summonCooldown );
-		bundle.put( ABILITY_CD, abilityCooldown );
+		bundle.put( SUMMON_CD, summonCoolDown );
+		bundle.put( ABILITY_CD, abilityCoolDown );
 		bundle.put( LAST_ABILITY, lastAbility );
 	}
 
@@ -138,8 +137,8 @@ public class DwarfKing extends Mob {
 		super.restoreFromBundle(bundle);
 		phase = bundle.getInt( PHASE );
 		summonsMade = bundle.getInt( SUMMONS_MADE );
-		summonCooldown = bundle.getFloat( SUMMON_CD );
-		abilityCooldown = bundle.getFloat( ABILITY_CD );
+		summonCoolDown = bundle.getFloat( SUMMON_CD );
+		abilityCoolDown = bundle.getFloat( ABILITY_CD );
 		lastAbility = bundle.getInt( LAST_ABILITY );
 
 		if (phase == 2) properties.add(Property.IMMOVABLE);
@@ -156,11 +155,11 @@ public class DwarfKing extends Mob {
 
 		if (phase == 1) {
 
-			if (summonCooldown <= 0 && summonSubject(Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 2 : 3)){
+			if (summonCoolDown <= 0 && summonSubject(Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 2 : 3)){
 				summonsMade++;
-				summonCooldown += Random.NormalIntRange(MIN_COOLDOWN, MAX_COOLDOWN);
-			} else if (summonCooldown > 0){
-				summonCooldown--;
+				summonCoolDown += Random.NormalIntRange(MIN_COOL_DOWN, MAX_COOL_DOWN);
+			} else if (summonCoolDown > 0){
+				summonCoolDown--;
 			}
 
 			if (paralysed > 0){
@@ -168,7 +167,7 @@ public class DwarfKing extends Mob {
 				return true;
 			}
 
-			if (abilityCooldown <= 0){
+			if (abilityCoolDown <= 0){
 
 				if (lastAbility == NONE) {
 					//50/50 either ability
@@ -182,18 +181,18 @@ public class DwarfKing extends Mob {
 				}
 
 				if (lastAbility == LINK && lifeLinkSubject()){
-					abilityCooldown += Random.NormalIntRange(MIN_COOLDOWN, MAX_COOLDOWN);
+					abilityCoolDown += Random.NormalIntRange(MIN_COOL_DOWN, MAX_COOL_DOWN);
 					spend(TICK);
 					return true;
 				} else if (teleportSubject()) {
 					lastAbility = TELE;
-					abilityCooldown += Random.NormalIntRange(MIN_COOLDOWN, MAX_COOLDOWN);
+					abilityCoolDown += Random.NormalIntRange(MIN_COOL_DOWN, MAX_COOL_DOWN);
 					spend(TICK);
 					return true;
 				}
 
 			} else {
-				abilityCooldown--;
+				abilityCoolDown--;
 			}
 
 		} else if (phase == 2){
@@ -386,15 +385,15 @@ public class DwarfKing extends Mob {
 
 			Ballistic trajectory = new Ballistic(enemy.pos, pos, Ballistic.STOP_TARGET);
 			int targetCell = trajectory.path.get(trajectory.dist+1);
-			//if the position opposite the direction of the hero is open, go there
+			// if the position opposite the direction of the hero is open, go there
 			if (Actor.findChar(targetCell) == null && !Dungeon.level.solid[targetCell]){
 				bestPos = targetCell;
 
-			//Otherwise go to the neighbour cell that's open and is furthest
+			// Otherwise go to the neighbor cell that's open and is furthest
 			} else {
 				bestDist = Dungeon.level.trueDistance(pos, enemy.pos);
 
-				for (int i : PathFinder.NEIGHBOURS8){
+				for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )){
 					if (Actor.findChar(pos+i) == null
 							&& !Dungeon.level.solid[pos+i]
 							&& Dungeon.level.trueDistance(pos+i, enemy.pos) > bestDist){
@@ -410,7 +409,7 @@ public class DwarfKing extends Mob {
 			//find closest cell that's adjacent to enemy, place subject there
 			bestDist = Dungeon.level.trueDistance(enemy.pos, pos);
 			bestPos = enemy.pos;
-			for (int i : PathFinder.NEIGHBOURS8){
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, enemy.pos )){
 				if (Actor.findChar(enemy.pos+i) == null
 						&& !Dungeon.level.solid[enemy.pos+i]
 						&& Dungeon.level.trueDistance(enemy.pos+i, pos) < bestDist){
@@ -484,8 +483,8 @@ public class DwarfKing extends Mob {
 
 		if (phase == 1) {
 			int dmgTaken = preHP - HP;
-			abilityCooldown -= dmgTaken/8f;
-			summonCooldown -= dmgTaken/8f;
+			abilityCoolDown -= dmgTaken/8f;
+			summonCoolDown -= dmgTaken/8f;
 			if (HP <= (Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 100 : 50)) {
 				HP = (Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 100 : 50);
 				sprite.showStatus(CharSprite.POSITIVE, Messages.get(this, "invulnerable"));
@@ -667,7 +666,7 @@ public class DwarfKing extends Mob {
 
 				if (Actor.findChar(pos) != null){
 					ArrayList<Integer> candidates = new ArrayList<>();
-					for (int i : PathFinder.NEIGHBOURS8){
+					for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )){
 						if (Dungeon.level.passable[pos+i] && Actor.findChar(pos+i) == null){
 							candidates.add(pos+i);
 						}

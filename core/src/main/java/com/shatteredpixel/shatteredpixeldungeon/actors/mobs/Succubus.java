@@ -42,7 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.sprites.CharSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.SuccubusSprite;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
 
@@ -137,7 +137,7 @@ public class Succubus extends Mob {
 
 		if (Dungeon.level.avoid[ cell ] || (properties().contains(Property.LARGE) && !Dungeon.level.openSpace[cell])){
 			ArrayList<Integer> candidates = new ArrayList<>();
-			for (int n : PathFinder.NEIGHBOURS8) {
+			for (int n : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, route.collisionPos )) {
 				cell = route.collisionPos + n;
 				if (Dungeon.level.passable[cell]
 						&& Actor.findChar( cell ) == null

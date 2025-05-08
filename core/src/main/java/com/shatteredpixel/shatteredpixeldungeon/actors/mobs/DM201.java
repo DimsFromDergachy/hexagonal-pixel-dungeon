@@ -28,7 +28,7 @@ import com.shatteredpixel.shatteredpixeldungeon.actors.blobs.CorrosiveGas;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.MetalShard;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.DM201Sprite;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 public class DM201 extends DM200 {
@@ -69,9 +69,9 @@ public class DM201 extends DM200 {
 		spend(TICK);
 
 		GameScene.add(Blob.seed(enemy.pos, 15, CorrosiveGas.class).setStrength(8));
-		for (int i : PathFinder.NEIGHBOURS8){
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, enemy.pos )){
 			if (!Dungeon.level.solid[enemy.pos+i]) {
-				GameScene.add(Blob.seed(enemy.pos + i, 5, CorrosiveGas.class).setStrength(8));
+				GameScene.add(Blob.seed(enemy.pos + i, 7, CorrosiveGas.class).setStrength(8));
 			}
 		}
 
@@ -100,7 +100,7 @@ public class DM201 extends DM200 {
 
 		int ofs;
 		do {
-			ofs = PathFinder.NEIGHBOURS8[Random.Int(8)];
+			ofs = Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )[Random.Int(6)];
 		} while (Dungeon.level.solid[pos + ofs] && !Dungeon.level.passable[pos + ofs]);
 		Dungeon.level.drop( new MetalShard(), pos + ofs ).sprite.drop( pos );
 	}

@@ -40,7 +40,7 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class ScrollOfRemoveCurse extends InventoryScroll {
 
@@ -53,7 +53,7 @@ public class ScrollOfRemoveCurse extends InventoryScroll {
 	public void doRead() {
 
 		TormentedSpirit spirit = null;
-		for (int i : PathFinder.NEIGHBOURS8){
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, curUser.pos )){
 			if (Actor.findChar(curUser.pos+i) instanceof TormentedSpirit){
 				spirit = (TormentedSpirit) Actor.findChar(curUser.pos+i);
 			}

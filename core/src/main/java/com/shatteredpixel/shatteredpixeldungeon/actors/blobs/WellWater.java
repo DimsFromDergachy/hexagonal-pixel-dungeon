@@ -30,6 +30,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 public abstract class WellWater extends Blob {
@@ -37,7 +38,6 @@ public abstract class WellWater extends Blob {
 	@Override
 	protected void evolve() {
 		int cell;
-		boolean seen = false;
 		for (int i=area.top-1; i <= area.bottom; i++) {
 			for (int j = area.left-1; j <= area.right; j++) {
 				cell = j + i* Dungeon.level.width();
@@ -85,7 +85,7 @@ public abstract class WellWater extends Blob {
 				
 				int newPlace;
 				do {
-					newPlace = pos + PathFinder.NEIGHBOURS8[Random.Int( 8 )];
+					newPlace = pos + Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )[Random.Int( 6 )];
 				} while (!Dungeon.level.passable[newPlace] && !Dungeon.level.avoid[newPlace]);
 				Dungeon.level.drop( heap.pickUp(), newPlace ).sprite.drop( pos );
 				

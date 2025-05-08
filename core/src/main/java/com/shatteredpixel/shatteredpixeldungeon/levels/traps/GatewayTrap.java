@@ -34,8 +34,8 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.scrolls.ScrollOfTeleportation;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 
@@ -55,7 +55,7 @@ public class GatewayTrap extends Trap {
 	public void activate() {
 
 		if (telePos == -1){
-			for (int i : PathFinder.NEIGHBOURS9){
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, pos )){
 				Char ch = Actor.findChar(pos + i);
 				if (ch != null){
 					if (ScrollOfTeleportation.teleportChar(ch)) {
@@ -84,7 +84,7 @@ public class GatewayTrap extends Trap {
 		if (telePos != -1){
 
 			ArrayList<Integer> telePositions = new ArrayList<>();
-			for (int i : PathFinder.NEIGHBOURS8){
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, telePos )){
 				if (Dungeon.level.passable[telePos+i]
 						&& Actor.findChar( telePos+i ) == null){
 					telePositions.add(telePos+i);
@@ -104,7 +104,7 @@ public class GatewayTrap extends Trap {
 				}
 			}
 
-			for (int i : PathFinder.NEIGHBOURS9){
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, pos )){
 
 				Char ch = Actor.findChar(pos + i);
 				if (ch != null && !Char.hasProp(ch, Char.Property.IMMOVABLE)){

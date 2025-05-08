@@ -24,8 +24,8 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.painters;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 
@@ -42,8 +42,8 @@ public class HallsPainter extends RegularPainter {
 			if (map[i] == Terrain.EMPTY) {
 				
 				int count = 0;
-				for (int j = 0; j < PathFinder.NEIGHBOURS8.length; j++) {
-					if ((Terrain.flags[map[i + PathFinder.NEIGHBOURS8[j]]] & Terrain.PASSABLE) > 0) {
+				for (int j : level.neighbors( Neighbor.NEIGHBORS_6, i )) {
+					if ((Terrain.flags[map[i + j]] & Terrain.PASSABLE) > 0) {
 						count++;
 					}
 				}

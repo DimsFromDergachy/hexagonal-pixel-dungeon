@@ -232,7 +232,7 @@ public class EtherealChains extends Artifact {
 		
 		//don't pull if there are no solid objects next to the pull location
 		boolean solidFound = false;
-		for (int i : PathFinder.NEIGHBOURS8){
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, chain.collisionPos )){
 			if (Dungeon.level.solid[chain.collisionPos + i]){
 				solidFound = true;
 				break;

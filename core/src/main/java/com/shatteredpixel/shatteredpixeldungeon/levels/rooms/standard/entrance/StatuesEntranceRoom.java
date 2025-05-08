@@ -26,7 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StatuesRoom;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class StatuesEntranceRoom extends StatuesRoom {
 
@@ -50,7 +50,7 @@ public class StatuesEntranceRoom extends StatuesRoom {
 			Painter.fill(level, this, 3, Terrain.EMPTY_SP);
 		}
 
-		for (int i : PathFinder.NEIGHBOURS8){
+		for (int i : level.neighbors( Neighbor.NEIGHBORS_6, entrance )){
 			if (level.map[entrance + i] != Terrain.STATUE_SP) {
 				Painter.set(level, entrance + i, Terrain.EMPTY_SP);
 			}

@@ -61,7 +61,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -198,8 +198,8 @@ public class SpiritForm extends ClericSpell {
 
 		} else if (effect instanceof DriedRose){
 			ArrayList<Integer> spawnPoints = new ArrayList<>();
-			for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-				int p = Dungeon.hero.pos + PathFinder.NEIGHBOURS8[i];
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, Dungeon.hero.pos )) {
+				int p = Dungeon.hero.pos + i;
 				if (Actor.findChar(p) == null && !Dungeon.level.solid[p]) {
 					spawnPoints.add(p);
 				}

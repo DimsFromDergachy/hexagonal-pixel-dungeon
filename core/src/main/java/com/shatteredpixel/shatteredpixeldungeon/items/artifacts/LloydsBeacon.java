@@ -46,7 +46,7 @@ import com.watabou.noosa.Game;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 
@@ -116,8 +116,8 @@ public class LloydsBeacon extends Artifact {
 				return;
 			}
 			
-			for (int i = 0; i < PathFinder.NEIGHBOURS8.length; i++) {
-				Char ch = Actor.findChar(hero.pos + PathFinder.NEIGHBOURS8[i]);
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, hero.pos )) {
+				Char ch = Actor.findChar(hero.pos + i);
 				if (ch != null && ch.alignment == Char.Alignment.ENEMY) {
 					GLog.w( Messages.get(this, "creatures") );
 					return;
@@ -162,7 +162,7 @@ public class LloydsBeacon extends Artifact {
 				for(Mob m : Dungeon.level.mobs){
 					if (m.pos == hero.pos){
 						//displace mob
-						for(int i : PathFinder.NEIGHBOURS8){
+						for(int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, m.pos )){
 							if (Actor.findChar(m.pos+i) == null && Dungeon.level.passable[m.pos + i]){
 								m.pos += i;
 								m.sprite.point(m.sprite.worldToCamera(m.pos));
@@ -182,8 +182,6 @@ public class LloydsBeacon extends Artifact {
 				InterlevelScene.returnPos = returnPos;
 				Game.switchScene( InterlevelScene.class );
 			}
-			
-			
 		}
 	}
 

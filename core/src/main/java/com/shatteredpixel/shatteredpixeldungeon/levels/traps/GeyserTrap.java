@@ -36,6 +36,7 @@ import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 
@@ -70,7 +71,7 @@ public class GeyserTrap extends Trap {
 			}
 		}
 
-		for (int i : PathFinder.NEIGHBOURS8){
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )){
 			Char ch = Actor.findChar(pos + i);
 			if (ch != null){
 
@@ -100,24 +101,28 @@ public class GeyserTrap extends Trap {
 
 		Char ch = Actor.findChar(pos);
 		if (ch != null){
-			int targetpos = -1;
+			int targetPos = -1;
 			if (centerKnockBackDirection != -1){
-				targetpos = centerKnockBackDirection;
+				targetPos = centerKnockBackDirection;
 			} else if (ch == Dungeon.hero){
 				//if it is the hero, random direction that isn't into a hazard
 				ArrayList<Integer> candidates = new ArrayList<>();
-				for (int i : PathFinder.NEIGHBOURS8){
+
+				// TODO: A little bit messy, probably there is a more elegant way to do this
+				int[] neighbors1 = Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos );
+				int[] neighbors2 = Dungeon.level.neighbors( Neighbor.NEIGHBORS_6_x2, pos);
+				for (int i = 0; i < neighbors1.length; i++){
 					//add as a candidate if both cells on the trajectory are safe
-					if (!Dungeon.level.avoid[pos + i] && !Dungeon.level.avoid[pos + i + i]){
+					if (!Dungeon.level.avoid[pos + neighbors1[i]] && !Dungeon.level.avoid[pos + neighbors2[i]]){
 						candidates.add(pos + i);
 					}
 				}
 				if (!candidates.isEmpty()){
-					targetpos = Random.element(candidates);
+					targetPos = Random.element(candidates);
 				}
 			} else {
 				//random direction if it isn't the hero
-				targetpos = pos + PathFinder.NEIGHBOURS8[Random.Int(8)];
+				targetPos = pos + Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, pos )[Random.Int(6)];
 			}
 
 			//does the equivalent of a bomb's damage against fiery enemies.
@@ -128,13 +133,13 @@ public class GeyserTrap extends Trap {
 				}
 			}
 
-			if (ch.isAlive() && targetpos != -1){
+			if (ch.isAlive() && targetPos != -1){
 				if (ch.buff(Burning.class) != null){
 					ch.buff(Burning.class).detach();
 				}
-				//trace a ballistica in the direction of our target
-				Ballistic trajectory = new Ballistic(pos, targetpos, Ballistic.MAGIC_BOLT);
-				//knock them back along that ballistica
+				//trace a ballistic in the direction of our target
+				Ballistic trajectory = new Ballistic(pos, targetPos, Ballistic.MAGIC_BOLT);
+				//knock them back along that ballistic
 				WandOfBlastWave.throwChar(ch, trajectory, 2, true, true, source);
 			}
 		}

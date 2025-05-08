@@ -195,7 +195,7 @@ public class Necromancer extends Mob {
 		if (Actor.findChar(summoningPos) != null) {
 
 			int pushPos = pos;
-			for (int c : PathFinder.NEIGHBOURS8) {
+			for (int c : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, summoningPos )) {
 				if (Actor.findChar(summoningPos + c) == null
 						&& Dungeon.level.passable[summoningPos + c]
 						&& (Dungeon.level.openSpace[summoningPos + c] || !hasProp(Actor.findChar(summoningPos), Property.LARGE))
@@ -291,7 +291,7 @@ public class Necromancer extends Mob {
 				BArray.or(Dungeon.level.passable, passable, passable);
 				PathFinder.buildDistanceMap(pos, passable, Dungeon.level.distance(pos, enemy.pos)+3);
 
-				for (int c : PathFinder.NEIGHBOURS8){
+				for (int c : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, enemy.pos )){
 					if (Actor.findChar(enemy.pos+c) == null
 							&& PathFinder.distance[enemy.pos+c] != Integer.MAX_VALUE
 							&& Dungeon.level.passable[enemy.pos+c]
@@ -329,7 +329,7 @@ public class Necromancer extends Mob {
 					//teleport them to the closest spot next to the enemy that can be seen
 					if (!Dungeon.level.adjacent(mySkeleton.pos, enemy.pos)){
 						int telePos = -1;
-						for (int c : PathFinder.NEIGHBOURS8){
+						for (int c : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, enemy.pos )){
 							if (Actor.findChar(enemy.pos+c) == null
 									&& Dungeon.level.passable[enemy.pos+c]
 									&& fieldOfView[enemy.pos+c]

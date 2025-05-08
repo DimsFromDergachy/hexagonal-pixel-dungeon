@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.CaveRoom;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class CaveExitRoom extends CaveRoom {
 
@@ -77,7 +78,7 @@ public class CaveExitRoom extends CaveRoom {
 		} while (!valid);
 		Painter.set( level, exit, Terrain.EXIT );
 
-		for (int i : PathFinder.NEIGHBOURS8){
+		for (int i : level.neighbors( Neighbor.NEIGHBORS_6, exit )){
 			Painter.set( level, exit+i, Terrain.EMPTY );
 		}
 

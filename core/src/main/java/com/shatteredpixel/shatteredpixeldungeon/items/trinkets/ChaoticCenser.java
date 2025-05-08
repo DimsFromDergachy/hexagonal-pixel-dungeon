@@ -50,6 +50,7 @@ import com.watabou.utils.BArray;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.HashMap;
 
@@ -89,7 +90,6 @@ public class ChaoticCenser extends Trinket {
 	public static class CenserGasTracker extends Buff {
 
 		private int left = Integer.MAX_VALUE;
-		private int safeAreaDelay = 100;
 
 		@Override
 		public boolean act() {
@@ -104,8 +104,6 @@ public class ChaoticCenser extends Trinket {
 			}
 
 			if (left <= 0) {
-
-				Char enemy = null;
 
 				if (TargetHealthIndicator.instance != null && TargetHealthIndicator.instance.isVisible()
 						&& TargetHealthIndicator.instance.target() != null
@@ -185,25 +183,25 @@ public class ChaoticCenser extends Trinket {
 		}
 
 		//strongly prefer cells closer to target
-		int targetpos = target.pos;
+		int targetPos = target.pos;
 		if (Dungeon.level.trueDistance(target.pos, Dungeon.hero.pos) >= 4){
 			//if target is a distance from the hero, aim in front of them instead
-			for (int i : PathFinder.NEIGHBOURS8){
-				while (!Dungeon.level.solid[targetpos+i]
-						&& Dungeon.level.trueDistance(target.pos+i, Dungeon.hero.pos) < Dungeon.level.trueDistance(targetpos, Dungeon.hero.pos)){
-					targetpos = target.pos+i;
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, targetPos )){
+				while (!Dungeon.level.solid[targetPos+i]
+						&& Dungeon.level.trueDistance(target.pos+i, Dungeon.hero.pos) < Dungeon.level.trueDistance(targetPos, Dungeon.hero.pos)){
+					targetPos = target.pos+i;
 				}
 			}
 		}
 		float closest = 100;
 		for (int cell : candidateCells.keySet()){
-			float dist = Dungeon.level.distance(cell, targetpos);
+			float dist = Dungeon.level.distance(cell, targetPos);
 			if (dist < closest){
 				closest = dist;
 			}
 		}
 		for (int cell : candidateCells.keySet()){
-			float dist = Dungeon.level.distance(cell, targetpos);
+			float dist = Dungeon.level.distance(cell, targetPos);
 			if (dist - closest == 0) {
 				candidateCells.put(cell, 8f);
 			} else if (dist - closest <= 1) {

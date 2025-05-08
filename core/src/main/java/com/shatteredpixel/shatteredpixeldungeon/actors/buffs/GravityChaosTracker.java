@@ -22,6 +22,7 @@
 package com.shatteredpixel.shatteredpixeldungeon.actors.buffs;
 
 import com.shatteredpixel.shatteredpixeldungeon.Assets;
+import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Actor;
 import com.shatteredpixel.shatteredpixeldungeon.actors.Char;
 import com.shatteredpixel.shatteredpixeldungeon.actors.hero.Hero;
@@ -34,6 +35,7 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
 import java.util.ArrayList;
@@ -70,17 +72,17 @@ public class GravityChaosTracker extends Buff {
 		}
 
 		if (!blocked.isEmpty()){
-			boolean blockedremoved = false;
+			boolean blockedRemoved = false;
 			for (Char ch : blocked.toArray(new Char[0])){
-				Ballistic path = new Ballistic(ch.pos, ch.pos + PathFinder.NEIGHBOURS8[idx], Ballistic.MAGIC_BOLT);
+				Ballistic path = new Ballistic(ch.pos, ch.pos + Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, ch.pos )[idx], Ballistic.MAGIC_BOLT);
 				if (!(path.dist == 1 && Actor.findChar(path.collisionPos) != null)){
 					if (ch instanceof Hero) ((Hero) ch).interrupt();
 					WandOfBlastWave.throwChar(ch, path, 3, false, false, this);
 					blocked.remove(ch);
-					blockedremoved = true;
+					blockedRemoved = true;
 				}
 			}
-			if (!blockedremoved || blocked.isEmpty()){
+			if (!blockedRemoved || blocked.isEmpty()){
 				blocked.clear();
 				left--;
 				if (left <= 0){
@@ -96,7 +98,7 @@ public class GravityChaosTracker extends Buff {
 			}
 		}
 
-		idx = Random.Int(PathFinder.NEIGHBOURS8.length);
+		idx = Random.Int(PathFinder.NEIGHBOURS6[0].length);
 		for (Char ch : Actor.chars()){
 			if (Char.hasProp(ch, Char.Property.IMMOVABLE) ||
 					(positiveOnly && ch.alignment == Char.Alignment.ALLY)){
@@ -105,7 +107,7 @@ public class GravityChaosTracker extends Buff {
 				if (ch instanceof Mob && ((Mob) ch).state == ((Mob) ch).SLEEPING){
 					((Mob) ch).state = ((Mob) ch).WANDERING;
 				}
-				Ballistic path = new Ballistic(ch.pos, ch.pos + PathFinder.NEIGHBOURS8[idx], Ballistic.MAGIC_BOLT);
+				Ballistic path = new Ballistic(ch.pos, ch.pos + Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, ch.pos )[idx], Ballistic.MAGIC_BOLT);
 				if (path.dist == 1 && Actor.findChar(path.collisionPos) != null){
 					blocked.add(ch);
 				} else {

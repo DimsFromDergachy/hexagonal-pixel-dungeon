@@ -82,9 +82,9 @@ import com.watabou.noosa.Image;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
 import com.watabou.utils.Reflection;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -709,7 +709,7 @@ public enum Talent {
 		}
 		if (hero.hasTalent(LIQUID_NATURE)){
 			ArrayList<Integer> grassCells = new ArrayList<>();
-			for (int i : PathFinder.NEIGHBOURS9){
+			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, cell )){
 				grassCells.add(cell+i);
 			}
 			Random.shuffle(grassCells);

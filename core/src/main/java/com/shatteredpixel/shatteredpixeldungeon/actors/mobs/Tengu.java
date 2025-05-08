@@ -76,6 +76,7 @@ import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
@@ -381,10 +382,7 @@ public class Tengu extends Mob {
 		if (HP <= HT/2) BossHealthBar.bleed(true);
 	}
 	
-	//don't bother bundling this, as its purely cosmetic
-	private boolean yelledCoward = false;
-	
-	//tengu is always hunting
+	// tengu is always hunting
 	private class Hunting extends Mob.Hunting{
 		
 		@Override
@@ -564,7 +562,7 @@ public class Tengu extends Mob {
 		int targetCell = -1;
 		
 		//Targets closest cell which is adjacent to target and has no existing bombs
-		for (int i : PathFinder.NEIGHBOURS8){
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, target.pos )){
 			int cell = target.pos + i;
 			boolean bombHere = false;
 			for (BombAbility b : thrower.buffs(BombAbility.class)){
@@ -746,8 +744,9 @@ public class Tengu extends Mob {
 		
 		Ballistic aim = new Ballistic(thrower.pos, target.pos, Ballistic.WONT_STOP);
 		
-		for (int i = 0; i < PathFinder.CIRCLE8.length; i++){
-			if (aim.sourcePos+PathFinder.CIRCLE8[i] == aim.path.get(1)){
+		int[] neighbors = Dungeon.level.neighbors( Neighbor.CIRCLE6, aim.sourcePos );
+		for (int i = 0; i < neighbors.length; i++){
+			if (aim.sourcePos+neighbors[i] == aim.path.get(1)){
 				thrower.sprite.zap(target.pos);
 				Buff.append(thrower, Tengu.FireAbility.class).direction = i;
 				
@@ -803,23 +802,15 @@ public class Tengu extends Mob {
 		}
 		
 		private void spreadFromCell( int cell ){
-			if (!Dungeon.level.solid[cell + PathFinder.CIRCLE8[left(direction)]]){
-				toCells.add(cell + PathFinder.CIRCLE8[left(direction)]);
+
+			int[] neighbors = Dungeon.level.neighbors( Neighbor.CIRCLE6, cell );
+
+			for (int i = -1; i <= 1; i++)
+			{
+				int cell2 = cell + neighbors[(direction + i + 6) % 6];
+				if (!Dungeon.level.solid[cell2])
+					toCells.add( cell2 );
 			}
-			if (!Dungeon.level.solid[cell + PathFinder.CIRCLE8[direction]]){
-				toCells.add(cell + PathFinder.CIRCLE8[direction]);
-			}
-			if (!Dungeon.level.solid[cell + PathFinder.CIRCLE8[right(direction)]]){
-				toCells.add(cell + PathFinder.CIRCLE8[right(direction)]);
-			}
-		}
-		
-		private int left(int direction){
-			return direction == 0 ? 7 : direction-1;
-		}
-		
-		private int right(int direction){
-			return direction == 7 ? 0 : direction+1;
 		}
 		
 		private static final String DIRECTION = "direction";
@@ -930,7 +921,7 @@ public class Tengu extends Mob {
 		int targetCell = -1;
 		
 		//Targets closest cell which is adjacent to target, and not adjacent to thrower or another shocker
-		for (int i : PathFinder.NEIGHBOURS8){
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, target.pos )){
 			int cell = target.pos + i;
 			if (Dungeon.level.distance(cell, thrower.pos) >= 2 && !Dungeon.level.solid[cell]){
 				boolean validTarget = true;
@@ -1010,9 +1001,10 @@ public class Tengu extends Mob {
 		
 		private void spreadblob(){
 			GameScene.add(Blob.seed(shockerPos, 1, ShockerBlob.class));
-			for (int i = shockingOrdinals ? 0 : 1; i < PathFinder.CIRCLE8.length; i += 2){
-				if (!Dungeon.level.solid[shockerPos+PathFinder.CIRCLE8[i]]) {
-					GameScene.add(Blob.seed(shockerPos + PathFinder.CIRCLE8[i], 2, ShockerBlob.class));
+			int[] neighbors = Dungeon.level.neighbors( Neighbor.CIRCLE6, shockerPos );
+			for (int i = shockingOrdinals ? 0 : 1; i < neighbors.length; i += 2){
+				if (!Dungeon.level.solid[shockerPos+neighbors[i]]) {
+					GameScene.add(Blob.seed(shockerPos + neighbors[i], 2, ShockerBlob.class));
 				}
 			}
 		}

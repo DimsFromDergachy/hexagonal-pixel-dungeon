@@ -60,7 +60,7 @@ public class WallOfLight extends TargetedClericSpell {
 
 	@Override
 	public int targetingFlags(){
-		return -1; //auto-targeting behaviour is often wrong, so we don't use it
+		return -1; // auto-targeting behavior is often wrong, so we don't use it
 	}
 
 	@Override

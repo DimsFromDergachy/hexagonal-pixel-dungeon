@@ -46,8 +46,8 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class SacrificialFire extends Blob {
 
@@ -80,7 +80,7 @@ public class SacrificialFire extends Blob {
 					volume += off[cell];
 
 					if (off[cell] > 0){
-						for (int k : PathFinder.NEIGHBOURS9){
+						for (int k : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, cell )){
 							Char ch = Actor.findChar( cell+k );
 							if (ch != null){
 								if (Dungeon.level.heroFOV[cell+k] && ch.buff( Marked.class ) == null) {
@@ -148,7 +148,7 @@ public class SacrificialFire extends Blob {
 	public void sacrifice( Char ch ) {
 
 		int firePos = -1;
-		for (int i : PathFinder.NEIGHBOURS9){
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, ch.pos )){
 			if (volume > 0 && cur[ch.pos+i] > 0){
 				firePos = ch.pos+i;
 				break;
@@ -192,7 +192,7 @@ public class SacrificialFire extends Blob {
 					clear(firePos);
 					if (volume <= 0) Notes.remove( landmark() );
 
-					for (int i : PathFinder.NEIGHBOURS9){
+					for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, firePos )){
 						CellEmitter.get(firePos+i).burst( SacrificialParticle.FACTORY, 20 );
 					}
 					Sample.INSTANCE.play(Assets.Sounds.BURNING );
