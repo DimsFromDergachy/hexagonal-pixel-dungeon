@@ -45,6 +45,7 @@ public final class ShadowCaster {
 		}
 	}
 	
+	// TODO: Hexagonal
 	public static void castShadow( int x, int y, int w, boolean[] fieldOfView, boolean[] blocking, int distance ) {
 		
 		if (distance >= MAX_DISTANCE){

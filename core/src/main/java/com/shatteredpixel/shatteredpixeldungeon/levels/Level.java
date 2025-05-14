@@ -105,6 +105,7 @@ import com.watabou.utils.BArray;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.GameMath;
+import com.watabou.utils.HexMath;
 import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
@@ -226,8 +227,8 @@ public abstract class Level implements Bundlable {
 			if (Dungeon.souNeeded()) {
 				Dungeon.LimitedDrops.UPGRADE_SCROLLS.count++;
 				//every 2nd scroll of upgrade is removed with forbidden runes challenge on
-				//TODO while this does significantly reduce this challenge's levelgen impact, it doesn't quite remove it
-				//for 0 levelgen impact, we need to do something like give the player all SOU, but nerf them
+				//TODO while this does significantly reduce this challenge's level gen impact, it doesn't quite remove it
+				//for 0 level gen impact, we need to do something like give the player all SOU, but nerf them
 				//or give a random scroll (from a separate RNG) instead of every 2nd SOU
 				if (!Dungeon.isChallenged(Challenges.NO_SCROLLS) || Dungeon.LimitedDrops.UPGRADE_SCROLLS.count%2 != 0){
 					addItemToSpawn(new ScrollOfUpgrade());
@@ -602,7 +603,7 @@ public abstract class Level implements Bundlable {
 			GLog.w(Messages.get(Stasis.StasisBuff.class, "left_behind"));
 		}
 
-		//spend the hero's partial turns,  so the hero cannot take partial turns between floors
+		//spend the hero's partial turns, so the hero cannot take partial turns between floors
 		Dungeon.hero.spendToWhole();
 		for (Actor a : Actor.all()){
 			//also adjust any other actors that are now ahead of the hero due to this
@@ -828,7 +829,7 @@ public abstract class Level implements Bundlable {
 			int flags = Terrain.flags[map[i]];
 			passable[i]		= (flags & Terrain.PASSABLE) != 0;
 			losBlocking[i]	= (flags & Terrain.LOS_BLOCKING) != 0;
-			flammable[i]		= (flags & Terrain.FLAMMABLE) != 0;
+			flammable[i]	= (flags & Terrain.FLAMMABLE) != 0;
 			secret[i]		= (flags & Terrain.SECRET) != 0;
 			solid[i]		= (flags & Terrain.SOLID) != 0;
 			avoid[i]		= (flags & Terrain.AVOID) != 0;
@@ -857,7 +858,6 @@ public abstract class Level implements Bundlable {
 		// an open space is large enough to fit large mobs. A space is open when it is not solid
 		// and there is an open corner with both adjacent cells opens
 
-		
 		for (int i=0; i < length(); i++) {
 			setOpenSpace( this, i );
 		}
@@ -941,7 +941,6 @@ public abstract class Level implements Bundlable {
 		}
 	}
 
-	
 	public Heap drop( Item item, int cell ) {
 
 		if (item == null || Challenges.isItemBlocked(item)){
@@ -1481,21 +1480,20 @@ public abstract class Level implements Bundlable {
 		int ay = a / width();
 		int bx = b % width();
 		int by = b / width();
-		return Math.max( Math.abs( ax - bx ), Math.abs( ay - by ) );
+		return HexMath.distance( ax, ay, bx, by );
 	}
 	
 	public boolean adjacent( int a, int b ) {
 		return distance( a, b ) == 1;
 	}
 	
-	// TODO: Fix it for the hexagonal grid
 	// uses pythagorean theorem for true distance, as if there was no movement grid
 	public float trueDistance(int a, int b){
 		int ax = a % width();
 		int ay = a / width();
 		int bx = b % width();
 		int by = b / width();
-		return (float)Math.sqrt(Math.pow(Math.abs( ax - bx ), 2) + Math.pow(Math.abs( ay - by ), 2));
+		return HexMath.trueDistance( ax, ay, bx, by );
 	}
 
 	//usually just if a cell is solid, but other cases exist too
@@ -1623,7 +1621,7 @@ public abstract class Level implements Bundlable {
 		}
 	}
 
-	public int[] neighbors(PathFinder.Neighbor neighbor, int cell) {
+	public int[] neighbors( PathFinder.Neighbor neighbor, int cell ) {
 		switch (neighbor) {
 			case NEIGHBORS_3:
 				return PathFinder.NEIGHBOURS3;

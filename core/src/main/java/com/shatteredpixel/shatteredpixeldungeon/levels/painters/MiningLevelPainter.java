@@ -29,9 +29,9 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.MineSecretRoom;
 import com.watabou.utils.Graph;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,7 +77,8 @@ public class MiningLevelPainter extends CavesPainter {
 
 					if (level.insideMap(i) && goldToAdd > 0 && map[i] == Terrain.WALL){
 
-						for (int j : PathFinder.NEIGHBOURS4){
+						for (int j : level.neighbors( Neighbor.NEIGHBORS_3, i )){
+
 							if (level.insideMap(i+j) && map[i+j] != Terrain.WALL){
 								goldPosCandidates.add(i);
 								break;
@@ -93,13 +94,13 @@ public class MiningLevelPainter extends CavesPainter {
 					goldToAdd--;
 
 					if (goldToAdd > 0){
-						int i = PathFinder.NEIGHBOURS4[Random.Int(4)];
+						int i = level.neighbors( Neighbor.NEIGHBORS_3, pos)[Random.Int(3)];
 						if (level.insideMap(pos+i) && map[pos+i] == Terrain.WALL){
 							map[pos+i] = Terrain.WALL_DECO;
 							goldToAdd--;
 						}
 						if (Random.Int(2) == 0){
-							i = PathFinder.NEIGHBOURS4[Random.Int(4)];
+							i = level.neighbors( Neighbor.NEIGHBORS_3, pos)[Random.Int(3)];
 							if (level.insideMap(pos+i) && map[pos+i] == Terrain.WALL){
 								map[pos+i] = Terrain.WALL_DECO;
 								goldToAdd--;

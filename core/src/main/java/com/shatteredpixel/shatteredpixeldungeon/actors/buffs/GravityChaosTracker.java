@@ -34,7 +34,6 @@ import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.PathFinder.Neighbor;
 import com.watabou.utils.Random;
 
@@ -98,7 +97,7 @@ public class GravityChaosTracker extends Buff {
 			}
 		}
 
-		idx = Random.Int(PathFinder.NEIGHBOURS6[0].length);
+		idx = Random.Int( 6 );
 		for (Char ch : Actor.chars()){
 			if (Char.hasProp(ch, Char.Property.IMMOVABLE) ||
 					(positiveOnly && ch.alignment == Char.Alignment.ALLY)){

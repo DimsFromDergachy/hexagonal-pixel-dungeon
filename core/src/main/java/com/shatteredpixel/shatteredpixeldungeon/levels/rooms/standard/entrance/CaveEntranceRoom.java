@@ -67,7 +67,7 @@ public class CaveEntranceRoom extends CaveRoom {
 				valid = level.map[entrance] != Terrain.WALL && level.findMob(entrance) == null;
 			} else {
 				valid = false;
-				for (int i : PathFinder.NEIGHBOURS4){
+				for (int i : PathFinder.NEIGHBOURS3){
 					if (level.map[entrance+i] != Terrain.WALL){
 						valid = true;
 					}

@@ -157,6 +157,7 @@ public class Blob extends Actor {
 						int count = 1;
 						int sum = cur[cell];
 
+						// TODO: Do it hexagonal way
 						if (j > area.left && !blocking[cell-1]) {
 							sum += cur[cell-1];
 							count++;

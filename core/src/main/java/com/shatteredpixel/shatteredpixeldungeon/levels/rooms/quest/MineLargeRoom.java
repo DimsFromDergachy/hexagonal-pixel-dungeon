@@ -216,7 +216,7 @@ public class MineLargeRoom extends CaveRoom {
 	}
 
 	private void findInternalCells(Level level, int cell, ArrayList<Integer> internalCells){
-		for (int i : PathFinder.NEIGHBOURS4){
+		for (int i : PathFinder.NEIGHBOURS3){
 			if (!internalCells.contains(cell+i) && level.map[cell+i] != Terrain.MINE_CRYSTAL){
 				internalCells.add(cell+i);
 				findInternalCells(level, cell+i, internalCells);

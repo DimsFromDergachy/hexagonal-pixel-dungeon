@@ -44,6 +44,8 @@ public class PathFinder {
 		CIRCLE3,			// [1, 5, 4]
 		CIRCLE6,			// [1, 3, 5, 6, 4, 2]
 
+		CIRCLE12,			// cells are around on the distance 2
+
 		// DIRECTION,			// [1, 5, 4, 3, 6, 2]
 		// DIRECTION_LR,		// [2, 4, 1, 6, 3, 5]
 	}
@@ -81,6 +83,7 @@ public class PathFinder {
 	// first index is for odd/even column
 	public static int[][] CIRCLE3;
 	public static int[][] CIRCLE6;
+	public static int[][] CIRCLE12;
 
 	public static int[] NEIGHBOURS6_X2;
 
@@ -123,6 +126,9 @@ public class PathFinder {
 			{ -width-1, -width, -width+1, +1, +width, -1 }, // even
 			{ -1, -width, +1, +width+1, +width, +width-1 }}; // odd
 
+		CIRCLE12 = new int[][] {
+			{ -1-2*width, -2*width, +1-2*width, +2-width, +2, +2+width, +1+1*width, +2*width, -1+1*width, -2+width, -2, -2-width }, // even
+			{ -1-1*width, -2*width, +1-1*width, +2-width, +2, +2+width, +1+2*width, +2*width, -1+2*width, -2+width, -2, -2-width }}; // odd
 
 		//       1         
 		//     ______      

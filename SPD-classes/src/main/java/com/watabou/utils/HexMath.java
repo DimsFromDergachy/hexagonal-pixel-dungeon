@@ -44,11 +44,10 @@ package com.watabou.utils;
 	/// Invert:
 	/// [  1/14,    0 ]
 	/// [ -1/28, 1/16 ]
-	private static float 	H11 =  1f / 14f,	H12 = 0f;
-	private static float 	H21 = -1f / 28f,	H22 = 1f / 16f;
+	private static float	H11 =  1f / 14f,	H12 = 0f;
+	private static float	H21 = -1f / 28f,	H22 = 1f / 16f;
 
-	public static PointF HexToPixel(int x, int y)
-	{
+	public static PointF HexToPixel( int x, int y ) {
 		// To cube coordinate
 		int q = x;
 		int r = y - x / 2;
@@ -56,8 +55,8 @@ package com.watabou.utils;
 		return new PointF(A11 * q + A12 * r, A21 * q + A22 * r);
 	}
 
-	public static Point PixelToHex(PointF point)
-	{
+	public static Point PixelToHex( PointF point ) {
+
 		// TODO: Get rid of this by offseting coords to [9f, 8f]
 		point = point.offset(-9f, -8f);
 
@@ -83,6 +82,38 @@ package com.watabou.utils;
 			s = 0 - q - r;
 
 		// To offset coordinate (odd-q vertical layout)
+		return FromCube(q, r);
+	}
+
+	// To cube coordinate
+	public static Point ToCube( int x, int y ) {
+		return new Point(x, y - x / 2);
+	}
+
+	// To offset coordinate (odd-q vertical layout)
+	public static Point FromCube( int q, int r ) {
 		return new Point(q, r + q / 2);
+	}
+
+	public static int distance( int x1, int y1, int x2, int y2 ) {
+
+		int q1 = x1;
+		int r1 = y1 - x1 / 2;
+		int s1 = 0 - q1 - r1;
+
+		int q2 = x2;
+		int r2 = y2 - x2 / 2;
+		int s2 = 0 - q2 - r2;
+
+		return GameMath.Max( Math.abs(q1 - q2), Math.abs(r1 - r2), Math.abs(s1 - s2) );
+
+	}
+
+	public static float trueDistance( int x1, int y1, int x2, int y2 ) {
+
+		PointF p1 = HexToPixel( x1, y1 );
+		PointF p2 = HexToPixel( x2, y2 );
+
+		return (float) Math.sqrt(Math.pow( p1.x - p2.x, 2f ) + Math.pow( p1.y - p2.y, 2f ));
 	}
 }

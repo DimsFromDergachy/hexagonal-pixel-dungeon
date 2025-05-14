@@ -142,6 +142,7 @@ public class DungeonTileSheet {
 	));
 
 	//+1 for ground above, +2 for ground right, +4 for ground below, +8 for ground left.
+	// TODO: Hexagonal tiles
 	public static int stitchWaterTile(int top, int right, int bottom, int left){
 		int result = WATER;
 		if (waterStitcheable.contains(top))     result += 1;

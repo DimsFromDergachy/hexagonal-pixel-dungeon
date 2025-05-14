@@ -42,7 +42,7 @@ import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
 import com.shatteredpixel.shatteredpixeldungeon.ui.HeroIcon;
 import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class WallOfLight extends TargetedClericSpell {
 
@@ -102,81 +102,24 @@ public class WallOfLight extends TargetedClericSpell {
 		int closest = hero.pos;
 		int closestIdx = -1;
 
-		for (int i = 0; i < PathFinder.CIRCLE8.length; i++){
-			int ofs = PathFinder.CIRCLE8[i];
-			if (Dungeon.level.trueDistance(target, hero.pos+ofs) < Dungeon.level.trueDistance(target, closest)){
-				closest = hero.pos+ofs;
+		int[] neighbors = Dungeon.level.neighbors( Neighbor.CIRCLE6, hero.pos );
+		for (int i = 0; i < neighbors.length; i++){
+			if (Dungeon.level.trueDistance(target, hero.pos+neighbors[i]) < Dungeon.level.trueDistance(target, closest)){
+				closest = hero.pos+neighbors[i];
 				closestIdx = i;
 			}
-		}
-
-		int leftDirX = 0;
-		int leftDirY = 0;
-
-		int rightDirX = 0;
-		int rightDirY = 0;
-
-		int steps = Dungeon.hero.pointsInTalent(Talent.WALL_OF_LIGHT);
-
-		switch (closestIdx){
-			case 0: //top left
-				leftDirX = -1;
-				leftDirY = 1;
-				rightDirX = 1;
-				rightDirY = -1;
-				break;
-			case 1: //top
-				leftDirX = -1;
-				rightDirX = 1;
-				leftDirY = rightDirY = 0;
-				break;
-			case 2: //top right (left and right DIR are purposefully inverted)
-				leftDirX = 1;
-				leftDirY = 1;
-				rightDirX = -1;
-				rightDirY = -1;
-				break;
-			case 3: //right
-				leftDirY = -1;
-				rightDirY = 1;
-				leftDirX = rightDirX = 0;
-				break;
-			case 4: //bottom right (left and right DIR are purposefully inverted)
-				leftDirX = 1;
-				leftDirY = -1;
-				rightDirX = -1;
-				rightDirY = 1;
-				break;
-			case 5: //bottom
-				leftDirX = 1;
-				rightDirX = -1;
-				leftDirY = rightDirY = 0;
-				break;
-			case 6: //bottom left
-				leftDirX = -1;
-				leftDirY = -1;
-				rightDirX = 1;
-				rightDirY = 1;
-				break;
-			case 7: //left
-				leftDirY = -1;
-				rightDirY = 1;
-				leftDirX = rightDirX = 0;
-				break;
 		}
 
 		if (Dungeon.level.blobs.get(LightWall.class) != null){
 			Dungeon.level.blobs.get(LightWall.class).fullyClear();
 		}
 
-		boolean placedWall = false;
+		int knockBackIdx = closestIdx;
 
-		int knockBackDir = PathFinder.CIRCLE8[closestIdx];
-
-		//if all 3 tiles infront of Paladin are blocked, assume cast was in error and cancel
-		if (Dungeon.level.solid[closest]
-				&& Dungeon.level.solid[hero.pos + PathFinder.CIRCLE8[(closestIdx+1)%8]]
-				&& Dungeon.level.solid[hero.pos + PathFinder.CIRCLE8[(closestIdx+7)%8]]){
+		//if all 3 tiles in front of Paladin are blocked, assume cast was in error and cancel
+		if (Dungeon.level.solid[closest] &&
+			Dungeon.level.solid[hero.pos + neighbors[(closestIdx + 1) % 6]] &&
+			Dungeon.level.solid[hero.pos + neighbors[(closestIdx + 5) % 6]]){
 			GLog.w(Messages.get(this, "invalid_target"));
 			return;
 		}
@@ -184,44 +127,11 @@ public class WallOfLight extends TargetedClericSpell {
 		//process early so that cost is calculated before walls are added
 		onSpellCast(tome, hero);
 
-		placeWall(closest, knockBackDir);
-
-		int leftPos = closest;
-		int rightPos = closest;
+		placeWall(closest, knockBackIdx);
 
 		//iterate to the left and right, placing walls as we go
-		for (int i = 0; i < steps; i++) {
-			if (leftDirY != 0) {
-				leftPos += leftDirY * Dungeon.level.width();
-				if (!Dungeon.level.insideMap(leftPos)){
-					break;
-				}
-				placeWall(leftPos, knockBackDir);
-			}
-			if (leftDirX != 0) {
-				leftPos += leftDirX;
-				if (!Dungeon.level.insideMap(leftPos)){
-					break;
-				}
-				placeWall(leftPos, knockBackDir);
-			}
-		}
-		for (int i = 0; i < steps; i++) {
-			if (rightDirX != 0) {
-				rightPos += rightDirX;
-				if (!Dungeon.level.insideMap(rightPos)){
-					break;
-				}
-				placeWall(rightPos, knockBackDir);
-			}
-			if (rightDirY != 0) {
-				rightPos += rightDirY * Dungeon.level.width();
-				if (!Dungeon.level.insideMap(rightPos)){
-					break;
-				}
-				placeWall(rightPos, knockBackDir);
-			}
-		}
+		placeWallTo(closest, knockBackIdx, (closestIdx + 3 - 1) % 6);
+		placeWallTo(closest, knockBackIdx, (closestIdx + 3 + 1) % 6);
 
 		Sample.INSTANCE.play(Assets.Sounds.CHARGEUP);
 
@@ -229,13 +139,27 @@ public class WallOfLight extends TargetedClericSpell {
 		Dungeon.hero.spendAndNext(1f);
 	}
 
-	private void placeWall( int pos, int knockbackDIR){
+	private void placeWallTo( int pos, int knockBackIdx, int direction ) {
+		
+		int steps = Dungeon.hero.pointsInTalent(Talent.WALL_OF_LIGHT);
+
+		for (int i = 0; i < steps; i++) {
+			pos = pos + Dungeon.level.neighbors( Neighbor.CIRCLE6, pos )[direction];
+			if (!Dungeon.level.insideMap( pos ) || Dungeon.level.solid[pos])
+				break;
+			placeWall( pos, knockBackIdx );
+		}
+
+	}
+
+	private void placeWall( int pos, int knockBackIdx){
 		if (!Dungeon.level.solid[pos]) {
 			GameScene.add(Blob.seed(pos, 20, LightWall.class));
 
 			Char ch = Actor.findChar(pos);
 			if (ch != null && ch.alignment == Char.Alignment.ENEMY){
-				WandOfBlastWave.throwChar(ch, new Ballistic(pos, pos+knockbackDIR, Ballistic.PROJECTILE), 1, false, false, WallOfLight.INSTANCE);
+				int newPos = pos + Dungeon.level.neighbors( Neighbor.CIRCLE6, pos)[knockBackIdx];
+				WandOfBlastWave.throwChar(ch, new Ballistic(pos, newPos, Ballistic.PROJECTILE), 1, false, false, WallOfLight.INSTANCE);
 				Buff.affect(ch, Paralysis.class, ch.cooldown());
 			}
 		}

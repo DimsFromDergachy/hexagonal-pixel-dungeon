@@ -50,4 +50,8 @@ public class GameMath {
 
 	}
 
+	public static int Max( int a1, int a2, int a3 ) {
+		return Math.max( a1, Math.max( a2, a3 ));
+	}
+
 }

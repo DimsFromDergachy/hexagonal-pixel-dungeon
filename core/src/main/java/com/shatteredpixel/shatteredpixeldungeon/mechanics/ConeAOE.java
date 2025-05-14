@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 
-//a cone made of up several ballisticas scanning in an arc
+//a cone made of up several ballistics scanning in an arc
 public class ConeAOE {
 
 	public Ballistic coreRay;
@@ -43,7 +43,7 @@ public class ConeAOE {
 		this( core, Float.POSITIVE_INFINITY, degrees, core.collisionProperties );
 	}
 
-	public ConeAOE( Ballistic core, float maxDist, float degrees, int ballisticaParams ){
+	public ConeAOE( Ballistic core, float maxDist, float degrees, int ballisticParams ){
 
 		coreRay = core;
 
@@ -70,13 +70,13 @@ public class ConeAOE {
 		//Now we find every unique cell along the outer arc of our cone.
 		PointF scan = new PointF();
 		Point scanInt = new Point();
-		float initalAngle = PointF.angle(fromP, toP)/PointF.G2R;
+		float initialAngle = PointF.angle(fromP, toP)/PointF.G2R;
 		//want to preserve order so that our collection of rays is going clockwise
 		LinkedHashSet<Integer> targetCells = new LinkedHashSet<>();
 		LinkedHashSet<Integer> outerCells = new LinkedHashSet<>();
 
 		//cast a ray every 0.5 degrees in a clockwise arc, to find cells along the cone's outer arc
-		for (float a = initalAngle+degrees/2f; a >= initalAngle-degrees/2f; a-=0.5f){
+		for (float a = initialAngle+degrees/2f; a >= initialAngle-degrees/2f; a-=0.5f){
 			scan.polar(a * PointF.G2R, circleRadius);
 			scan.offset(fromP);
 			scan.x += (fromP.x > scan.x ? +0.5f : -0.5f);
@@ -103,7 +103,7 @@ public class ConeAOE {
 		//cast a ray to each found cell, these make up the cone
 		//we don't add the core ray as its collision properties may differ from the cone
 		for( int c : targetCells ){
-			Ballistic ray = new Ballistic(core.sourcePos, c, ballisticaParams);
+			Ballistic ray = new Ballistic(core.sourcePos, c, ballisticParams);
 			cells.addAll(ray.subPath(1, ray.dist));
 			rays.add(ray);
 			if (outerCells.contains(c)){
