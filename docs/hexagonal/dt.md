@@ -9,3 +9,6 @@ Run:
 
 Adjust tiles:
 > python3 ./image_tools/process_tiles.py
+
+Build for android:
+> ./gradlew assembleDebug
