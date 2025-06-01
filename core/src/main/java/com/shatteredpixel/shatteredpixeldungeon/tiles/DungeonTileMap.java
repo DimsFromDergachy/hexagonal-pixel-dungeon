@@ -91,15 +91,16 @@ public abstract class DungeonTileMap extends HexTileMap {
 
 		int cell = p.x + p.y * Dungeon.level.width();
 
+		// TODO: Fix wall assist
 		if (wallAssist
 				&& map != null
 				&& DungeonTileSheet.wallStitcheable(map[cell])){
 
-			if (cell + mapWidth < size
-					// && p.y % 1 >= 0.75f
-					&& !DungeonTileSheet.wallStitcheable(map[cell + mapWidth])){
-				cell += mapWidth;
-			}
+			// if (cell + mapWidth < size
+			// 		// && p.y % 1 >= 0.75f
+			// 		&& !DungeonTileSheet.wallStitcheable(map[cell + mapWidth])){
+			// 	cell += mapWidth;
+			// }
 
 		}
 
