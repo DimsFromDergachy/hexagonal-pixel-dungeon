@@ -1509,10 +1509,12 @@ public abstract class Level implements Bundlable {
 				(tile % width == 0 || tile % width == width-1));
 	}
 
+	// TODO: Should be hexagonal ??
 	public Point cellToPoint( int cell ){
 		return new Point(cell % width(), cell / width());
 	}
 
+	// TODO: Should be hexagonal ??
 	public int pointToCell( Point p ){
 		return p.x + p.y*width();
 	}

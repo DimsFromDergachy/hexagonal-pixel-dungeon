@@ -2357,6 +2357,7 @@ public class Hero extends Char {
 		}
 	}
 
+	// TODO: Hexagonal
 	public boolean search( boolean intentional ) {
 		
 		if (!isAlive()) return false;

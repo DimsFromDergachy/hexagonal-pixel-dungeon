@@ -46,6 +46,7 @@ public class DungeonTerrainTileMap extends DungeonTileMap {
 
 		if (tile == Terrain.WATER) {
 			return DungeonTileSheet.stitchWaterTile(
+					// TODO: Do it on hexagonal way
 					map[pos + PathFinder.CIRCLE4[0]],
 					map[pos + PathFinder.CIRCLE4[1]],
 					map[pos + PathFinder.CIRCLE4[2]],
