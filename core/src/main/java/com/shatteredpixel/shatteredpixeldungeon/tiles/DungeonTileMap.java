@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.tiles;
 
 import com.shatteredpixel.shatteredpixeldungeon.Dungeon;
 import com.watabou.noosa.HexTileMap;
+import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.tweeners.AlphaTweener;
 import com.watabou.utils.GameMath;
@@ -78,6 +79,10 @@ public abstract class DungeonTileMap extends HexTileMap {
 
 	protected abstract int getTileVisual(int pos, int tile, boolean flat);
 
+	// public int screenToTile(int x, int y ){
+	// 	return screenToTile(x, y, false);
+	// }
+
 	// wall assist is used to make raised perspective tapping a bit easier.
 	// If the pressed tile is a wall tile, the tap can be 'bumped' down into a none-wall tile.
 	// currently this happens if the bottom 1/4 of the wall tile is pressed.
@@ -91,11 +96,15 @@ public abstract class DungeonTileMap extends HexTileMap {
 
 		int cell = p.x + p.y * Dungeon.level.width();
 
-		// TODO: Fix wall assist
+
+		// wall assist is used to make raised perspective tapping a bit easier.
+		// If the pressed tile is a wall tile, the tap can be 'bumped' down into a none-wall tile.
+		// currently this happens if the bottom 1/4 of the wall tile is pressed.
 		if (wallAssist
 				&& map != null
-				&& DungeonTileSheet.wallStitcheable(map[cell])){
+				&& isWallAssistable(cell)){
 
+			// TODO: Fix wall assist
 			// if (cell + mapWidth < size
 			// 		// && p.y % 1 >= 0.75f
 			// 		&& !DungeonTileSheet.wallStitcheable(map[cell + mapWidth])){
@@ -106,6 +115,24 @@ public abstract class DungeonTileMap extends HexTileMap {
 
 		return cell;
 
+	}
+
+	private boolean isWallAssistable(int cell){
+		if (map == null || cell >= size){
+			return false;
+		}
+
+		if (DungeonTileSheet.wallStitcheable(map[cell])){
+			return true;
+		}
+
+		//caves region deco is very wall-like, so it counts
+		if (Dungeon.depth >= 10 && Dungeon.depth <= 15
+				&& (map[cell] == Terrain.REGION_DECO || map[cell] == Terrain.REGION_DECO_ALT)) {
+			return true;
+		}
+
+		return false;
 	}
 	
 	@Override

@@ -3,7 +3,7 @@
  * Copyright (C) 2012-2015 Oleg Dolya
  *
  * Shattered Pixel Dungeon
- * Copyright (C) 2014-2024 Evan Debenham
+ * Copyright (C) 2014-2025 Evan Debenham
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,11 +34,13 @@ public class PathFinder {
 	// 4  \______/  5  
 	//        6        
 	public enum Neighbor {
+
 		NEIGHBORS_3,		// [1, 4, 5]
 
 		NEIGHBORS_6,		// [1 .. 6]
 		NEIGHBORS_7,		// [1, 2, 3, 0, 4, 5, 6]
 
+		// the same as NEIGHBORS_6 with the x2 distance
 		NEIGHBORS_6_x2,
 
 		CIRCLE3,			// [1, 5, 4]
@@ -46,8 +48,6 @@ public class PathFinder {
 
 		CIRCLE12,			// cells are around on the distance 2
 
-		// DIRECTION,			// [1, 5, 4, 3, 6, 2]
-		// DIRECTION_LR,		// [2, 4, 1, 6, 3, 5]
 	}
 
 	public static int[] distance;
