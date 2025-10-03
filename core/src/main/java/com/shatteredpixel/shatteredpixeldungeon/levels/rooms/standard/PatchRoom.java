@@ -23,6 +23,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Patch;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Door;
 import com.watabou.utils.BArray;
 import com.watabou.utils.PathFinder;
 

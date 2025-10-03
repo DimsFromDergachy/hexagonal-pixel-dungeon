@@ -26,6 +26,7 @@ import com.shatteredpixel.shatteredpixeldungeon.items.Item;
 import com.shatteredpixel.shatteredpixeldungeon.items.quest.DarkGold;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.quest.MineSecretRoom;
 import com.watabou.utils.Graph;
@@ -127,25 +128,25 @@ public class MiningLevelPainter extends CavesPainter {
 		for (Room r : rooms) {
 			for (Room n : r.connected.keySet()) {
 
-				Room.Door d = r.connected.get(n);
+				Door d = r.connected.get(n);
 				int door = d.x + d.y * l.width();
 
-				if (d.type == Room.Door.Type.WALL || d.type == Room.Door.Type.HIDDEN){
+				if (d.type == Door.Type.WALL || d.type == Door.Type.HIDDEN){
 					l.map[door] = Terrain.WALL;
 				} else {
 					//some of these are randomly hidden, using the same rules as regular levels
 					if (Random.Float() < hiddenDoorChance) {
-						d.type = Room.Door.Type.HIDDEN;
+						d.type = Door.Type.HIDDEN;
 						Graph.buildDistanceMap(rooms, r);
 						if (n.distance == Integer.MAX_VALUE){
 							l.map[door] = Terrain.EMPTY;
-							d.type = Room.Door.Type.EMPTY;
+							d.type = Door.Type.EMPTY;
 						} else {
 							l.map[door] = Terrain.WALL;
 						}
 					} else {
 						l.map[door] = Terrain.EMPTY;
-						d.type = Room.Door.Type.EMPTY;
+						d.type = Door.Type.EMPTY;
 					}
 
 				}

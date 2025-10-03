@@ -21,6 +21,7 @@
 
 package com.shatteredpixel.shatteredpixeldungeon.levels.features;
 
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.watabou.utils.Random;
 import com.watabou.utils.Rect;
@@ -45,7 +46,7 @@ public class Maze {
 		}
 		
 		//set spaces where there are doors
-		for (Room.Door d : r.connected.values()) {
+		for (Door d : r.connected.values()) {
 			maze[d.x - r.left][d.y - r.top] = EMPTY;
 		}
 		

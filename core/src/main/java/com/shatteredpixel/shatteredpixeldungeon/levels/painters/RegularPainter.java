@@ -29,6 +29,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Document;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Patch;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.connection.ConnectionRoom;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
@@ -159,7 +160,7 @@ public abstract class RegularPainter extends Painter {
 	
 	private void placeDoors( Room r ) {
 		for (Room n : r.connected.keySet()) {
-			Room.Door door = r.connected.get( n );
+			Door door = r.connected.get( n );
 			if (door == null) {
 				
 				Rect i = r.intersect( n );
@@ -175,7 +176,7 @@ public abstract class RegularPainter extends Painter {
 									" n=" + n.getClass().getSimpleName()));
 					continue;
 				}
-				door = new Room.Door(Random.element(doorSpots));
+				door = new Door(Random.element(doorSpots));
 				
 				r.connected.put( n, door );
 				n.connected.put( r, door );
@@ -210,17 +211,17 @@ public abstract class RegularPainter extends Painter {
 					continue;
 				}
 				
-				Room.Door d = r.connected.get(n);
+				Door d = r.connected.get(n);
 				int door = d.x + d.y * l.width();
 				
-				if (d.type == Room.Door.Type.REGULAR){
+				if (d.type == Door.Type.REGULAR){
 					if (Random.Float() < hiddenDoorChance) {
-						d.type = Room.Door.Type.HIDDEN;
+						d.type = Door.Type.HIDDEN;
 						//all standard rooms must have an unbroken path to all other standard rooms
 						if (l.feeling != Level.Feeling.SECRETS){
 							Graph.buildDistanceMap(rooms, r);
 							if (n.distance == Integer.MAX_VALUE){
-								d.type = Room.Door.Type.UNLOCKED;
+								d.type = Door.Type.UNLOCKED;
 							}
 						//on a secrets level, rooms just have to not be totally isolated
 						} else {
@@ -233,7 +234,7 @@ public abstract class RegularPainter extends Painter {
 								}
 							}
 							if (roomsInGraph < 2){
-								d.type = Room.Door.Type.UNLOCKED;
+								d.type = Door.Type.UNLOCKED;
 							} else {
 								roomsInGraph = 0;
 								Graph.buildDistanceMap(rooms, n);
@@ -244,7 +245,7 @@ public abstract class RegularPainter extends Painter {
 									}
 								}
 								if (roomsInGraph < 2){
-									d.type = Room.Door.Type.UNLOCKED;
+									d.type = Door.Type.UNLOCKED;
 								}
 							}
 						}
@@ -252,10 +253,10 @@ public abstract class RegularPainter extends Painter {
 						//don't hide if it would make this room only accessible by hidden doors
 						//unless we're on a secrets depth
 						if (l.feeling != Level.Feeling.SECRETS && n.distance == Integer.MAX_VALUE){
-							d.type = Room.Door.Type.UNLOCKED;
+							d.type = Door.Type.UNLOCKED;
 						}
 					} else {
-						d.type = Room.Door.Type.UNLOCKED;
+						d.type = Door.Type.UNLOCKED;
 					}
 
 					//entrance doors on floor 1 are hidden during tutorial
@@ -263,7 +264,7 @@ public abstract class RegularPainter extends Painter {
 					if (r.isEntrance() || n.isEntrance()){
 						if ((Dungeon.depth == 1 && SPDSettings.intro())
 							|| (Dungeon.depth == 2 && !Document.ADVENTURERS_GUIDE.isPageFound(Document.GUIDE_SEARCHING))) {
-							d.type = Room.Door.Type.HIDDEN;
+							d.type = Door.Type.HIDDEN;
 						}
 					}
 				}

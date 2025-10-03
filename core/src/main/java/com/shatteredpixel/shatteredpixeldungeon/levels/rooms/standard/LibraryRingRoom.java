@@ -24,7 +24,7 @@ package com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Door;
 import com.watabou.utils.Point;
 import com.watabou.utils.Rect;
 
@@ -70,8 +70,8 @@ public class LibraryRingRoom extends StandardRoom {
 			Painter.fill(level, c.x, c.y-4, 2, 10, Terrain.EMPTY);
 		}
 
-		for (Room.Door door : connected.values()) {
-			door.set( Room.Door.Type.REGULAR );
+		for (Door door : connected.values()) {
+			door.set( Door.Type.REGULAR );
 			Painter.drawInside(level, this, door, 2, Terrain.EMPTY);
 		}
 	}

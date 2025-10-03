@@ -489,7 +489,7 @@ public class CityBossLevel extends Level {
 						|| map[i] == Terrain.EMBERS || map[i] == Terrain.GRASS
 						|| map[i] == Terrain.HIGH_GRASS || map[i] == Terrain.FURROWED_GRASS){
 
-					//final ground stiching with city tiles
+					//final ground stitching with city tiles
 					if (i/tileW == 21){
 						data[i] = 11*8 + 0;
 						data[++i] = 11*8 + 1;
