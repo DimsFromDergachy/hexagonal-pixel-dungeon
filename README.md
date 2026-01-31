@@ -18,3 +18,21 @@ If you'd like to work with the code, you can find the following guides in `/docs
 - [Compiling for desktop platforms.](docs/getting-started-desktop.md)
 - [Compiling for iOS.](docs/getting-started-ios.md)
 - [Recommended changes for making your own version.](docs/recommended-changes.md)
+
+### Hexagonal Transformation Documentation
+
+This fork transforms Shattered Pixel Dungeon from a square grid to a hexagonal grid. Key documentation:
+
+- **[AI Agent Guide](AI_AGENT_GUIDE.md)** - Comprehensive project vision, goals, and development guidelines
+- **[Hexagonal Coordinates Technical Doc](docs/hexagonal/HEXAGONAL_COORDINATES.md)** - Detailed technical documentation of the coordinate system implementation
+- **[Quick Reference & TODO](docs/hexagonal/dt.md)** - Development notes and task list
+- **[WARP Guide](WARP.md)** - Development commands and architecture overview
+
+Quick start for development:
+```bash
+# Desktop (fastest for development)
+./gradlew desktop:debug
+
+# Android debug build
+./gradlew android:assembleDebug
+```
