@@ -46,10 +46,10 @@
 ### High Priority
 
 #### 🐛 Critical Bugs
-- [ ] **Bug: Level 15 boss crash** - Game consistently crashes when fighting the final boss
-  - Difficult to reproduce on desktop
-  - Happens reliably on Android
-  - Need better logging and save file debugging tools
+- [x] **Bug: Level 15 boss crash** - ✅ FIXED
+  - Was caused by Pylon using `% 8` instead of `% 6` for hexagonal neighbor array
+  - Fixed in Pylon.java - see `docs/hexagonal/bug-fixes/dm300-pylon-crash.md`
+  - Bug was specific to hexagonal fork (introduced during 8→6 direction conversion)
 - [ ] **Bug: Fix search pattern** - Search functionality broken with hexagonal grid
   - Likely related to neighbor/adjacency calculations
   - May need to update PathFinder for 6-directional movement
