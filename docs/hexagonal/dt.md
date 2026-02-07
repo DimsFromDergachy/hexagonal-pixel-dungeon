@@ -56,9 +56,10 @@
 - [ ] **Bug: Fix wall-assist** - Wall-assist feature not working correctly
   - Related to `screenToTile()` method in `DungeonTileMap.java`
   - Hex coordinate conversion issues
-- [ ] **Bug: Cursed wands crash** - Inherited from original game
-  - Also present in Shattered Pixel Dungeon
-  - Should report upstream if possible
+- [x] **Bug: Cursed wands crash** - ✅ FIXED
+  - Was caused by LightningBolt effect passing neighbor offsets as absolute positions
+  - Fixed in CursedWand.java - see `docs/hexagonal/bug-fixes/cursed-wand-lightning-crash.md`
+  - This fix should be reported upstream to Shattered Pixel Dungeon
 
 #### 🎨 Core Hexagonal Features
 - [ ] **Hex: Complete level repainting** - Adapt level generation for hexagonal patterns

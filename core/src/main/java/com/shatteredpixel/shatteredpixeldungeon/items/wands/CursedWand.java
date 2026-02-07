@@ -546,9 +546,9 @@ public class CursedWand {
 
 			int[] circle = Dungeon.level.neighbors( Neighbor.CIRCLE6, user.pos );
 
-			user.sprite.parent.add(new Lightning(circle[0], circle[3], null));
-			user.sprite.parent.add(new Lightning(circle[1], circle[4], null));
-			user.sprite.parent.add(new Lightning(circle[2], circle[5], null));
+			user.sprite.parent.add(new Lightning(user.pos + circle[0], user.pos + circle[3], null));
+			user.sprite.parent.add(new Lightning(user.pos + circle[1], user.pos + circle[4], null));
+			user.sprite.parent.add(new Lightning(user.pos + circle[2], user.pos + circle[5], null));
 
 			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, user.pos )){
 				if (Actor.findChar(user.pos+i) != null){
@@ -559,9 +559,9 @@ public class CursedWand {
 			int pos = bolt.collisionPos;
 			circle = Dungeon.level.neighbors( Neighbor.CIRCLE6, pos );
 
-			user.sprite.parent.add(new Lightning(circle[0], circle[3], null));
-			user.sprite.parent.add(new Lightning(circle[1], circle[4], null));
-			user.sprite.parent.add(new Lightning(circle[2], circle[5], null));
+			user.sprite.parent.add(new Lightning(pos + circle[0], pos + circle[3], null));
+			user.sprite.parent.add(new Lightning(pos + circle[1], pos + circle[4], null));
+			user.sprite.parent.add(new Lightning(pos + circle[2], pos + circle[5], null));
 
 			for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, pos )){
 				if (Actor.findChar(pos+i) != null && !affected.contains(Actor.findChar(pos+i))){
