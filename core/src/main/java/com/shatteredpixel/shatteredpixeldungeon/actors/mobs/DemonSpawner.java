@@ -77,6 +77,7 @@ public class DemonSpawner extends Mob {
 
 	private float spawnCoolDown = 0;
 
+	//pre-v3.3.0 , leftover from when these could record their spawn on act
 	public boolean spawnRecorded = false;
 
 	@Override

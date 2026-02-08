@@ -14,7 +14,7 @@ If you like this game, please consider support **ORIGINAL** authors:
 
 If you'd like to work with the code, you can find the following guides in `/docs`:
 - [Compiling for Android.](docs/getting-started-android.md)
-    - **[If you plan to distribute on Google Play please read the end of this guide.](docs/getting-started-android.md#distributing-your-apk)**
+    - **[If you plan to distribute on Google Play please read the end of this guide.](docs/getting-started-android.md#distributing-your-app)**
 - [Compiling for desktop platforms.](docs/getting-started-desktop.md)
 - [Compiling for iOS.](docs/getting-started-ios.md)
 - [Recommended changes for making your own version.](docs/recommended-changes.md)

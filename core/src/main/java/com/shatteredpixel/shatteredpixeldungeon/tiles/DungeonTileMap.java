@@ -180,6 +180,10 @@ public abstract class DungeonTileMap extends HexTileMap {
 	public static PointF raisedTileCenterToWorld( int pos ) {
 		return tileToWorld(pos, 0.5f * WIDTH, 0.1f * HEIGHT);
 	}
+
+	public static int worldToTile( float x, float y, int width){
+		return (int)(x / SIZE) + ((int)(y / SIZE) * width);
+	}
 	
 	@Override
 	public boolean overlapsScreenPoint( int x, int y ) {
