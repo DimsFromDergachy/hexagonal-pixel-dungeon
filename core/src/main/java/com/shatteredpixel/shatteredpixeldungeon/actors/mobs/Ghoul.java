@@ -108,8 +108,8 @@ public class Ghoul extends Mob {
 			
 			ArrayList<Integer> candidates = new ArrayList<>();
 			
-			int[] neighbours = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos - Dungeon.level.width()};
-			for (int n : neighbours) {
+			int[] neighbors = {pos + 1, pos - 1, pos + Dungeon.level.width(), pos - Dungeon.level.width()};
+			for (int n : neighbors) {
 				if (Dungeon.level.passable[n]
 						&& Actor.findChar( n ) == null
 						&& (!Char.hasProp(this, Property.LARGE) || Dungeon.level.openSpace[n])) {

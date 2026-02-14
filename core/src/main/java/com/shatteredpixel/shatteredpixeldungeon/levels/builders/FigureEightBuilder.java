@@ -245,10 +245,10 @@ public class FigureEightBuilder extends RegularBuilder {
 			return null;
 		}
 		
-		findNeighbours(rooms);
+		findNeighbors(rooms);
 		
 		for (Room r : rooms){
-			for (Room n : r.neigbours){
+			for (Room n : r.neighbors){
 				if (!n.connected.containsKey(r)
 						&& Random.Float() < extraConnectionChance){
 					r.connect(n);

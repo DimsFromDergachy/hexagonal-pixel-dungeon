@@ -36,7 +36,7 @@ public class RingBridgeRoom extends RingTunnelRoom {
 
 		super.paint(level);
 
-		for (Room r : neigbours){
+		for (Room r : neighbors){
 			if (r instanceof BridgeRoom || r instanceof RingBridgeRoom || r instanceof WalkwayRoom){
 				Rect i = intersect(r);
 				if (i.width() != 0){

@@ -1653,13 +1653,13 @@ public abstract class Level implements Bundlable {
 	public int[] neighbors( PathFinder.Neighbor neighbor, int cell ) {
 		switch (neighbor) {
 			case NEIGHBORS_3:
-				return PathFinder.NEIGHBOURS3;
+				return PathFinder.NEIGHBORS3;
 			case NEIGHBORS_6:
-				return PathFinder.NEIGHBOURS6[(cell % width) & 1];
+				return PathFinder.NEIGHBORS6[(cell % width) & 1];
 			case NEIGHBORS_7:
-				return PathFinder.NEIGHBOURS7[(cell % width) & 1];
+				return PathFinder.NEIGHBORS7[(cell % width) & 1];
 			case NEIGHBORS_6_x2:
-				return PathFinder.NEIGHBOURS6_X2;
+				return PathFinder.NEIGHBORS6_X2;
 			case CIRCLE3:
 				return PathFinder.CIRCLE3[(cell % width) & 1];
 			case CIRCLE6:

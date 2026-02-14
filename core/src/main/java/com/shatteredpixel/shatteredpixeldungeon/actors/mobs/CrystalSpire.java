@@ -232,7 +232,7 @@ public class CrystalSpire extends Mob {
 	private ArrayList<Integer> spreadDiamondAOE(ArrayList<Integer> currentCells){
 		ArrayList<Integer> spreadCells = new ArrayList<>();
 		for (int i : currentCells){
-			for (int j : PathFinder.NEIGHBOURS3){
+			for (int j : PathFinder.NEIGHBORS3){
 				if ((!Dungeon.level.solid[i+j] || Dungeon.level.map[i+j] == Terrain.MINE_CRYSTAL)
 						&& !spreadCells.contains(i+j) && !currentCells.contains(i+j)){
 					spreadCells.add(i+j);

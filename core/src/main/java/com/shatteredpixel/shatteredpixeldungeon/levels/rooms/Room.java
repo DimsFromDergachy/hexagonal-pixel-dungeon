@@ -36,7 +36,7 @@ import java.util.LinkedHashMap;
 
 public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	
-	public ArrayList<Room> neigbours = new ArrayList<>();
+	public ArrayList<Room> neighbors = new ArrayList<>();
 	public LinkedHashMap<Room, Door> connected = new LinkedHashMap<>();
 	
 	public int distance;
@@ -52,10 +52,10 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	
 	public Room set( Room other ) {
 		super.set( other );
-		for (Room r : other.neigbours){
-			neigbours.add(r);
-			r.neigbours.remove(other);
-			r.neigbours.add(this);
+		for (Room r : other.neighbors){
+			neighbors.add(r);
+			r.neighbors.remove(other);
+			r.neighbors.add(this);
 		}
 		for (Room r : other.connected.keySet()){
 			Door d = other.connected.get(r);
@@ -253,15 +253,15 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 		Painter.fill(l, merge, mergeTerrain);
 	}
 	
-	public boolean addNeigbour( Room other ) {
-		if (neigbours.contains(other))
+	public boolean addNeighbor( Room other ) {
+		if (neighbors.contains(other))
 			return true;
 		
 		Rect i = intersect( other );
 		if ((i.width() == 0 && i.height() >= 2) ||
 			(i.height() == 0 && i.width() >= 2)) {
-			neigbours.add( other );
-			other.neigbours.add( this );
+			neighbors.add( other );
+			other.neighbors.add( this );
 			return true;
 		}
 		return false;
@@ -269,7 +269,7 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	
 	public boolean connect( Room room ) {
 
-		if ((neigbours.contains(room) || addNeigbour(room))
+		if ((neighbors.contains(room) || addNeighbor(room))
 				&& !connected.containsKey( room ) && canConnect(room)) {
 			connected.put( room, null );
 			room.connected.put( this, null );
@@ -279,10 +279,10 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 	}
 	
 	public void clearConnections(){
-		for (Room r : neigbours){
-			r.neigbours.remove(this);
+		for (Room r : neighbors){
+			r.neighbors.remove(this);
 		}
-		neigbours.clear();
+		neighbors.clear();
 		for (Room r : connected.keySet()){
 			r.connected.remove(this);
 		}
@@ -434,7 +434,7 @@ public abstract class Room extends Rect implements Graph.Node, Bundlable {
 		bottom = bundle.getInt( "bottom" );
 	}
 
-	//FIXME currently connections and neighbours are not preserved on load
+	//FIXME currently connections and neighbors are not preserved on load
 	public void onLevelLoad( Level level ){
 		//does nothing by default
 	}

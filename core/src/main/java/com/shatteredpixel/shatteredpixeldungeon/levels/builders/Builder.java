@@ -40,11 +40,11 @@ public abstract class Builder {
 	//returns null on failure
 	public abstract ArrayList<Room> build(ArrayList<Room> rooms);
 	
-	protected static void findNeighbours(ArrayList<Room> rooms){
+	protected static void findNeighbors(ArrayList<Room> rooms){
 		Room[] ra = rooms.toArray( new Room[0] );
 		for (int i=0; i < ra.length-1; i++) {
 			for (int j=i+1; j < ra.length; j++) {
-				ra[i].addNeigbour( ra[j] );
+				ra[i].addNeighbor( ra[j] );
 			}
 		}
 	}

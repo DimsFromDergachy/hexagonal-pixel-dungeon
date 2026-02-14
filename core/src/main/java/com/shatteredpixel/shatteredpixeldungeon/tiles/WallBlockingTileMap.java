@@ -106,7 +106,7 @@ public class WallBlockingTileMap extends HexTileMap {
 
 				//Block a camera-facing wall if:
 				//- the cell above, above-left, or above-right is not a wall, visible, and has a wall below
-				//- none of the remaining 5 neighbour cells are both not a wall and visible
+				//- none of the remaining 5 neighbor cells are both not a wall and visible
 				
 				//if all 3 above are wall we can shortcut and just clear the cell
 				//unless one or more is a shelf, or we can mine, then we have to just block none
@@ -142,10 +142,10 @@ public class WallBlockingTileMap extends HexTileMap {
 				//Block the side of an internal wall if:
 				//- any cells above, the one directly below, or the cell itself is visible
 				//and all of the following are NOT true:
-				//- the cell has no neighbours on that side
-				//- the top-side neighbour is visible and the side neighbour isn't a wall.
-				//- the side neighbour is both not a wall and visible
-				//- the bottom-side neighbour is both not a wall and visible
+				//- the cell has no neighbors on that side
+				//- the top-side neighbor is visible and the side neighbor isn't a wall.
+				//- the side neighbor is both not a wall and visible
+				//- the bottom-side neighbor is both not a wall and visible
 
 				curr = BLOCK_NONE;
 				

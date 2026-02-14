@@ -65,7 +65,7 @@ public class PathFinder {
 
 	//performance-light shortcuts for some common pathfinder cases
 	//they are in array-access order for increased memory performance
-	public static int[] NEIGHBOURS3;
+	public static int[] NEIGHBORS3;
 
 	//similar to their equivalent neighbor arrays, but the order is clockwise.
 	//Useful for some logic functions, but is slower due to lack of array-access order.
@@ -76,8 +76,8 @@ public class PathFinder {
 
 	// the hexagonal grid is "odd-q" vertical layout
 	// first index is for odd/even column
-	public static int[][] NEIGHBOURS6;
-	public static int[][] NEIGHBOURS7;
+	public static int[][] NEIGHBORS6;
+	public static int[][] NEIGHBORS7;
 
 	// the hexagonal grid is "odd-q" vertical layout
 	// first index is for odd/even column
@@ -85,7 +85,7 @@ public class PathFinder {
 	public static int[][] CIRCLE6;
 	public static int[][] CIRCLE12;
 
-	public static int[] NEIGHBOURS6_X2;
+	public static int[] NEIGHBORS6_X2;
 
 
 	public static void setMapSize( int width, int height ) {
@@ -101,22 +101,22 @@ public class PathFinder {
 		maxVal = new int[size];
 		Arrays.fill(maxVal, Integer.MAX_VALUE);
 
-		// analog of neighbour4 for hexagonal grid (this is adding asymmetric, but it's OK)
-		NEIGHBOURS3 = new int[]{-width, -1, +1 };
+		// analog of neighbor4 for hexagonal grid (this is adding asymmetric, but it's OK)
+		NEIGHBORS3 = new int[]{-width, -1, +1 };
 
 		CIRCLE4 = new int[]{-width, +1, +width, -1};
 		CIRCLE8 = new int[]{-width-1, -width, -width+1, +1, +width+1, +width, +width-1, -1};
 
 		// "odd-q" vertical layout
-		NEIGHBOURS6 = new int[][] {
+		NEIGHBORS6 = new int[][] {
 			{ -width, -width-1, -width+1, -1, +1, +width }, // even
 			{ -width, -1, +1, +width-1, +width+1, +width }}; // odd
 
-		NEIGHBOURS7 = new int[][] {
+		NEIGHBORS7 = new int[][] {
 			{ -width, -width-1, -width+1, 0, -1, +1, +width }, // even
 			{ -width, -1, +1, 0, +width-1, +width+1, +width }}; // odd
 
-		NEIGHBOURS6_X2 = new int[] { -2*width, -2-width, +2-width, -2+width, +2+width, +2*width};
+		NEIGHBORS6_X2 = new int[] { -2*width, -2-width, +2-width, -2+width, +2+width, +2*width};
 
 		// "odd-q" vertical layout
 		CIRCLE3 = new int[][] {

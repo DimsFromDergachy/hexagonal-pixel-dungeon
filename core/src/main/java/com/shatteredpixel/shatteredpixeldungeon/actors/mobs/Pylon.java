@@ -219,20 +219,20 @@ public class Pylon extends Mob {
 	}
 
 	private static final String ALIGNMENT = "alignment";
-	private static final String TARGET_NEIGHBOUR = "target_neighbour";
+	private static final String TARGET_NEIGHBOR = "target_neighbor";
 
 	@Override
 	public void storeInBundle(Bundle bundle) {
 		super.storeInBundle(bundle);
 		bundle.put(ALIGNMENT, alignment);
-		bundle.put(TARGET_NEIGHBOUR, targetNeighbor);
+		bundle.put(TARGET_NEIGHBOR, targetNeighbor);
 	}
 
 	@Override
 	public void restoreFromBundle(Bundle bundle) {
 		alignment = bundle.getEnum(ALIGNMENT, Alignment.class);
 		super.restoreFromBundle(bundle);
-		targetNeighbor = bundle.getInt(TARGET_NEIGHBOUR);
+		targetNeighbor = bundle.getInt(TARGET_NEIGHBOR);
 	}
 
 }

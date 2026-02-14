@@ -112,7 +112,7 @@ public abstract class RegularLevel extends Level {
 		
 		do {
 			for (Room r : initRooms){
-				r.neigbours.clear();
+				r.neighbors.clear();
 				r.connected.clear();
 			}
 			rooms = builder.build((ArrayList<Room>)initRooms.clone());

@@ -64,46 +64,46 @@ public class Patch {
 					
 					int pos = x + y * w;
 					int count = 0;
-					int neighbours = 0;
+					int neighbors = 0;
 
 					if (y > 0) {
 						if (x > 0){
 							if (off[pos - w - 1]) count++;
-							neighbours++;
+							neighbors++;
 						}
 						if (off[pos - w]) count++;
-						neighbours++;
+						neighbors++;
 						if (x < (w - 1)){
 							if (off[pos - w + 1]) count++;
-							neighbours++;
+							neighbors++;
 						}
 					}
 
 					if (x > 0){
 						if (off[pos - 1]) count++;
-						neighbours++;
+						neighbors++;
 					}
 					if (off[pos]) count++;
-					neighbours++;
+					neighbors++;
 					if (x < (w-1)){
 						if (off[pos + 1]) count++;
-						neighbours++;
+						neighbors++;
 					}
 
 					if (y < (h-1)) {
 						if (x > 0){
 							if (off[pos + w - 1]) count++;
-							neighbours++;
+							neighbors++;
 						}
 						if (off[pos + w]) count++;
-						neighbours++;
+						neighbors++;
 						if (x < (w-1)){
 							if (off[pos + w + 1]) count++;
-							neighbours++;
+							neighbors++;
 						}
 					}
 
-					cur[pos] = 2*count >= neighbours;
+					cur[pos] = 2*count >= neighbors;
 					if (cur[pos] != off[pos]) fillDiff += cur[pos] ? +1 : -1;
 
 				}
@@ -116,7 +116,7 @@ public class Patch {
 
 		//even if force fill rate is on, only do this if we have some kind of border
 		if (forceFillRate && Math.min(w, h) > 2) {
-			int[] neighbours = new int[]{-w - 1, -w, -w + 1, -1, 0, +1, +w - 1, +w, +w + 1};
+			int[] neighbors = new int[]{-w - 1, -w, -w + 1, -1, 0, +1, +w - 1, +w, +w + 1};
 			boolean growing = fillDiff < 0;
 
 			while (fillDiff != 0) {
@@ -130,7 +130,7 @@ public class Patch {
 					tries++;
 				} while (off[cell] != growing && tries * 10 < length);
 
-				for (int i : neighbours) {
+				for (int i : neighbors) {
 					if (fillDiff != 0 && off[cell + i] != growing) {
 						off[cell + i] = growing;
 						fillDiff += growing ? +1 : -1;

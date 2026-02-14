@@ -101,7 +101,7 @@ public class GridBuilder extends Builder {
 			}
 			int tries = 0;
 			do {
-				r.neigbours.clear();
+				r.neighbors.clear();
 				tries++;
 				if (tries > 30) {
 					toPlace.add(r); //can't place for now, put it into the back of to place list
@@ -168,10 +168,10 @@ public class GridBuilder extends Builder {
 			} while (!placed.contains(r));
 		}
 
-		findNeighbours(rooms);
+		findNeighbors(rooms);
 
 		for (Room r : rooms){
-			for (Room n : r.neigbours){
+			for (Room n : r.neighbors){
 				if (!n.connected.containsKey(r)
 						&& Random.Float() < extraConnectionChance){
 					r.connect(n);

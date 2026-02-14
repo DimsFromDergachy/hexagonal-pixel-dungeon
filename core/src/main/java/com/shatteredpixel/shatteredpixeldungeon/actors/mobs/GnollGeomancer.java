@@ -487,7 +487,7 @@ public class GnollGeomancer extends Mob {
 	private ArrayList<Integer> spreadDiamondAOE(ArrayList<Integer> currentCells){
 		ArrayList<Integer> spreadCells = new ArrayList<>();
 		for (int i : currentCells){
-			for (int j : PathFinder.NEIGHBOURS3){
+			for (int j : PathFinder.NEIGHBORS3){
 				if (Dungeon.level.insideMap(i+j) && !spreadCells.contains(i+j) && !currentCells.contains(i+j)){
 					spreadCells.add(i+j);
 				}

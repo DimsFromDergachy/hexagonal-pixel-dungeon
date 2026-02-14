@@ -51,7 +51,7 @@ public class PillarsExitRoom extends PillarsRoom {
 			exit = level.pointToCell(random(2));
 			valid = true;
 
-			for (int i : PathFinder.NEIGHBOURS3){
+			for (int i : PathFinder.NEIGHBORS3){
 				if (i == -level.width()) continue;
 				if (level.map[exit+i] == Terrain.WALL){
 					valid = false;
