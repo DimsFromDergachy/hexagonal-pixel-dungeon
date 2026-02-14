@@ -370,7 +370,7 @@ public class PrisonBossLevel extends Level {
 		addVisuals(); //this also resets existing visuals
 		traps.clear();
 
-		for (CustomTilemap t : customTiles.toArray(new CustomTilemap[0])){
+		for (CustomTileMap t : customTiles.toArray(new CustomTileMap[0])){
 			if (t instanceof FadingTraps){
 				((FadingTraps) t).remove();
 			}
@@ -650,7 +650,7 @@ public class PrisonBossLevel extends Level {
 		Painter.fill(this, tenguCell, 1, Terrain.EMPTY);
 		buildFlagMaps();
 
-		for (CustomTilemap vis : customTiles.toArray(new CustomTilemap[0])){
+		for (CustomTileMap vis : customTiles.toArray(new CustomTileMap[0])){
 			if (vis instanceof FadingTraps){
 				((FadingTraps) vis).remove();
 			}

@@ -46,7 +46,7 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Catalog;
 import com.shatteredpixel.shatteredpixeldungeon.journal.Notes;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
-import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistica;
+import com.shatteredpixel.shatteredpixeldungeon.mechanics.Ballistic;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.CellSelector;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
@@ -55,8 +55,8 @@ import com.shatteredpixel.shatteredpixeldungeon.utils.GLog;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Bundle;
 import com.watabou.utils.Callback;
-import com.watabou.utils.PathFinder;
 import com.watabou.utils.Random;
+import com.watabou.utils.PathFinder.Neighbor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -226,7 +226,7 @@ public class SkeletonKey extends Artifact {
 
 							int pushCell = -1;
 							//push to the closest open cell that's further than the door
-							for (int i : PathFinder.NEIGHBOURS8){
+							for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, target )) {
 								if (!Dungeon.level.solid[target+i]
 										&& Actor.findChar(target+i) == null
 										&& (Dungeon.level.openSpace[target+i] || !Char.hasProp(toMove, Char.Property.LARGE))
@@ -237,7 +237,7 @@ public class SkeletonKey extends Artifact {
 							}
 
 							if (pushCell != -1 && !Char.hasProp(toMove, Char.Property.IMMOVABLE)){
-								Ballistica push = new Ballistica(target, pushCell, Ballistica.PROJECTILE);
+								Ballistic push = new Ballistic(target, pushCell, Ballistic.PROJECTILE);
 								WandOfBlastWave.throwChar(toMove, push, 1, false, false, this);
 								artifactProc(toMove, visiblyUpgraded(), 2);
 							} else {
@@ -261,7 +261,7 @@ public class SkeletonKey extends Artifact {
 								//throw items inside the door in random directions
 								if (Dungeon.level.heaps.get(target) != null){
 									ArrayList<Integer> candidates = new ArrayList<>();
-									for (int n : PathFinder.NEIGHBOURS8){
+									for (int n : Dungeon.level.neighbors( Neighbor.NEIGHBORS_6, target )) {
 										if (Dungeon.level.passable[target+n]){
 											candidates.add(target+n);
 										}
@@ -331,15 +331,16 @@ public class SkeletonKey extends Artifact {
 				int closest = curUser.pos;
 				int closestIdx = -1;
 
-				for (int i = 0; i < PathFinder.CIRCLE8.length; i++){
-					int ofs = PathFinder.CIRCLE8[i];
+				int[] neighbors = Dungeon.level.neighbors( Neighbor.CIRCLE6, curUser.pos );
+				for (int i = 0; i < neighbors.length; i++) {
+					int ofs = neighbors[i];
 					if (Dungeon.level.trueDistance(target, curUser.pos+ofs) < Dungeon.level.trueDistance(target, closest)){
 						closest = curUser.pos+ofs;
 						closestIdx = i;
 					}
 				}
 
-				int knockBackDir = PathFinder.CIRCLE8[closestIdx];
+				int knockBackDir = neighbors[closestIdx];
 
 				if (Dungeon.level.solid[closest]){
 					GLog.w(Messages.get(SkeletonKey.class, "invalid_target"));
@@ -351,15 +352,16 @@ public class SkeletonKey extends Artifact {
 				curUser.sprite.operate(target, new Callback() {
 					@Override
 					public void call() {
-						placeWall(curUser.pos+PathFinder.CIRCLE8[finalClosestIdx], knockBackDir);
-						placeWall(curUser.pos+PathFinder.CIRCLE8[(finalClosestIdx +7)%8], knockBackDir);
-						placeWall(curUser.pos+PathFinder.CIRCLE8[(finalClosestIdx +1)%8], knockBackDir);
+						placeWall(curUser.pos+neighbors[finalClosestIdx], knockBackDir);
+						placeWall(curUser.pos+neighbors[(finalClosestIdx + 5) % 6], knockBackDir);
+						placeWall(curUser.pos+neighbors[(finalClosestIdx + 1) % 6], knockBackDir);
 
-						//if we're in a diagonal direction
-						if (finalClosestIdx % 2 == 0){
-							placeWall(curUser.pos+2*PathFinder.CIRCLE8[(finalClosestIdx +7)%8], knockBackDir);
-							placeWall(curUser.pos+2*PathFinder.CIRCLE8[(finalClosestIdx +1)%8], knockBackDir);
-						}
+						// DT: we don't need this on hexagonal grid
+						// //if we're in a diagonal direction
+						// if (finalClosestIdx % 2 == 0){
+						// 	placeWall(curUser.pos+2*PathFinder.CIRCLE8[(finalClosestIdx +7)%8], knockBackDir);
+						// 	placeWall(curUser.pos+2*PathFinder.CIRCLE8[(finalClosestIdx +1)%8], knockBackDir);
+						// }
 
 						charge -= 2;
 						gainExp(2);
@@ -463,7 +465,7 @@ public class SkeletonKey extends Artifact {
 
 			Char ch = Actor.findChar(pos);
 			if (ch != null && ch.alignment == Char.Alignment.ENEMY){
-				WandOfBlastWave.throwChar(ch, new Ballistica(pos, pos+knockbackDIR, Ballistica.PROJECTILE), 1, false, false, this);
+				WandOfBlastWave.throwChar(ch, new Ballistic(pos, pos+knockbackDIR, Ballistic.PROJECTILE), 1, false, false, this);
 				artifactProc(ch, visiblyUpgraded(), 2);
 			}
 		}

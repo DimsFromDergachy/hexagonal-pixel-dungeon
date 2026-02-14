@@ -373,7 +373,7 @@ public class DM300 extends Mob {
 	public void ventGas( Char target ){
 		Dungeon.hero.interrupt();
 
-		Ballistic trajectory = new Ballistic(pos, target.pos, Ballistica.STOP_TARGET);
+		Ballistic trajectory = new Ballistic(pos, target.pos, Ballistic.STOP_TARGET);
 
 		int gasMulti = Dungeon.isChallenged(Challenges.STRONGER_BOSSES) ? 2 : 1;
 

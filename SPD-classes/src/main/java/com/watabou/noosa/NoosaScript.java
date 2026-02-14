@@ -27,9 +27,7 @@ import com.watabou.glwrap.Attribute;
 import com.watabou.glwrap.Quad;
 import com.watabou.glwrap.Uniform;
 import com.watabou.glwrap.VertexBuffer;
-import com.watabou.glwrap.Vertexbuffer;
 import com.watabou.utils.DeviceCompat;
-
 import java.nio.Buffer;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;

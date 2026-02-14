@@ -33,9 +33,8 @@ import com.shatteredpixel.shatteredpixeldungeon.journal.Journal;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSprite;
 import com.shatteredpixel.shatteredpixeldungeon.sprites.ItemSpriteSheet;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.TerrainFeaturesTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.ExitButton;
-import com.shatteredpixel.shatteredpixeldungeon.ui.IconButton;
 import com.shatteredpixel.shatteredpixeldungeon.ui.Icons;
 import com.shatteredpixel.shatteredpixeldungeon.ui.TitleBackground;
 import com.shatteredpixel.shatteredpixeldungeon.ui.StyledButton;
@@ -49,8 +48,8 @@ import com.watabou.utils.SparseArray;
 
 public class JournalScene extends PixelScene {
 
-	public static final int WIDTH_P     = 126;
-	public static final int WIDTH_L     = 216;
+	public static final int WIDTH_P = 126;
+	public static final int WIDTH_L = 216;
 
 	private static int lastIDX = 0;
 
@@ -94,7 +93,7 @@ public class JournalScene extends PixelScene {
 		title.setSize(200, 0);
 		title.setPos(
 				insets.left + (w - title.reqWidth()) / 2f,
-				insets.top + (top - title.height()) / 2f
+			insets.top + (top - title.height()) / 2f
 		);
 		align(title);
 		add(title);
@@ -230,8 +229,8 @@ public class JournalScene extends PixelScene {
 		addToBack(BG);
 
 		ExitButton btnExit = new ExitButton();
-		btnExit.setPos( insets.left + w - btnExit.width(), insets.top );
-		add( btnExit );
+		btnExit.setPos(insets.left + w - btnExit.width(), insets.top);
+		add(btnExit);
 
 		fadeIn();
 	}

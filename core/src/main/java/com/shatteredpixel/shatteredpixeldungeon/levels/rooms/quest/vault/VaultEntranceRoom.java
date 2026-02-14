@@ -5,9 +5,9 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Room;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.StandardRoom;
-import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.standard.entrance.EntranceRoom;
 import com.watabou.utils.Point;
 
 public class VaultEntranceRoom extends StandardRoom {
@@ -22,8 +22,8 @@ public class VaultEntranceRoom extends StandardRoom {
 		Painter.fill( level, this, Terrain.WALL);
 		Painter.fill( level, this, 1, Terrain.EMPTY );
 
-		for (Room.Door door : connected.values()) {
-			door.set( Room.Door.Type.REGULAR );
+		for (Door door : connected.values()) {
+			door.set( Door.Type.REGULAR );
 		}
 
 		int entrance;

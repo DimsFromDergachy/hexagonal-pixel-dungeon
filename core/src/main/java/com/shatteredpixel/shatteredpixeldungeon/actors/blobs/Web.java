@@ -100,7 +100,6 @@ public class Web extends Blob {
 			for (int i=0; i < l.length(); i++) {
 				l.solid[i] = l.solid[i] || cur[i] > 0;
 				l.flammable[i] = l.flammable[i] || cur[i] > 0;
-				l.flamable[i] = l.flamable[i] || cur[i] > 0;
 				//openSpace will be updated as part of building flap maps
 			}
 		}

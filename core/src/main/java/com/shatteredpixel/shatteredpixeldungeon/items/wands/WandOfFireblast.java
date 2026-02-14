@@ -48,7 +48,7 @@ import com.watabou.noosa.audio.Sample;
 import com.watabou.utils.Callback;
 import com.watabou.utils.GameMath;
 import com.watabou.utils.PathFinder.Neighbor;
-
+import com.watabou.utils.Random;
 import java.util.ArrayList;
 
 public class WandOfFireblast extends DamageWand {
@@ -156,8 +156,7 @@ public class WandOfFireblast extends DamageWand {
 
 		//proc chance is initially 0..
 		float procChance = 0;
-		for (int i : PathFinder.NEIGHBOURS7) {
-
+		for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, defender.pos )) {
 			//+25% proc chance per burning char within 3x3 of target
 			// this includes the attacker and defender
 			if (Actor.findChar(defender.pos + i) != null
@@ -183,7 +182,7 @@ public class WandOfFireblast extends DamageWand {
 			//explode, dealing damage to enemies in 3x3, and clearing all fire
 			CellEmitter.center(defender.pos).burst(BlastParticle.FACTORY, 30);
 			if (fire != null) {
-				for (int i : PathFinder.NEIGHBOURS7) {
+				for (int i : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, defender.pos )) {
 					CellEmitter.get(defender.pos + i).burst(SmokeParticle.FACTORY, 4);
 					if (Fire.volumeAt(defender.pos+i, Fire.class) > 0){
 						Dungeon.level.destroy(defender.pos + i);

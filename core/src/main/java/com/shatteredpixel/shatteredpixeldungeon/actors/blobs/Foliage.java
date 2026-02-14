@@ -32,7 +32,7 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.watabou.utils.PathFinder;
+import com.watabou.utils.PathFinder.Neighbor;
 
 public class Foliage extends Blob {
 
@@ -63,7 +63,7 @@ public class Foliage extends Blob {
 						//only turn terrain into grass if no fire is adjacent to it
 						boolean valid = true;
 						if (fire != null && fire.volume > 0) {
-							for (int k : PathFinder.NEIGHBOURS9) {
+							for (int k : Dungeon.level.neighbors( Neighbor.NEIGHBORS_7, cell)) {
 								if (fire.cur[cell + k] > 0){
 									valid = false;
 								}

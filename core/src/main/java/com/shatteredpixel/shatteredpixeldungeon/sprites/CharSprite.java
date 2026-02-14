@@ -39,15 +39,10 @@ import com.shatteredpixel.shatteredpixeldungeon.effects.particles.ShadowParticle
 import com.shatteredpixel.shatteredpixeldungeon.effects.particles.SnowParticle;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
 import com.shatteredpixel.shatteredpixeldungeon.scenes.GameScene;
-import com.shatteredpixel.shatteredpixeldungeon.scenes.PixelScene;
 import com.shatteredpixel.shatteredpixeldungeon.tiles.DungeonTileMap;
 import com.shatteredpixel.shatteredpixeldungeon.ui.CharHealthIndicator;
-import com.watabou.glwrap.Matrix;
-import com.watabou.glwrap.VertexBuffer;
-import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.MovieClip;
-import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.audio.Sample;
 import com.watabou.noosa.particles.Emitter;
 import com.watabou.noosa.tweeners.AlphaTweener;
@@ -57,7 +52,6 @@ import com.watabou.utils.Callback;
 import com.watabou.utils.PointF;
 import com.watabou.utils.Random;
 
-import java.nio.Buffer;
 import java.util.HashSet;
 
 public class CharSprite extends Sprite implements Tweener.Listener, MovieClip.Listener {
@@ -191,7 +185,7 @@ public class CharSprite extends Sprite implements Tweener.Listener, MovieClip.Li
 			}
 			float x = destinationCenter().x;
 			float y = destinationCenter().y - height()/2f;
-			int pos = DungeonTilemap.worldToTile(x, y + height(), Dungeon.level.width());
+			int pos = DungeonTileMap.worldToTile(x, y + height(), Dungeon.level.width());
 			if (ch != null) {
 				FloatingText.show( x, y, pos, text, color, icon, true );
 			} else {

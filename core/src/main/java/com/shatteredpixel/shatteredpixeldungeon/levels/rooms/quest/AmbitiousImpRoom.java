@@ -28,14 +28,15 @@ import com.shatteredpixel.shatteredpixeldungeon.levels.Level;
 import com.shatteredpixel.shatteredpixeldungeon.levels.Terrain;
 import com.shatteredpixel.shatteredpixeldungeon.levels.features.LevelTransition;
 import com.shatteredpixel.shatteredpixeldungeon.levels.painters.Painter;
+import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.Door;
 import com.shatteredpixel.shatteredpixeldungeon.levels.rooms.special.SpecialRoom;
 import com.shatteredpixel.shatteredpixeldungeon.messages.Messages;
-import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTilemap;
+import com.shatteredpixel.shatteredpixeldungeon.tiles.CustomTileMap;
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
 import com.watabou.noosa.NoosaScript;
 import com.watabou.noosa.TextureFilm;
-import com.watabou.noosa.Tilemap;
+import com.watabou.noosa.TileMap;
 import com.watabou.utils.Point;
 import com.watabou.utils.Random;
 
@@ -128,7 +129,7 @@ public class AmbitiousImpRoom extends SpecialRoom {
 		return Point.distance(p, center()) >= 3;
 	}
 
-	public static class QuestEntrance extends CustomTilemap {
+	public static class QuestEntrance extends CustomTileMap {
 
 		{
 			texture = Assets.Environment.CITY_QUEST;
@@ -139,8 +140,8 @@ public class AmbitiousImpRoom extends SpecialRoom {
 		final int TEX_WIDTH = 128;
 
 		@Override
-		public Tilemap create() {
-			Tilemap v = super.create();
+		public TileMap create() {
+			TileMap v = super.create();
 			v.map(mapSimpleImage(0, 0, TEX_WIDTH), 5);
 			return v;
 		}
@@ -166,7 +167,7 @@ public class AmbitiousImpRoom extends SpecialRoom {
 		}
 	}
 
-	public static class EntranceBarrier extends CustomTilemap {
+	public static class EntranceBarrier extends CustomTileMap {
 		{
 			texture = Assets.Environment.CITY_QUEST;
 
@@ -176,10 +177,10 @@ public class AmbitiousImpRoom extends SpecialRoom {
 		final int TEX_WIDTH = 128;
 
 		@Override
-		public Tilemap create() {
+		public TileMap create() {
 			//largely a copy of super method, so that we can change alpha on update
 			if (vis != null && vis.alive) vis.killAndErase();
-			vis = new Tilemap(texture, new TextureFilm( texture, SIZE, SIZE )){
+			vis = new TileMap(texture, new TextureFilm( texture, SIZE, SIZE )){
 				@Override
 				protected NoosaScript script() {
 					//allow lighting for custom tilemaps
